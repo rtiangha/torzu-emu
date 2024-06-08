@@ -62,4 +62,10 @@ if (YUZU_USE_PRECOMPILED_HEADERS)
     target_precompile_headers(yuzu-cmd PRIVATE precompiled_headers.h)
 endif()
 
+# Bundle in-place on MSVC so dependencies can be resolved by builds.
+if (MSVC)
+    include(BundleTarget)
+    bundle_target_in_place(yuzu-cmd)
+endif()
+
 create_target_directory_groups(yuzu-cmd)

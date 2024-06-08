@@ -719,6 +719,21 @@ else()
     set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT yuzu-cmd)
 endif()
 
+# Create target for outputting distributable bundles.
+# Not supported for mobile platforms as distributables are built differently.
+if (NOT ANDROID AND NOT IOS)
+    include(BundleTarget)
+    if (ENABLE_SDL2)
+        bundle_target(yuzu-cmd)
+    endif()
+    if (ENABLE_QT)
+        bundle_target(yuzu)
+    endif()
+    if (YUZU_ROOM)
+        bundle_target(yuzu-room)
+    endif()
+endif()
+
 
 # Installation instructions
 # =========================

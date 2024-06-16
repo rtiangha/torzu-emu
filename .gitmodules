@@ -49,9 +49,6 @@
 [submodule "externals/SPIRV-Tools"]
 	path = externals/SPIRV-Tools
 	url = https://github.com/KhronosGroup/SPIRV-Tools.git
-[submodule "externals/fmt"]
-	path = externals/fmt
-	url = https://github.com/fmtlib/fmt.git
 [submodule "externals/Vulkan-Utility-Libraries"]
 	path = externals/Vulkan-Utility-Libraries
 	url = https://github.com/KhronosGroup/Vulkan-Utility-Libraries.git

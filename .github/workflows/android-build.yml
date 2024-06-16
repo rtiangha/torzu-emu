@@ -1,28 +1,29 @@
 # SPDX-FileCopyrightText: 2022 yuzu Emulator Project
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-name: 'yuzu-android-build'
+name: 'torzu-android-build'
 
 on:
   push:
+    branches: [ "*" ]
     tags: [ "*" ]
 
 jobs:
   android:
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'yuzu-emu/yuzu-android' }}
+    if: ${{ github.repository == 'rtiangha/torzu-emu' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
       - name: Set up cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -32,7 +33,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-android-
       - name: Query tag name
-        uses: olegtarasov/get-tag@v2.1.2
+        uses: olegtarasov/get-tag@v2
         id: tagName
       - name: Install dependencies
         run: |
@@ -47,7 +48,7 @@ jobs:
       - name: Copy artifacts
         run: ./.ci/scripts/android/upload.sh
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: android
           path: artifacts/
@@ -61,7 +62,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
       - name: Query tag name
-        uses: olegtarasov/get-tag@v2.1.2
+        uses: olegtarasov/get-tag@v2
         id: tagName
       - name: Create release
         uses: actions/create-release@v1
@@ -73,7 +74,7 @@ jobs:
           draft: false
           prerelease: false
       - name: Upload artifacts
-        uses: alexellis/upload-assets@0.2.3
+        uses: alexellis/upload-assets@0.4.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

@@ -79,6 +79,23 @@ if (ENABLE_LIBUSB AND NOT TARGET libusb::usb)
     add_subdirectory(libusb)
 endif()
 
+# Zstandard
+if(USE_SYSTEM_ZSTD)
+    find_package(zstd REQUIRED)
+    add_library(zstd INTERFACE)
+    if(TARGET zstd::libzstd_shared)
+        message(STATUS "Found system Zstandard")
+    endif()
+    target_link_libraries(zstd INTERFACE zstd::libzstd_shared)
+else()
+    set(ZSTD_LEGACY_SUPPORT OFF)
+    set(ZSTD_BUILD_PROGRAMS OFF)
+    set(ZSTD_BUILD_SHARED OFF)
+    add_subdirectory(zstd/build/cmake EXCLUDE_FROM_ALL)
+    target_include_directories(libzstd_static INTERFACE $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/externals/zstd/lib>)
+    add_library(zstd ALIAS libzstd_static)
+endif()
+
 # SDL2
 if (YUZU_USE_EXTERNAL_SDL2)
     if (NOT WIN32)

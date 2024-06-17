@@ -128,6 +128,7 @@ if(USE_SYSTEM_ENET)
 else()
     add_subdirectory(enet)
     target_include_directories(enet INTERFACE ./enet/include)
+    add_library(enet::enet ALIAS enet)
 endif()
 
 # Cubeb

@@ -29,7 +29,7 @@ if (BUNDLE_TARGET_EXECUTE)
             file(WRITE "${executable_parent_dir}/qt.conf" "[Paths]\nPrefix = .")
 
             find_program(windeployqt_executable windeployqt PATHS "${QT_HOST_PATH}/bin")
-            find_program(qtpaths_executable qtpaths5 PATHS "${QT_HOST_PATH}/bin")
+            find_program(qtpaths_executable qtpaths PATHS "${QT_HOST_PATH}/bin")
 
             # TODO: Hack around windeployqt's poor cross-compilation support by
             # TODO: making a local copy with a prefix pointing to the target Qt.
@@ -62,7 +62,7 @@ if (BUNDLE_TARGET_EXECUTE)
                 endif()
 
                 set(windeployqt_executable "${windeployqt_dir}/windeployqt.exe")
-                set(qtpaths_executable "${windeployqt_dir}/qtpaths5.exe")
+                set(qtpaths_executable "${windeployqt_dir}/qtpaths.exe")
             endif()
 
             message(STATUS "Executing windeployqt for executable ${executable_path}")

@@ -121,10 +121,13 @@ if (YUZU_USE_EXTERNAL_SDL2)
 endif()
 
 # ENet
-if (NOT TARGET enet::enet)
+if(USE_SYSTEM_ENET)
+    find_package(libenet REQUIRED)
+    add_library(enet INTERFACE)
+    target_link_libraries(enet INTERFACE libenet::libenet)
+else()
     add_subdirectory(enet)
     target_include_directories(enet INTERFACE ./enet/include)
-    add_library(enet::enet ALIAS enet)
 endif()
 
 # Cubeb

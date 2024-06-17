@@ -125,7 +125,7 @@ endif()
 add_subdirectory(sirit)
 
 # httplib
-if (ENABLE_WEB_SERVICE AND NOT TARGET httplib::httplib)
+if (WIN32 OR ENABLE_WEB_SERVICE AND NOT TARGET httplib::httplib)
     set(HTTPLIB_REQUIRE_OPENSSL ON)
     add_subdirectory(cpp-httplib)
 endif()

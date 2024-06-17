@@ -156,6 +156,17 @@ endif()
 # Sirit
 add_subdirectory(sirit)
 
+# JSON
+add_library(json INTERFACE)
+if (USE_SYSTEM_JSON)
+    find_package(nlohmann_json REQUIRED)
+    target_link_libraries(json INTERFACE nlohmann_json::nlohmann_json)
+    get_target_property(NLOHMANN_PREFIX nlohmann_json::nlohmann_json INTERFACE_INCLUDE_DIRECTORIES)
+else()
+    target_include_directories(json SYSTEM INTERFACE ./json/include)
+    target_link_libraries(json INTERFACE nlohmann_json::nlohmann_json)
+endif()
+
 # httplib
 if (WIN32 OR ENABLE_WEB_SERVICE AND NOT TARGET httplib::httplib)
     set(HTTPLIB_REQUIRE_OPENSSL ON)

@@ -39,7 +39,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         if: ${{ matrix.target == 'msvc' }}
       - name: Install extra tools (MSVC)
-        run: choco install ccache ninja wget boost-msvc-14.3
+        run: choco install ccache ninja wget boost-msvc-14.3 openssl
         if: ${{ matrix.target == 'msvc' }}
       - name: Install Vulkan SDK
         uses: humbletim/install-vulkan-sdk@v1.1.1

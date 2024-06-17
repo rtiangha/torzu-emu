@@ -67,7 +67,7 @@ if (BUNDLE_TARGET_EXECUTE)
 
             message(STATUS "Executing windeployqt for executable ${executable_path}")
             execute_process(COMMAND "${windeployqt_executable}" "${executable_path}"
-                --qtpaths "${qtpaths_executable}"
+#                --qtpaths "${qtpaths_executable}"
                 --no-compiler-runtime --no-system-d3d-compiler --no-opengl-sw --no-translations
                 --plugindir "${executable_parent_dir}/plugins"
                 RESULT_VARIABLE windeployqt_result)

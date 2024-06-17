@@ -41,7 +41,7 @@ jobs:
         run: choco install ccache ninja wget boost-msvc-14.3 openssl
         if: ${{ matrix.target == 'msvc' }}
       - name: Install Qt
-        uses: jurplel/install-qt-action@v3
+        uses: jurplel/install-qt-action@v4
         with:
           aqtversion: '==3.1.*'
           version: '5.15.*'
@@ -111,9 +111,9 @@ jobs:
           update: true
           install: git make p7zip autoconf libtool automake-wrapper lz4 liblz4-devel
           pacboy: >-
-            toolchain:p ccache:p cmake:p ninja:p nlohmann-json:p ffmpeg:p
+            qt5:p toolchain:p ccache:p cmake:p ninja:p nlohmann-json:p ffmpeg:p
             vulkan-headers:p spirv-headers:p vulkan-utility-libraries:p
-            qt5:p python-pip:p glslang:p spirv-tools:p boost:p lz4:p libusb:p
+            python-pip:p glslang:p spirv-tools:p boost:p lz4:p libusb:p
             spirv-cross:p spirv-llvm-translator:p pkg-config:p
       - name: Disable line ending translation
         run: git config --global core.autocrlf input

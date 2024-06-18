@@ -165,9 +165,9 @@ endif()
 add_subdirectory(sirit)
 
 # JSON
+add_subdirectory(json)
 add_library(json INTERFACE)
 target_include_directories(json SYSTEM INTERFACE ./json/include)
-add_library(nlohmann_json::nlohmann_json ALIAS json)
 
 # httplib
 if (WIN32 OR ENABLE_WEB_SERVICE AND NOT TARGET httplib::httplib)

@@ -112,7 +112,7 @@ jobs:
           update: true
           install: git make p7zip autoconf libtool automake-wrapper lz4 liblz4-devel
           pacboy: >-
-            qt5:p toolchain:p ccache:p cmake:p ninja:p nlohmann-json:p ffmpeg:p
+            qt5:p toolchain:p ccache:p cmake:p ninja:p ffmpeg:p
             vulkan-headers:p spirv-headers:p vulkan-utility-libraries:p
             python-pip:p glslang:p spirv-tools:p boost:p lz4:p libusb:p
             spirv-cross:p spirv-llvm-translator:p pkg-config:p

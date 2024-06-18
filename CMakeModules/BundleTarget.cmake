@@ -28,34 +28,64 @@ if (BUNDLE_TARGET_EXECUTE)
             # This ensures Qt can find its plugins.
             file(WRITE "${executable_parent_dir}/qt.conf" "[Paths]\nPrefix = .")
 
-            find_program(windeployqt_executable windeployqt PATHS "${QT_HOST_PATH}/bin")
-            find_program(qtpaths_executable qtpaths PATHS "${QT_HOST_PATH}/bin")
+            if (ENABLE_QT6)
+                find_program(windeployqt_executable windeployqt6 PATHS "${QT_HOST_PATH}/bin")
+                find_program(qtpaths_executable qtpaths6 PATHS "${QT_HOST_PATH}/bin")
+            else()
+                find_program(windeployqt_executable windeployqt PATHS "${QT_HOST_PATH}/bin")
+                find_program(qtpaths_executable qtpaths PATHS "${QT_HOST_PATH}/bin")
+            endif()
 
             # TODO: Hack around windeployqt's poor cross-compilation support by
             # TODO: making a local copy with a prefix pointing to the target Qt.
             if (NOT "${QT_HOST_PATH}" STREQUAL "${QT_TARGET_PATH}")
                 set(windeployqt_dir "${BINARY_PATH}/windeployqt_copy")
                 file(MAKE_DIRECTORY "${windeployqt_dir}")
-                symlink_safe_copy("${windeployqt_executable}" "${windeployqt_dir}/windeployqt.exe")
-                symlink_safe_copy("${qtpaths_executable}" "${windeployqt_dir}/qtpaths.exe")
-                symlink_safe_copy("${QT_HOST_PATH}/bin/Qt5Core.dll" "${windeployqt_dir}")
+
+                if (ENABLE_QT6)
+                    symlink_safe_copy("${windeployqt_executable}" "${windeployqt_dir}/windeployqt6.exe")
+                    symlink_safe_copy("${qtpaths_executable}" "${windeployqt_dir}/qtpaths6.exe")
+                    symlink_safe_copy("${QT_HOST_PATH}/bin/Qt6Core.dll" "${windeployqt_dir}")
+                else()
+                    symlink_safe_copy("${windeployqt_executable}" "${windeployqt_dir}/windeployqt.exe")
+                    symlink_safe_copy("${qtpaths_executable}" "${windeployqt_dir}/qtpaths.exe")
+                    symlink_safe_copy("${QT_HOST_PATH}/bin/Qt5Core.dll" "${windeployqt_dir}")
+                endif()
 
                 if (EXISTS "${QT_TARGET_PATH}/share")
                     # Unix-style Qt; we need to wire up the paths manually.
-                    file(WRITE "${windeployqt_dir}/qt.conf" "\
-                        [Paths]\n
-                        Prefix = ${QT_TARGET_PATH}\n \
-                        ArchData = ${QT_TARGET_PATH}/share/qt5\n \
-                        Binaries = ${QT_TARGET_PATH}/bin\n \
-                        Data = ${QT_TARGET_PATH}/share/qt5\n \
-                        Documentation = ${QT_TARGET_PATH}/share/qt5/doc\n \
-                        Headers = ${QT_TARGET_PATH}/include/qt5\n \
-                        Libraries = ${QT_TARGET_PATH}/lib\n \
-                        LibraryExecutables = ${QT_TARGET_PATH}/share/qt5/bin\n \
-                        Plugins = ${QT_TARGET_PATH}/share/qt5/plugins\n \
-                        QmlImports = ${QT_TARGET_PATH}/share/qt5/qml\n \
-                        Translations = ${QT_TARGET_PATH}/share/qt5/translations\n \
-                    ")
+
+                    if (ENABLE_QT6)
+                        file(WRITE "${windeployqt_dir}/qt.conf" "\
+                            [Paths]\n
+                            Prefix = ${QT_TARGET_PATH}\n \
+                            ArchData = ${QT_TARGET_PATH}/share/qt6\n \
+                            Binaries = ${QT_TARGET_PATH}/bin\n \
+                            Data = ${QT_TARGET_PATH}/share/qt6\n \
+                            Documentation = ${QT_TARGET_PATH}/share/qt6/doc\n \
+                            Headers = ${QT_TARGET_PATH}/include/qt6\n \
+                            Libraries = ${QT_TARGET_PATH}/lib\n \
+                            LibraryExecutables = ${QT_TARGET_PATH}/share/qt6/bin\n \
+                            Plugins = ${QT_TARGET_PATH}/share/qt6/plugins\n \
+                            QmlImports = ${QT_TARGET_PATH}/share/qt6/qml\n \
+                            Translations = ${QT_TARGET_PATH}/share/qt6/translations\n \
+                        ")
+                    else()
+                        file(WRITE "${windeployqt_dir}/qt.conf" "\
+                            [Paths]\n
+                            Prefix = ${QT_TARGET_PATH}\n \
+                            ArchData = ${QT_TARGET_PATH}/share/qt5\n \
+                            Binaries = ${QT_TARGET_PATH}/bin\n \
+                            Data = ${QT_TARGET_PATH}/share/qt5\n \
+                            Documentation = ${QT_TARGET_PATH}/share/qt5/doc\n \
+                            Headers = ${QT_TARGET_PATH}/include/qt5\n \
+                            Libraries = ${QT_TARGET_PATH}/lib\n \
+                            LibraryExecutables = ${QT_TARGET_PATH}/share/qt5/bin\n \
+                            Plugins = ${QT_TARGET_PATH}/share/qt5/plugins\n \
+                            QmlImports = ${QT_TARGET_PATH}/share/qt5/qml\n \
+                            Translations = ${QT_TARGET_PATH}/share/qt5/translations\n \
+                        ")
+                    endif()
                 else()
                     # Windows-style Qt; the defaults should suffice.
                     file(WRITE "${windeployqt_dir}/qt.conf" "[Paths]\nPrefix = ${QT_TARGET_PATH}")
@@ -66,11 +96,20 @@ if (BUNDLE_TARGET_EXECUTE)
             endif()
 
             message(STATUS "Executing windeployqt for executable ${executable_path}")
-            execute_process(COMMAND "${windeployqt_executable}" "${executable_path}"
-#                --qtpaths "${qtpaths_executable}"
-                --no-compiler-runtime --no-system-d3d-compiler --no-opengl-sw --no-translations
-                --plugindir "${executable_parent_dir}/plugins"
-                RESULT_VARIABLE windeployqt_result)
+
+            if (ENABLE_QT6)
+                execute_process(COMMAND "${windeployqt_executable}" "${executable_path}"
+                    --qtpaths "${qtpaths_executable}"
+                    --no-compiler-runtime --no-system-d3d-compiler --no-opengl-sw --no-translations
+                    --plugindir "${executable_parent_dir}/plugins"
+                    RESULT_VARIABLE windeployqt_result)
+            else()
+                execute_process(COMMAND "${windeployqt_executable}" "${executable_path}"
+                    --no-compiler-runtime --no-system-d3d-compiler --no-opengl-sw --no-translations
+                    --plugindir "${executable_parent_dir}/plugins"
+                    RESULT_VARIABLE windeployqt_result)
+            endif()
+
             if (NOT windeployqt_result EQUAL "0")
                 message(FATAL_ERROR "windeployqt failed: ${windeployqt_result}")
             endif()
@@ -80,7 +119,12 @@ if (BUNDLE_TARGET_EXECUTE)
             file(REMOVE "${executable_parent_dir}/plugins/multimedia/ffmpegmediaplugin.dll")
         elseif (APPLE)
             get_filename_component(executable_name "${executable_path}" NAME_WE)
-            find_program(macdeployqt_executable macdeployqt PATHS "${QT_HOST_PATH}/bin")
+
+            if (ENABLE_QT6)
+                find_program(macdeployqt_executable macdeployqt6 PATHS "${QT_HOST_PATH}/bin")
+            else()
+                find_program(macdeployqt_executable macdeployqt PATHS "${QT_HOST_PATH}/bin")
+            endif()
 
             message(STATUS "Executing macdeployqt at \"${macdeployqt_executable}\" for executable \"${executable_path}\"")
             execute_process(
@@ -111,7 +155,12 @@ if (BUNDLE_TARGET_EXECUTE)
 
         if (enable_qt)
             # Find qmake to make sure the plugin uses the right version of Qt.
-            find_program(qmake_executable qmake PATHS "${QT_HOST_PATH}/bin")
+
+            if (ENABLE_QT6)
+                find_program(qmake_executable qmake6 PATHS "${QT_HOST_PATH}/bin")
+            else()
+                find_program(qmake_executable qmake PATHS "${QT_HOST_PATH}/bin")
+            endif()
 
             set(extra_linuxdeploy_env "QMAKE=${qmake_executable}")
             set(extra_linuxdeploy_args --plugin qt)

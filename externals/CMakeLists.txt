@@ -97,6 +97,13 @@ else()
     add_library(zstd::zstd ALIAS libzstd_static)
 endif()
 
+# lz4
+if (MSVC)
+    add_subdirectory(lz4/build/cmake EXCLUDE_FROM_ALL)
+    target_include_directories(lz4 INTERFACE lz4/lib)
+    add_library(lz4::lz4 ALIAS lz4)
+endif()
+
 # SDL2
 if (YUZU_USE_EXTERNAL_SDL2)
     if (NOT WIN32)

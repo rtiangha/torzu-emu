@@ -82,3 +82,6 @@
 [submodule "externals/json"]
 	path = externals/json
 	url = https://github.com/nlohmann/json.git
+[submodule "externals/lz4"]
+	path = externals/lz4
+	url = https://github.com/lz4/lz4.git

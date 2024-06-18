@@ -17,7 +17,7 @@ include(CTest)
 option(ENABLE_SDL2 "Enable the SDL2 frontend" ON)
 CMAKE_DEPENDENT_OPTION(YUZU_USE_BUNDLED_SDL2 "Download bundled SDL2 binaries" ON "ENABLE_SDL2;MSVC" OFF)
 # On Linux system SDL2 is likely to be lacking HIDAPI support which have drawbacks but is needed for SDL motion
-CMAKE_DEPENDENT_OPTION(YUZU_USE_EXTERNAL_SDL2 "Compile external SDL2" ON "ENABLE_SDL2;NOT MSVC" OFF)
+option(YUZU_USE_EXTERNAL_SDL2 "Compile external SDL2" ON)
 
 cmake_dependent_option(ENABLE_LIBUSB "Enable the use of LibUSB" ON "NOT ANDROID" OFF)
 
@@ -540,7 +540,7 @@ if (ENABLE_SDL2)
     if (YUZU_USE_BUNDLED_SDL2)
         # Detect toolchain and platform
         if ((MSVC_VERSION GREATER_EQUAL 1920 AND MSVC_VERSION LESS 1940) AND ARCHITECTURE_x86_64)
-            set(SDL2_VER "SDL2-2.28.2")
+            set(SDL2_VER "SDL2-2.30.3")
         else()
             message(FATAL_ERROR "No bundled SDL2 binaries for your toolchain. Disable YUZU_USE_BUNDLED_SDL2 and provide your own.")
         endif()
@@ -560,7 +560,7 @@ if (ENABLE_SDL2)
     elseif (YUZU_USE_EXTERNAL_SDL2)
         message(STATUS "Using SDL2 from externals.")
     else()
-        find_package(SDL2 2.26.4 REQUIRED)
+#        find_package(SDL2 2.26.4 REQUIRED)
     endif()
 endif()
 

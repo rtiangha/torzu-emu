@@ -42,13 +42,12 @@ if (BUNDLE_TARGET_EXECUTE)
                 set(windeployqt_dir "${BINARY_PATH}/windeployqt_copy")
                 file(MAKE_DIRECTORY "${windeployqt_dir}")
 
+                symlink_safe_copy("${windeployqt_executable}" "${windeployqt_dir}/windeployqt.exe")
+                symlink_safe_copy("${qtpaths_executable}" "${windeployqt_dir}/qtpaths.exe")
+
                 if (ENABLE_QT6)
-                    symlink_safe_copy("${windeployqt_executable}" "${windeployqt_dir}/windeployqt6.exe")
-                    symlink_safe_copy("${qtpaths_executable}" "${windeployqt_dir}/qtpaths6.exe")
                     symlink_safe_copy("${QT_HOST_PATH}/bin/Qt6Core.dll" "${windeployqt_dir}")
                 else()
-                    symlink_safe_copy("${windeployqt_executable}" "${windeployqt_dir}/windeployqt.exe")
-                    symlink_safe_copy("${qtpaths_executable}" "${windeployqt_dir}/qtpaths.exe")
                     symlink_safe_copy("${QT_HOST_PATH}/bin/Qt5Core.dll" "${windeployqt_dir}")
                 endif()
 

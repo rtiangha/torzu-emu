@@ -173,6 +173,8 @@ target_include_directories(json SYSTEM INTERFACE ./json/include)
 if (WIN32 OR ENABLE_WEB_SERVICE AND NOT TARGET httplib::httplib)
     set(HTTPLIB_REQUIRE_OPENSSL ON)
     add_subdirectory(cpp-httplib)
+else()
+    add_subdirectory(cpp-httplib)
 endif()
 
 # cpp-jwt

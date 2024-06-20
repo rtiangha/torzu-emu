@@ -13,8 +13,8 @@ cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER_LAUNCHER=ccache \
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-    -DCMAKE_CXX_COMPILER=clang++-18 \
-    -DCMAKE_C_COMPILER=clang-18 \
+    -DCMAKE_CXX_COMPILER=clang++-17 \
+    -DCMAKE_C_COMPILER=clang-17 \
     "${EXTRA_CMAKE_FLAGS[@]}" \
     -DYUZU_USE_BUNDLED_VCPKG=ON \
     -DYUZU_USE_BUNDLED_FFMPEG=OFF \

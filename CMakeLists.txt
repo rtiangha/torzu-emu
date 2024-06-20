@@ -306,7 +306,7 @@ find_package(SimpleIni MODULE)
 find_package(stb MODULE)
 find_package(VulkanMemoryAllocator CONFIG)
 find_package(ZLIB 1.2 MODULE)
-#find_package(zstd 1.5 MODULE)
+find_package(zstd 1.5 MODULE)
 
 if (NOT YUZU_USE_EXTERNAL_VULKAN_HEADERS)
     find_package(VulkanHeaders 1.3.274 REQUIRED)

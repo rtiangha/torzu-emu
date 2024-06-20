@@ -94,7 +94,9 @@ else()
     add_subdirectory(zstd/build/cmake EXCLUDE_FROM_ALL)
     target_include_directories(libzstd_static INTERFACE $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/externals/zstd/lib>)
     add_library(zstd ALIAS libzstd_static)
-    add_library(zstd::zstd ALIAS libzstd_static)
+    if(MSVC)
+        add_library(zstd::zstd ALIAS libzstd_static)
+    endif()
 endif()
 
 # lz4

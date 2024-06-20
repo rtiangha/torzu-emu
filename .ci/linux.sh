@@ -27,7 +27,6 @@ cmake .. -G Ninja \
     -DENABLE_WEB_SERVICE=OFF
 
 ninja
-strip -s bin/*
 
 if [ "$TARGET" = "appimage" ]; then
     ninja bundle

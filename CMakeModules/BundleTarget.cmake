@@ -80,7 +80,7 @@ if (BUNDLE_TARGET_EXECUTE)
             file(REMOVE "${executable_parent_dir}/plugins/multimedia/ffmpegmediaplugin.dll")
         elseif (APPLE)
             get_filename_component(executable_name "${executable_path}" NAME_WE)
-            find_program(macdeployqt_executable macdeployqt PATHS "${QT_HOST_PATH}/bin")
+            find_program(macdeployqt_executable macdeployqt6 PATHS "${QT_HOST_PATH}/bin")
 
             message(STATUS "Executing macdeployqt at \"${macdeployqt_executable}\" for executable \"${executable_path}\"")
             execute_process(

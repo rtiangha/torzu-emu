@@ -27,6 +27,9 @@ cmake .. -G Ninja \
     -DENABLE_WEB_SERVICE=OFF
 
 ninja
+strip -s bin/yuzu
+strip -s bin/yuzu-cmd
+strip -s bin/yuzu-room
 
 if [ "$TARGET" = "appimage" ]; then
     ninja bundle

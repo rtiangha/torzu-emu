@@ -16,6 +16,7 @@ cmake .. -G Ninja \
     -DCMAKE_CXX_COMPILER=clang++-17 \
     -DCMAKE_C_COMPILER=clang-17 \
     "${EXTRA_CMAKE_FLAGS[@]}" \
+    -DYUZU_ENABLE_LTO=ON \
     -DYUZU_USE_BUNDLED_VCPKG=ON \
     -DYUZU_USE_BUNDLED_FFMPEG=OFF \
     -DYUZU_TESTS=OFF \

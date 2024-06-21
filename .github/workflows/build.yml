@@ -67,11 +67,57 @@ jobs:
         with:
           name: ${{ env.OS }}-${{ env.TARGET }}
           path: artifacts/
-  macos:
+  macos-x86:
     runs-on: ${{ (matrix.target == 'x86_64' && 'macos-13') || 'macos-14' }}
     strategy:
       matrix:
-        target: ["x86_64", "arm64"]
+        target: ["x86_64"]
+    env:
+      CCACHE_DIR: ${{ github.workspace }}/.ccache
+      CCACHE_COMPILERCHECK: content
+      CCACHE_SLOPPINESS: time_macros
+      OS: macos
+      TARGET: ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Set up cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.target }}-
+      - name: Setup XCode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Install tools
+        run: brew install ccache ninja spirv-tools autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool libusb lz4 ninja nlohmann-json openssl pkg-config sdl2 speexdsp zlib zstd
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          aqtversion: '==3.1.*'
+          version: '6.7.1'
+          host: 'mac'
+          target: 'desktop'
+          arch: 'clang_64'
+          modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
+      - name: Build
+        run: ./.ci/macos.sh
+      - name: Prepare outputs for caching
+        run: mv build/bundle $OS-$TARGET
+      - name: Cache outputs for universal build
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.OS }}-${{ env.TARGET }}
+          key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+  macos-arm:
+    runs-on: ${{ (matrix.target == 'x86_64' && 'macos-13') || 'macos-14' }}
+    strategy:
+      matrix:
+        target: ["arm64"]
     env:
       CCACHE_DIR: ${{ github.workspace }}/.ccache
       CCACHE_COMPILERCHECK: content
@@ -115,7 +161,7 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
   macos-universal:
     runs-on: macos-14
-    needs: macos
+    needs: [macos-arm, macos-x86]
     env:
       OS: macos
       TARGET: universal

@@ -94,12 +94,12 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja spirv-tools autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool libusb lz4 ninja nlohmann-json openssl pkg-config sdl2 speexdsp zlib zstd
+        run: brew install ccache ninja spirv-tools automake boost ccache ffmpeg fmt glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           aqtversion: '==3.1.*'
-          version: '6.7.1'
+          version: '6.7.*'
           host: 'mac'
           target: 'desktop'
           arch: 'clang_64'
@@ -140,12 +140,12 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja spirv-tools autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool libusb lz4 ninja nlohmann-json openssl pkg-config sdl2 speexdsp zlib zstd
+        run: brew install ccache ninja spirv-tools autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           aqtversion: '==3.1.*'
-          version: '6.7.1'
+          version: '6.7.*'
           host: 'mac'
           target: 'desktop'
           arch: 'clang_64'
@@ -230,7 +230,6 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           modules: 'qtwebengine'
-          extra: '--base https://mirrors.ocf.berkeley.edu/qt/'
       - name: Install Vulkan SDK
         uses: humbletim/install-vulkan-sdk@v1.1.1
         with:
@@ -332,7 +331,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-android-
       - name: Query tag name
-        uses: olegtarasov/get-tag@v2
+        uses: olegtarasov/get-tag@v2.1.3
         id: tagName
       - name: Install dependencies
         run: |
@@ -361,7 +360,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
       - name: Query tag name
-        uses: olegtarasov/get-tag@v2
+        uses: olegtarasov/get-tag@v2.1.3
         id: tagName
       - name: Create release
         uses: actions/create-release@v1

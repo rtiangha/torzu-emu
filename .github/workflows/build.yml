@@ -94,7 +94,16 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja spirv-tools autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool libusb lz4 ninja nlohmann-json openssl pkg-config qt sdl2 speexdsp zlib zstd
+        run: brew install ccache ninja spirv-tools autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool libusb lz4 ninja nlohmann-json openssl pkg-config sdl2 speexdsp zlib zstd
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          aqtversion: '==3.1.*'
+          version: '6.7.1'
+          host: 'mac'
+          target: 'desktop'
+          arch: 'clang_64'
+          modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
       - name: Build
         run: ./.ci/macos.sh
       - name: Prepare outputs for caching

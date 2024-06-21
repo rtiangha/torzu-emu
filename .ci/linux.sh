@@ -15,6 +15,8 @@ cmake .. -G Ninja \
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
     -DCMAKE_CXX_COMPILER=clang++-17 \
     -DCMAKE_C_COMPILER=clang-17 \
+    -DCMAKE_CXX_FLAGS="-O2" \
+    -DCMAKE_C_FLAGS="-O2" \
     "${EXTRA_CMAKE_FLAGS[@]}" \
     -DYUZU_ENABLE_LTO=ON \
     -DYUZU_USE_BUNDLED_VCPKG=ON \

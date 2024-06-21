@@ -7,6 +7,10 @@ if (BUNDLE_TARGET_EXECUTE)
             # Use cmake copy for maximum compatibility.
             execute_process(COMMAND ${CMAKE_COMMAND} -E copy "${from}" "${to}"
                 RESULT_VARIABLE cp_result)
+        elseif(APPLE)
+            # MacOS needs to be root to read from some directories in /opt or /usr/local.
+            execute_process(COMMAND sudo cp -L "${from}" "${to}"
+                RESULT_VARIABLE cp_result)
         else()
             # Use native copy to turn symlinks into normal files.
             execute_process(COMMAND cp -L "${from}" "${to}"

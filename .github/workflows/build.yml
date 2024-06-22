@@ -219,7 +219,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         if: ${{ matrix.target == 'msvc' }}
       - name: Install extra tools (MSVC)
-        run: choco install ccache ninja wget boost-msvc-14.3 openssl
+        run: choco install ccache ninja wget openssl
         if: ${{ matrix.target == 'msvc' }}
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -241,6 +241,19 @@ jobs:
           vulkan-query-version: latest
           vulkan-components: SPIRV-Tools, SPIRV-Headers, Glslang, Vulkan-Headers
           vulkan-use-cache: true
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.4.5
+        id: install-boost
+        with:
+            # REQUIRED: Specify the required boost version
+            # A list of supported versions can be found here:
+            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+            boost_version: 1.84.0
+            # OPTIONAL: Specify a platform version
+            platform_version: 2022
+            # OPTIONAL: Specify a toolset
+            toolset: msvc
+            link: static
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
       - name: Build (MSVC)

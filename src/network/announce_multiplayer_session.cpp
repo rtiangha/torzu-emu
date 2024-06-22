@@ -7,6 +7,7 @@
 #include "announce_multiplayer_session.h"
 #include "common/announce_multiplayer_room.h"
 #include "common/assert.h"
+#include "common/settings.h"
 #include "network/network.h"
 
 #ifdef ENABLE_WEB_SERVICE

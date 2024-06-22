@@ -6,6 +6,7 @@
 #include <QtConcurrent/QtConcurrentRun>
 #include "common/settings.h"
 #include "ui_configure_web.h"
+#include "web_service/verify_login.h"
 #include "yuzu/configuration/configure_web.h"
 #include "yuzu/uisettings.h"
 

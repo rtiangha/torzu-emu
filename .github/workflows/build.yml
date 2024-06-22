@@ -256,6 +256,24 @@ jobs:
             link: static
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
+      - name: Configure cmake (MSVC)
+        run: |
+            mkdir build && cd build && cmake .. -G Ninja \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DBoost_INCLUDE_DIR=${{steps.install-boost.outputs.BOOST_ROOT}}/include \
+                -DBoost_LIBRARY_DIRS=${{steps.install-boost.outputs.BOOST_ROOT}}/lib \
+                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+                -DYUZU_USE_BUNDLED_VCPKG=OFF \
+                -DYUZU_TESTS=OFF \
+                -DYUZU_ENABLE_LTO=ON \
+                -DYUZU_USE_BUNDLED_QT=OFF \
+                -DYUZU_USE_BUNDLED_SDL2=OFF \
+                -DYUZU_USE_EXTERNAL_SDL2=ON \
+                -DUSE_DISCORD_PRESENCE=ON \
+                -DYUZU_USE_QT_WEB_ENGINE=ON \
+                -DUSE_SYSTEM_ZSTD=OFF \
+                -DENABLE_WEB_SERVICE=OFF
       - name: Build (MSVC)
         run: ./.ci/windows-msvc.sh
         if: ${{ matrix.target == 'msvc' }}

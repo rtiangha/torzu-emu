@@ -5,7 +5,7 @@ if [ "$TARGET" = "appimage" ]; then
     export EXTRA_CMAKE_FLAGS=(-DCMAKE_LINKER=/etc/bin/ld.lld)
 else
     # For the linux-fresh verification target, verify compilation without PCH as well.
-    export EXTRA_CMAKE_FLAGS=(-DYUZU_USE_PRECOMPILED_HEADERS=OFF)
+    export EXTRA_CMAKE_FLAGS=(-DTORZU_USE_PRECOMPILED_HEADERS=OFF)
 fi
 
 mkdir build && cd build
@@ -18,21 +18,21 @@ cmake .. -G Ninja \
     -DCMAKE_CXX_FLAGS="-O2" \
     -DCMAKE_C_FLAGS="-O2" \
     "${EXTRA_CMAKE_FLAGS[@]}" \
-    -DYUZU_ENABLE_LTO=ON \
-    -DYUZU_USE_BUNDLED_VCPKG=ON \
-    -DYUZU_USE_BUNDLED_FFMPEG=OFF \
-    -DYUZU_TESTS=OFF \
-    -DYUZU_ENABLE_LTO=OFF \
-    -DYUZU_USE_EXTERNAL_SDL2=ON \
-    -DDYUZU_USE_QT_WEB_ENGINE=ON \
+    -DTORZU_ENABLE_LTO=ON \
+    -DTORZU_USE_BUNDLED_VCPKG=ON \
+    -DTORZU_USE_BUNDLED_FFMPEG=OFF \
+    -DTORZU_TESTS=OFF \
+    -DTORZU_ENABLE_LTO=OFF \
+    -DTORZU_USE_EXTERNAL_SDL2=ON \
+    -DDTORZU_USE_QT_WEB_ENGINE=ON \
     -DUSE_DISCORD_PRESENCE=ON \
     -DENABLE_QT6=ON \
     -DENABLE_WEB_SERVICE=OFF
 
 ninja
-strip -s bin/yuzu
-strip -s bin/yuzu-cmd
-strip -s bin/yuzu-room
+strip -s bin/torzu
+strip -s bin/torzu-cmd
+strip -s bin/torzu-room
 
 if [ "$TARGET" = "appimage" ]; then
     ninja bundle

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2021 yuzu Emulator Project
+// SPDX-FileCopyrightText: Copyright 2021 torzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #pragma once
@@ -21,8 +21,8 @@ namespace Kernel {
 class KernelCore;
 
 class KHandleTable {
-    YUZU_NON_COPYABLE(KHandleTable);
-    YUZU_NON_MOVEABLE(KHandleTable);
+    TORZU_NON_COPYABLE(KHandleTable);
+    TORZU_NON_MOVEABLE(KHandleTable);
 
 public:
     static constexpr size_t MaxTableSize = 1024;

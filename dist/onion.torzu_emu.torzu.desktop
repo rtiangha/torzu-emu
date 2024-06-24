@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2018 yuzu Emulator Project
+# SPDX-FileCopyrightText: 2018 torzu Emulator Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 [Desktop Entry]
@@ -8,8 +8,8 @@ Name=torzu
 GenericName=Switch Emulator
 Comment=Nintendo Switch video game console emulator
 Icon=onion.torzu_emu.torzu
-TryExec=yuzu
-Exec=yuzu %f
+TryExec=torzu
+Exec=torzu %f
 Categories=Game;Emulator;Qt;
 MimeType=application/x-nx-nro;application/x-nx-nso;application/x-nx-nsp;application/x-nx-xci;
 Keywords=Nintendo;Switch;

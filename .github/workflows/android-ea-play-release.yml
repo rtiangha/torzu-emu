@@ -1,7 +1,7 @@
-# SPDX-FileCopyrightText: 2024 yuzu Emulator Project
+# SPDX-FileCopyrightText: 2024 torzu Emulator Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
-name: yuzu-android-ea-play-release
+name: torzu-android-ea-play-release
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ on:
 jobs:
   android:
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'yuzu-emu/yuzu' }}
+    if: ${{ github.repository == 'torzu-emu/torzu' }}
     steps:
       - uses: actions/checkout@v3
         name: Checkout
@@ -62,5 +62,5 @@ jobs:
           name: ${{ env.EA_TAG_NAME }}
           draft: false
           prerelease: false
-          repository: yuzu/yuzu-android
+          repository: torzu/torzu-android
           token: ${{ secrets.ALT_GITHUB_TOKEN }}

@@ -1,9 +1,9 @@
-# SPDX-FileCopyrightText: 2018 yuzu Emulator Project and 2024 torzu project
+# SPDX-FileCopyrightText: 2018 torzu Emulator Project and 2024 torzu project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 cmake_minimum_required(VERSION 3.22)
 
-project(yuzu)
+project(torzu)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/externals/cmake-modules")
@@ -15,9 +15,9 @@ include(CTest)
 # Set bundled sdl2/qt as dependent options.
 # OFF by default, but if ENABLE_SDL2 and MSVC are true then ON
 option(ENABLE_SDL2 "Enable the SDL2 frontend" ON)
-CMAKE_DEPENDENT_OPTION(YUZU_USE_BUNDLED_SDL2 "Download bundled SDL2 binaries" ON "ENABLE_SDL2;MSVC" OFF)
+CMAKE_DEPENDENT_OPTION(TORZU_USE_BUNDLED_SDL2 "Download bundled SDL2 binaries" ON "ENABLE_SDL2;MSVC" OFF)
 # On Linux system SDL2 is likely to be lacking HIDAPI support which have drawbacks but is needed for SDL motion
-option(YUZU_USE_EXTERNAL_SDL2 "Compile external SDL2" ON)
+option(TORZU_USE_EXTERNAL_SDL2 "Compile external SDL2" ON)
 
 cmake_dependent_option(ENABLE_LIBUSB "Enable the use of LibUSB" ON "NOT ANDROID" OFF)
 
@@ -28,47 +28,47 @@ option(ENABLE_QT6 "Allow usage of Qt6 to be attempted" OFF)
 set(QT6_LOCATION "" CACHE PATH "Additional Location to search for Qt6 libraries like C:/Qt/6.3.1/msvc2019_64/")
 
 option(ENABLE_QT_TRANSLATION "Enable translations for the Qt frontend" OFF)
-CMAKE_DEPENDENT_OPTION(YUZU_USE_BUNDLED_QT "Download bundled Qt binaries" "${MSVC}" "ENABLE_QT" OFF)
+CMAKE_DEPENDENT_OPTION(TORZU_USE_BUNDLED_QT "Download bundled Qt binaries" "${MSVC}" "ENABLE_QT" OFF)
 
 option(ENABLE_WEB_SERVICE "Enable web services (telemetry, etc.)" ON)
 
-option(YUZU_USE_BUNDLED_FFMPEG "Download/Build bundled FFmpeg" "${WIN32}")
+option(TORZU_USE_BUNDLED_FFMPEG "Download/Build bundled FFmpeg" "${WIN32}")
 
-option(YUZU_USE_EXTERNAL_VULKAN_HEADERS "Use Vulkan-Headers from externals" ON)
+option(TORZU_USE_EXTERNAL_VULKAN_HEADERS "Use Vulkan-Headers from externals" ON)
 
-option(YUZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES "Use Vulkan-Utility-Libraries from externals" ON)
+option(TORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES "Use Vulkan-Utility-Libraries from externals" ON)
 
-option(YUZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS "Use SPIRV-Tools from externals" ON)
+option(TORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS "Use SPIRV-Tools from externals" ON)
 
-option(YUZU_USE_QT_MULTIMEDIA "Use QtMultimedia for Camera" OFF)
+option(TORZU_USE_QT_MULTIMEDIA "Use QtMultimedia for Camera" OFF)
 
-option(YUZU_USE_QT_WEB_ENGINE "Use QtWebEngine for web applet implementation" OFF)
+option(TORZU_USE_QT_WEB_ENGINE "Use QtWebEngine for web applet implementation" OFF)
 
 option(ENABLE_CUBEB "Enables the cubeb audio backend" ON)
 
 option(USE_DISCORD_PRESENCE "Enables Discord Rich Presence" OFF)
 
-option(YUZU_TESTS "Compile tests" "${BUILD_TESTING}")
+option(TORZU_TESTS "Compile tests" "${BUILD_TESTING}")
 
-option(YUZU_USE_PRECOMPILED_HEADERS "Use precompiled headers" ON)
+option(TORZU_USE_PRECOMPILED_HEADERS "Use precompiled headers" ON)
 
-option(YUZU_DOWNLOAD_ANDROID_VVL "Download validation layer binary for android" ON)
+option(TORZU_DOWNLOAD_ANDROID_VVL "Download validation layer binary for android" ON)
 
-CMAKE_DEPENDENT_OPTION(YUZU_ROOM "Compile LDN room server" ON "NOT ANDROID" OFF)
+CMAKE_DEPENDENT_OPTION(TORZU_ROOM "Compile LDN room server" ON "NOT ANDROID" OFF)
 
-CMAKE_DEPENDENT_OPTION(YUZU_CRASH_DUMPS "Compile crash dump (Minidump) support" OFF "WIN32 OR LINUX" OFF)
+CMAKE_DEPENDENT_OPTION(TORZU_CRASH_DUMPS "Compile crash dump (Minidump) support" OFF "WIN32 OR LINUX" OFF)
 
-option(YUZU_USE_BUNDLED_VCPKG "Use vcpkg for yuzu dependencies" "${MSVC}")
+option(TORZU_USE_BUNDLED_VCPKG "Use vcpkg for torzu dependencies" "${MSVC}")
 
-option(YUZU_CHECK_SUBMODULES "Check if submodules are present" ON)
+option(TORZU_CHECK_SUBMODULES "Check if submodules are present" ON)
 
-option(YUZU_ENABLE_LTO "Enable link-time optimization" OFF)
+option(TORZU_ENABLE_LTO "Enable link-time optimization" OFF)
 
-option(YUZU_DOWNLOAD_TIME_ZONE_DATA "Always download time zone binaries" OFF)
+option(TORZU_DOWNLOAD_TIME_ZONE_DATA "Always download time zone binaries" OFF)
 
-option(YUZU_ENABLE_PORTABLE "Allow yuzu to enable portable mode if a user folder is found in the CWD" ON)
+option(TORZU_ENABLE_PORTABLE "Allow torzu to enable portable mode if a user folder is found in the CWD" ON)
 
-CMAKE_DEPENDENT_OPTION(YUZU_USE_FASTER_LD "Check if a faster linker is available" ON "NOT WIN32" OFF)
+CMAKE_DEPENDENT_OPTION(TORZU_USE_FASTER_LD "Check if a faster linker is available" ON "NOT WIN32" OFF)
 
 CMAKE_DEPENDENT_OPTION(USE_SYSTEM_MOLTENVK "Use the system MoltenVK lib (instead of the bundled one)" OFF "APPLE" OFF)
 
@@ -84,7 +84,7 @@ if (ANDROID OR WIN32 OR APPLE)
 endif()
 option(ENABLE_OPENSSL "Enable OpenSSL backend for ISslConnection" ${DEFAULT_ENABLE_OPENSSL})
 
-if (ANDROID AND YUZU_DOWNLOAD_ANDROID_VVL)
+if (ANDROID AND TORZU_DOWNLOAD_ANDROID_VVL)
     set(vvl_version "1.3.283.0")
     set(vvl_zip_file "${CMAKE_BINARY_DIR}/externals/vvl-android.zip")
     if (NOT EXISTS "${vvl_zip_file}")
@@ -106,7 +106,7 @@ if (ANDROID)
     set(CMAKE_SKIP_INSTALL_RULES ON)
 endif()
 
-if (YUZU_USE_BUNDLED_VCPKG)
+if (TORZU_USE_BUNDLED_VCPKG)
     if (ANDROID)
         set(ENV{ANDROID_NDK_HOME} "${ANDROID_NDK}")
         list(APPEND VCPKG_MANIFEST_FEATURES "android")
@@ -140,8 +140,8 @@ if (YUZU_USE_BUNDLED_VCPKG)
         endif()
     endif()
 
-    if (YUZU_TESTS)
-        list(APPEND VCPKG_MANIFEST_FEATURES "yuzu-tests")
+    if (TORZU_TESTS)
+        list(APPEND VCPKG_MANIFEST_FEATURES "torzu-tests")
     endif()
     if (ENABLE_WEB_SERVICE)
         list(APPEND VCPKG_MANIFEST_FEATURES "web-service")
@@ -157,16 +157,16 @@ elseif(NOT "$ENV{VCPKG_TOOLCHAIN_FILE}" STREQUAL "")
     include("$ENV{VCPKG_TOOLCHAIN_FILE}")
 endif()
 
-if (YUZU_USE_PRECOMPILED_HEADERS)
+if (TORZU_USE_PRECOMPILED_HEADERS)
     if (MSVC AND CCACHE)
         # buildcache does not properly cache PCH files, leading to compilation errors.
         # See https://github.com/mbitsnbites/buildcache/discussions/230
         message(WARNING "buildcache does not properly support Precompiled Headers. Disabling PCH")
         set(DYNARMIC_USE_PRECOMPILED_HEADERS OFF CACHE BOOL "" FORCE)
-        set(YUZU_USE_PRECOMPILED_HEADERS OFF CACHE BOOL "" FORCE)
+        set(TORZU_USE_PRECOMPILED_HEADERS OFF CACHE BOOL "" FORCE)
     endif()
 endif()
-if (YUZU_USE_PRECOMPILED_HEADERS)
+if (TORZU_USE_PRECOMPILED_HEADERS)
     message(STATUS "Using Precompiled Headers.")
     set(CMAKE_PCH_INSTANTIATE_TEMPLATES ON)
 endif()
@@ -201,7 +201,7 @@ function(check_submodules_present)
     endforeach()
 endfunction()
 
-if(EXISTS ${PROJECT_SOURCE_DIR}/.gitmodules AND YUZU_CHECK_SUBMODULES)
+if(EXISTS ${PROJECT_SOURCE_DIR}/.gitmodules AND TORZU_CHECK_SUBMODULES)
     check_submodules_present()
 endif()
 configure_file(${PROJECT_SOURCE_DIR}/dist/compatibility_list/compatibility_list.qrc
@@ -213,9 +213,9 @@ if (EXISTS ${PROJECT_SOURCE_DIR}/dist/compatibility_list/compatibility_list.json
                    COPYONLY)
 endif()
 if (ENABLE_COMPATIBILITY_LIST_DOWNLOAD AND NOT EXISTS ${PROJECT_BINARY_DIR}/dist/compatibility_list/compatibility_list.json)
-    message(STATUS "Downloading compatibility list for yuzu...")
+    message(STATUS "Downloading compatibility list for torzu...")
     file(DOWNLOAD
-        https://api.yuzu-emu.org/gamedb/
+        https://api.torzu-emu.org/gamedb/
         "${PROJECT_BINARY_DIR}/dist/compatibility_list/compatibility_list.json" SHOW_PROGRESS)
 endif()
 if (NOT EXISTS ${PROJECT_BINARY_DIR}/dist/compatibility_list/compatibility_list.json)
@@ -264,7 +264,7 @@ endif()
 message(STATUS "Target architecture: ${ARCHITECTURE}")
 
 if (UNIX)
-    add_definitions(-DYUZU_UNIX=1)
+    add_definitions(-DTORZU_UNIX=1)
 endif()
 
 if (ARCHITECTURE_arm64 AND (ANDROID OR ${CMAKE_SYSTEM_NAME} STREQUAL "Linux"))
@@ -308,15 +308,15 @@ find_package(VulkanMemoryAllocator CONFIG)
 find_package(ZLIB 1.2 MODULE)
 find_package(zstd 1.5 MODULE)
 
-if (NOT YUZU_USE_EXTERNAL_VULKAN_HEADERS)
+if (NOT TORZU_USE_EXTERNAL_VULKAN_HEADERS)
     find_package(VulkanHeaders 1.3.274 REQUIRED)
 endif()
 
-if (NOT YUZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES)
+if (NOT TORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES)
     find_package(VulkanUtilityLibraries REQUIRED)
 endif()
 
-if (NOT YUZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS)
+if (NOT TORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(SPIRV-Tools REQUIRED SPIRV-Tools)
 endif()
@@ -350,7 +350,7 @@ if (ENABLE_WEB_SERVICE)
     find_package(httplib 0.12 MODULE COMPONENTS OpenSSL)
 endif()
 
-if (YUZU_TESTS)
+if (TORZU_TESTS)
     find_package(Catch2 3.0.1 REQUIRED)
 endif()
 
@@ -375,26 +375,26 @@ endif()
 # QT6 searches for Vulkan::Headers, too, so we have to define it before QT6 has a chance to do it.
 add_subdirectory(externals)
 
-function(set_yuzu_qt_components)
+function(set_torzu_qt_components)
     # Best practice is to ask for all components at once, so they are from the same version
-    set(YUZU_QT_COMPONENTS2 Core Widgets Concurrent)
+    set(TORZU_QT_COMPONENTS2 Core Widgets Concurrent)
     if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-        list(APPEND YUZU_QT_COMPONENTS2 DBus)
+        list(APPEND TORZU_QT_COMPONENTS2 DBus)
     endif()
-    if (YUZU_USE_QT_MULTIMEDIA)
-        list(APPEND YUZU_QT_COMPONENTS2 Multimedia)
+    if (TORZU_USE_QT_MULTIMEDIA)
+        list(APPEND TORZU_QT_COMPONENTS2 Multimedia)
     endif()
-    if (YUZU_USE_QT_WEB_ENGINE)
-        list(APPEND YUZU_QT_COMPONENTS2 WebEngineCore WebEngineWidgets)
+    if (TORZU_USE_QT_WEB_ENGINE)
+        list(APPEND TORZU_QT_COMPONENTS2 WebEngineCore WebEngineWidgets)
     endif()
     if (ENABLE_QT_TRANSLATION)
-        list(APPEND YUZU_QT_COMPONENTS2 LinguistTools)
+        list(APPEND TORZU_QT_COMPONENTS2 LinguistTools)
     endif()
     if (USE_DISCORD_PRESENCE)
-        list(APPEND YUZU_QT_COMPONENTS2 Network)
+        list(APPEND TORZU_QT_COMPONENTS2 Network)
     endif()
-    set(YUZU_QT_COMPONENTS ${YUZU_QT_COMPONENTS2} PARENT_SCOPE)
-endfunction(set_yuzu_qt_components)
+    set(TORZU_QT_COMPONENTS ${TORZU_QT_COMPONENTS2} PARENT_SCOPE)
+endfunction(set_torzu_qt_components)
 
 # Qt5 requires that we find components, so it doesn't fit our pretty little find package function
 if(ENABLE_QT)
@@ -403,29 +403,29 @@ if(ENABLE_QT)
     set(QT5_VERSION 5.15)
     set(QT6_VERSION 6.3.1)
 
-    set_yuzu_qt_components()
+    set_torzu_qt_components()
     if (ENABLE_QT6)
-        find_package(Qt6 ${QT6_VERSION} COMPONENTS ${YUZU_QT_COMPONENTS})
+        find_package(Qt6 ${QT6_VERSION} COMPONENTS ${TORZU_QT_COMPONENTS})
     endif()
     if (Qt6_FOUND)
-        message(STATUS "yuzu/CMakeLists.txt: Qt6Widgets_VERSION ${Qt6Widgets_VERSION}, setting QT_VERSION")
+        message(STATUS "torzu/CMakeLists.txt: Qt6Widgets_VERSION ${Qt6Widgets_VERSION}, setting QT_VERSION")
         set(QT_VERSION ${Qt6Widgets_VERSION})
         set(QT_MAJOR_VERSION 6)
         # Qt6 sets cxx_std_17 and we need to undo that
         set_target_properties(Qt6::Platform PROPERTIES INTERFACE_COMPILE_FEATURES "")
     else()
-        message(STATUS "yuzu/CMakeLists.txt: Qt6 not found/not selected, trying for Qt5")
+        message(STATUS "torzu/CMakeLists.txt: Qt6 not found/not selected, trying for Qt5")
         # When Qt6 partially found, need this set to use Qt5 when not specifying version
         set(QT_DEFAULT_MAJOR_VERSION 5)
         set(QT_MAJOR_VERSION 5)
 
-        set(YUZU_USE_QT_MULTIMEDIA ON)
+        set(TORZU_USE_QT_MULTIMEDIA ON)
         # Check for system Qt on Linux, fallback to bundled Qt
         if (UNIX AND NOT APPLE)
-            if (NOT YUZU_USE_BUNDLED_QT)
+            if (NOT TORZU_USE_BUNDLED_QT)
                 find_package(Qt5 ${QT5_VERSION} COMPONENTS Widgets DBus Multimedia)
             endif()
-            if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND (NOT Qt5_FOUND OR YUZU_USE_BUNDLED_QT))
+            if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND (NOT Qt5_FOUND OR TORZU_USE_BUNDLED_QT))
                 # Check for dependencies, then enable bundled Qt download
 
                 # Check that the system GLIBCXX version is compatible
@@ -499,24 +499,24 @@ if(ENABLE_QT)
                     message(FATAL_ERROR "Bundled Qt package missing required dependencies: ${UNRESOLVED_QT_DEPS}")
                 endif()
 
-                set(YUZU_USE_BUNDLED_QT ON CACHE BOOL "Download bundled Qt" FORCE)
+                set(TORZU_USE_BUNDLED_QT ON CACHE BOOL "Download bundled Qt" FORCE)
             endif()
-            if (YUZU_USE_BUNDLED_QT)
+            if (TORZU_USE_BUNDLED_QT)
                 # Binary package currently does not support Qt webengine, so make sure it's disabled
-                set(YUZU_USE_QT_WEB_ENGINE OFF CACHE BOOL "Use Qt Webengine" FORCE)
+                set(TORZU_USE_QT_WEB_ENGINE OFF CACHE BOOL "Use Qt Webengine" FORCE)
             endif()
         endif()
 
-        set(YUZU_QT_NO_CMAKE_SYSTEM_PATH)
+        set(TORZU_QT_NO_CMAKE_SYSTEM_PATH)
 
-        if(YUZU_USE_BUNDLED_QT)
+        if(TORZU_USE_BUNDLED_QT)
             ## if ((MSVC_VERSION GREATER_EQUAL 1920 AND MSVC_VERSION LESS 1940) AND ARCHITECTURE_x86_64)
             if ((MSVC_VERSION GREATER_EQUAL 1920) AND ARCHITECTURE_x86_64)
                 set(QT_BUILD qt-5.15.2-msvc2019_64)
             elseif ((${CMAKE_SYSTEM_NAME} STREQUAL "Linux") AND NOT MINGW AND ARCHITECTURE_x86_64)
                 set(QT_BUILD qt5_5_15_2)
             else()
-                message(FATAL_ERROR "No bundled Qt binaries for your toolchain. Disable YUZU_USE_BUNDLED_QT and provide your own.")
+                message(FATAL_ERROR "No bundled Qt binaries for your toolchain. Disable TORZU_USE_BUNDLED_QT and provide your own.")
             endif()
 
             if (DEFINED QT_BUILD)
@@ -525,25 +525,25 @@ if(ENABLE_QT)
 
             set(QT_PREFIX_HINT HINTS "${QT_PREFIX}")
 
-            set(YUZU_QT_NO_CMAKE_SYSTEM_PATH "NO_CMAKE_SYSTEM_PATH")
+            set(TORZU_QT_NO_CMAKE_SYSTEM_PATH "NO_CMAKE_SYSTEM_PATH")
             # Binary package for Qt5 has Qt Multimedia
-            set(YUZU_USE_QT_MULTIMEDIA ON CACHE BOOL "Use Qt Multimedia" FORCE)
+            set(TORZU_USE_QT_MULTIMEDIA ON CACHE BOOL "Use Qt Multimedia" FORCE)
         endif()
 
-        set_yuzu_qt_components()
-        find_package(Qt5 ${QT5_VERSION} COMPONENTS ${YUZU_QT_COMPONENTS} ${QT_PREFIX_HINT} ${YUZU_QT_NO_CMAKE_SYSTEM_PATH})
+        set_torzu_qt_components()
+        find_package(Qt5 ${QT5_VERSION} COMPONENTS ${TORZU_QT_COMPONENTS} ${QT_PREFIX_HINT} ${TORZU_QT_NO_CMAKE_SYSTEM_PATH})
     endif()
 
 endif()
 
-# find SDL2 exports a bunch of variables that are needed, so its easier to do this outside of the yuzu_find_package
+# find SDL2 exports a bunch of variables that are needed, so its easier to do this outside of the torzu_find_package
 if (ENABLE_SDL2)
-    if (YUZU_USE_BUNDLED_SDL2)
+    if (TORZU_USE_BUNDLED_SDL2)
         # Detect toolchain and platform
         if ((MSVC_VERSION GREATER_EQUAL 1920) AND ARCHITECTURE_x86_64)
             set(SDL2_VER "SDL2-2.30.4")
         else()
-            message(FATAL_ERROR "No bundled SDL2 binaries for your toolchain. Disable YUZU_USE_BUNDLED_SDL2 and provide your own.")
+            message(FATAL_ERROR "No bundled SDL2 binaries for your toolchain. Disable TORZU_USE_BUNDLED_SDL2 and provide your own.")
         endif()
 
         if (DEFINED SDL2_VER)
@@ -558,7 +558,7 @@ if (ENABLE_SDL2)
         add_library(SDL2::SDL2 INTERFACE IMPORTED)
         target_link_libraries(SDL2::SDL2 INTERFACE "${SDL2_LIBRARY}")
         target_include_directories(SDL2::SDL2 INTERFACE "${SDL2_INCLUDE_DIR}")
-    elseif (YUZU_USE_EXTERNAL_SDL2)
+    elseif (TORZU_USE_EXTERNAL_SDL2)
         message(STATUS "Using SDL2 from externals.")
     else()
 #        find_package(SDL2 2.26.4 REQUIRED)
@@ -576,12 +576,12 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(LIBVA libva)
 endif()
-if (NOT YUZU_USE_BUNDLED_FFMPEG)
+if (NOT TORZU_USE_BUNDLED_FFMPEG)
     # Use system installed FFmpeg
     find_package(FFmpeg 4.3 REQUIRED QUIET COMPONENTS ${FFmpeg_COMPONENTS})
 endif()
 
-if (WIN32 AND YUZU_CRASH_DUMPS)
+if (WIN32 AND TORZU_CRASH_DUMPS)
     set(BREAKPAD_VER "breakpad-c89f9dd")
     download_bundled_external("breakpad/" ${BREAKPAD_VER} BREAKPAD_PREFIX)
 
@@ -696,7 +696,7 @@ if (MSVC AND CMAKE_GENERATOR STREQUAL "Ninja")
     )
 endif()
 
-if (YUZU_USE_FASTER_LD AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if (TORZU_USE_FASTER_LD AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # We will assume that if the compiler is GCC, it will attempt to use ld.bfd by default.
     # Try to pick a faster linker.
     find_program(LLD lld)
@@ -713,11 +713,11 @@ endif()
 
 add_subdirectory(src)
 
-# Set yuzu project or yuzu-cmd project as default StartUp Project in Visual Studio depending on whether QT is enabled or not
+# Set torzu project or torzu-cmd project as default StartUp Project in Visual Studio depending on whether QT is enabled or not
 if(ENABLE_QT)
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT yuzu)
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT torzu)
 else()
-    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT yuzu-cmd)
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT torzu-cmd)
 endif()
 
 # Create target for outputting distributable bundles.
@@ -725,13 +725,13 @@ endif()
 if (NOT ANDROID AND NOT IOS)
     include(BundleTarget)
     if (ENABLE_SDL2)
-        bundle_target(yuzu-cmd)
+        bundle_target(torzu-cmd)
     endif()
     if (ENABLE_QT)
-        bundle_target(yuzu)
+        bundle_target(torzu)
     endif()
-    if (YUZU_ROOM)
-        bundle_target(yuzu-room)
+    if (TORZU_ROOM)
+        bundle_target(torzu-room)
     endif()
 endif()
 
@@ -747,7 +747,7 @@ endif()
 if(ENABLE_QT AND UNIX AND NOT APPLE)
     install(FILES "dist/onion.torzu_emu.torzu.desktop"
             DESTINATION "share/applications")
-    install(FILES "dist/yuzu.svg"
+    install(FILES "dist/torzu.svg"
             DESTINATION "share/icons/hicolor/scalable/apps"
             RENAME "onion.torzu_emu.torzu.svg")
     install(FILES "dist/onion.torzu_emu.torzu.xml"

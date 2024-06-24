@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=torzu-room
+Comment=Multiplayer room host for torzu
+Icon=torzu
+TryExec=torzu-room
+Exec=torzu-room %f
+Categories=Game;Emulator;
+Keywords=Nintendo;Switch;

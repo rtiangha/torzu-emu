@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2021 yuzu Emulator Project
+// SPDX-FileCopyrightText: Copyright 2021 torzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <algorithm>
@@ -56,10 +56,10 @@ namespace fs = std::filesystem;
 
 /**
  * The PathManagerImpl is a singleton allowing to manage the mapping of
- * YuzuPath enums to real filesystem paths.
- * This class provides 2 functions: GetYuzuPathImpl and SetYuzuPathImpl.
- * These are used by GetYuzuPath and SetYuzuPath respectively to get or modify
- * the path mapped by the YuzuPath enum.
+ * TorzuPath enums to real filesystem paths.
+ * This class provides 2 functions: GetTorzuPathImpl and SetTorzuPathImpl.
+ * These are used by GetTorzuPath and SetTorzuPath respectively to get or modify
+ * the path mapped by the TorzuPath enum.
  */
 class PathManagerImpl {
 public:
@@ -75,62 +75,62 @@ public:
     PathManagerImpl(PathManagerImpl&&) = delete;
     PathManagerImpl& operator=(PathManagerImpl&&) = delete;
 
-    [[nodiscard]] const fs::path& GetYuzuPathImpl(YuzuPath yuzu_path) {
-        return yuzu_paths.at(yuzu_path);
+    [[nodiscard]] const fs::path& GetTorzuPathImpl(TorzuPath torzu_path) {
+        return torzu_paths.at(torzu_path);
     }
 
-    void SetYuzuPathImpl(YuzuPath yuzu_path, const fs::path& new_path) {
-        yuzu_paths.insert_or_assign(yuzu_path, new_path);
+    void SetTorzuPathImpl(TorzuPath torzu_path, const fs::path& new_path) {
+        torzu_paths.insert_or_assign(torzu_path, new_path);
     }
 
-    void Reinitialize(fs::path yuzu_path = {}) {
-        fs::path yuzu_path_cache;
-        fs::path yuzu_path_config;
+    void Reinitialize(fs::path torzu_path = {}) {
+        fs::path torzu_path_cache;
+        fs::path torzu_path_config;
 
 #ifdef _WIN32
-#ifdef YUZU_ENABLE_PORTABLE
-        yuzu_path = GetExeDirectory() / PORTABLE_DIR;
+#ifdef TORZU_ENABLE_PORTABLE
+        torzu_path = GetExeDirectory() / PORTABLE_DIR;
 #endif
-        if (!IsDir(yuzu_path)) {
-            yuzu_path = GetAppDataRoamingDirectory() / YUZU_DIR;
+        if (!IsDir(torzu_path)) {
+            torzu_path = GetAppDataRoamingDirectory() / TORZU_DIR;
         }
 
-        yuzu_path_cache = yuzu_path / CACHE_DIR;
-        yuzu_path_config = yuzu_path / CONFIG_DIR;
+        torzu_path_cache = torzu_path / CACHE_DIR;
+        torzu_path_config = torzu_path / CONFIG_DIR;
 #elif ANDROID
-        ASSERT(!yuzu_path.empty());
-        yuzu_path_cache = yuzu_path / CACHE_DIR;
-        yuzu_path_config = yuzu_path / CONFIG_DIR;
+        ASSERT(!torzu_path.empty());
+        torzu_path_cache = torzu_path / CACHE_DIR;
+        torzu_path_config = torzu_path / CONFIG_DIR;
 #else
-#ifdef YUZU_ENABLE_PORTABLE
-        yuzu_path = GetCurrentDir() / PORTABLE_DIR;
+#ifdef TORZU_ENABLE_PORTABLE
+        torzu_path = GetCurrentDir() / PORTABLE_DIR;
 #endif
-        if (Exists(yuzu_path) && IsDir(yuzu_path)) {
-            yuzu_path_cache = yuzu_path / CACHE_DIR;
-            yuzu_path_config = yuzu_path / CONFIG_DIR;
+        if (Exists(torzu_path) && IsDir(torzu_path)) {
+            torzu_path_cache = torzu_path / CACHE_DIR;
+            torzu_path_config = torzu_path / CONFIG_DIR;
         } else {
-            yuzu_path = GetDataDirectory("XDG_DATA_HOME") / YUZU_DIR;
-            yuzu_path_cache = GetDataDirectory("XDG_CACHE_HOME") / YUZU_DIR;
-            yuzu_path_config = GetDataDirectory("XDG_CONFIG_HOME") / YUZU_DIR;
+            torzu_path = GetDataDirectory("XDG_DATA_HOME") / TORZU_DIR;
+            torzu_path_cache = GetDataDirectory("XDG_CACHE_HOME") / TORZU_DIR;
+            torzu_path_config = GetDataDirectory("XDG_CONFIG_HOME") / TORZU_DIR;
         }
 #endif
 
-        GenerateYuzuPath(YuzuPath::YuzuDir, yuzu_path);
-        GenerateYuzuPath(YuzuPath::AmiiboDir, yuzu_path / AMIIBO_DIR);
-        GenerateYuzuPath(YuzuPath::CacheDir, yuzu_path_cache);
-        GenerateYuzuPath(YuzuPath::ConfigDir, yuzu_path_config);
-        GenerateYuzuPath(YuzuPath::CrashDumpsDir, yuzu_path / CRASH_DUMPS_DIR);
-        GenerateYuzuPath(YuzuPath::DumpDir, yuzu_path / DUMP_DIR);
-        GenerateYuzuPath(YuzuPath::KeysDir, yuzu_path / KEYS_DIR);
-        GenerateYuzuPath(YuzuPath::LoadDir, yuzu_path / LOAD_DIR);
-        GenerateYuzuPath(YuzuPath::LogDir, yuzu_path / LOG_DIR);
-        GenerateYuzuPath(YuzuPath::NANDDir, yuzu_path / NAND_DIR);
-        GenerateYuzuPath(YuzuPath::PlayTimeDir, yuzu_path / PLAY_TIME_DIR);
-        GenerateYuzuPath(YuzuPath::ScreenshotsDir, yuzu_path / SCREENSHOTS_DIR);
-        GenerateYuzuPath(YuzuPath::SDMCDir, yuzu_path / SDMC_DIR);
-        GenerateYuzuPath(YuzuPath::ShaderDir, yuzu_path / SHADER_DIR);
-        GenerateYuzuPath(YuzuPath::TASDir, yuzu_path / TAS_DIR);
-        GenerateYuzuPath(YuzuPath::IconsDir, yuzu_path / ICONS_DIR);
+        GenerateTorzuPath(TorzuPath::TorzuDir, torzu_path);
+        GenerateTorzuPath(TorzuPath::AmiiboDir, torzu_path / AMIIBO_DIR);
+        GenerateTorzuPath(TorzuPath::CacheDir, torzu_path_cache);
+        GenerateTorzuPath(TorzuPath::ConfigDir, torzu_path_config);
+        GenerateTorzuPath(TorzuPath::CrashDumpsDir, torzu_path / CRASH_DUMPS_DIR);
+        GenerateTorzuPath(TorzuPath::DumpDir, torzu_path / DUMP_DIR);
+        GenerateTorzuPath(TorzuPath::KeysDir, torzu_path / KEYS_DIR);
+        GenerateTorzuPath(TorzuPath::LoadDir, torzu_path / LOAD_DIR);
+        GenerateTorzuPath(TorzuPath::LogDir, torzu_path / LOG_DIR);
+        GenerateTorzuPath(TorzuPath::NANDDir, torzu_path / NAND_DIR);
+        GenerateTorzuPath(TorzuPath::PlayTimeDir, torzu_path / PLAY_TIME_DIR);
+        GenerateTorzuPath(TorzuPath::ScreenshotsDir, torzu_path / SCREENSHOTS_DIR);
+        GenerateTorzuPath(TorzuPath::SDMCDir, torzu_path / SDMC_DIR);
+        GenerateTorzuPath(TorzuPath::ShaderDir, torzu_path / SHADER_DIR);
+        GenerateTorzuPath(TorzuPath::TASDir, torzu_path / TAS_DIR);
+        GenerateTorzuPath(TorzuPath::IconsDir, torzu_path / ICONS_DIR);
     }
 
 private:
@@ -140,13 +140,13 @@ private:
 
     ~PathManagerImpl() = default;
 
-    void GenerateYuzuPath(YuzuPath yuzu_path, const fs::path& new_path) {
+    void GenerateTorzuPath(TorzuPath torzu_path, const fs::path& new_path) {
         void(FS::CreateDir(new_path));
 
-        SetYuzuPathImpl(yuzu_path, new_path);
+        SetTorzuPathImpl(torzu_path, new_path);
     }
 
-    std::unordered_map<YuzuPath, fs::path> yuzu_paths;
+    std::unordered_map<TorzuPath, fs::path> torzu_paths;
 };
 
 bool ValidatePath(const fs::path& path) {
@@ -230,22 +230,22 @@ void SetAppDirectory(const std::string& app_directory) {
     PathManagerImpl::GetInstance().Reinitialize(app_directory);
 }
 
-const fs::path& GetYuzuPath(YuzuPath yuzu_path) {
-    return PathManagerImpl::GetInstance().GetYuzuPathImpl(yuzu_path);
+const fs::path& GetTorzuPath(TorzuPath torzu_path) {
+    return PathManagerImpl::GetInstance().GetTorzuPathImpl(torzu_path);
 }
 
-std::string GetYuzuPathString(YuzuPath yuzu_path) {
-    return PathToUTF8String(GetYuzuPath(yuzu_path));
+std::string GetTorzuPathString(TorzuPath torzu_path) {
+    return PathToUTF8String(GetTorzuPath(torzu_path));
 }
 
-void SetYuzuPath(YuzuPath yuzu_path, const fs::path& new_path) {
+void SetTorzuPath(TorzuPath torzu_path, const fs::path& new_path) {
     if (!FS::IsDir(new_path)) {
         LOG_ERROR(Common_Filesystem, "Filesystem object at new_path={} is not a directory",
                   PathToUTF8String(new_path));
         return;
     }
 
-    PathManagerImpl::GetInstance().SetYuzuPathImpl(yuzu_path, new_path);
+    PathManagerImpl::GetInstance().SetTorzuPathImpl(torzu_path, new_path);
 }
 
 #ifdef _WIN32

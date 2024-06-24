@@ -383,7 +383,7 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:theofficialgman/gpu-tools
           sudo apt-get update && sudo apt-get -y dist-upgrade
-          sudo apt-get install -y ccache apksigner glslang-dev glslang-tools
+          sudo apt-get install -y ccache apksigner glslang-tools glslang-dev
       - name: Build
         run: ./.ci/scripts/android/build.sh
         env:

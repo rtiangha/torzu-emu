@@ -248,7 +248,11 @@ else()
     set(SPIRV_TOOLS_LIBRARY SPIRV-Tools-opt SPIRV-Tools SPIRV-Tools-link)
 endif()
 
-target_link_libraries(shader_recompiler PUBLIC common fmt::fmt sirit ${SPIRV_TOOLS_LIBRARY})
+if (NOT ANDROID)
+    target_link_libraries(shader_recompiler PUBLIC common fmt::fmt sirit ${SPIRV_TOOLS_LIBRARY})
+else()
+    target_link_libraries(shader_recompiler PUBLIC common fmt::fmt sirit)
+endif()
 
 if (MSVC)
     target_compile_options(shader_recompiler PRIVATE

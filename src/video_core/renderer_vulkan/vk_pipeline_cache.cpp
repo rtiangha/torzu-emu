@@ -768,8 +768,14 @@ std::unique_ptr<ComputePipeline> PipelineCache::CreateComputePipeline(
     }
 
     auto program{TranslateProgram(pools.inst, pools.block, env, cfg, host_info)};
+
+#ifndef ANDROID
     const std::vector<u32> code{
         EmitSPIRV(profile, program, Settings::values.optimize_spirv_output.GetValue())};
+#else
+    const std::vector<u32> code{EmitSPIRV(profile, program, 0)};
+#endif
+
     device.SaveShader(code);
     vk::ShaderModule spv_module{BuildShader(device, code)};
     if (device.HasDebuggingToolAttached()) {

@@ -6,7 +6,10 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
+
+#ifndef ANDROID
 #include <spirv-tools/optimizer.hpp>
+#endif
 
 #include "common/settings.h"
 #include "shader_recompiler/backend/spirv/emit_spirv.h"
@@ -495,6 +498,9 @@ std::vector<u32> EmitSPIRV(const Profile& profile, const RuntimeInfo& runtime_in
     SetupTransformFeedbackCapabilities(ctx, main);
     PatchPhiNodes(program, ctx);
 
+    std::vector<u32> result = ctx.Assemble();
+
+#ifndef ANDROID
     if (!optimize) {
         return ctx.Assemble();
     } else {
@@ -508,14 +514,14 @@ std::vector<u32> EmitSPIRV(const Profile& profile, const RuntimeInfo& runtime_in
         spvtools::OptimizerOptions opt_options;
         opt_options.set_run_validator(false);
 
-        std::vector<u32> result;
         if (!spv_opt.Run(spirv.data(), spirv.size(), &result, opt_options)) {
             LOG_ERROR(HW_GPU,
                       "Failed to optimize SPIRV shader output, continuing without optimization");
             result = std::move(spirv);
         }
-        return result;
     }
+#endif
+    return result;
 }
 
 Id EmitPhi(EmitContext& ctx, IR::Inst* inst) {

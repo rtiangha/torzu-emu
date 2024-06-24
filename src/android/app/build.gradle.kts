@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 yuzu Emulator Project
+// SPDX-FileCopyrightText: 2023 torzu Emulator Project
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import android.annotation.SuppressLint
@@ -25,7 +25,7 @@ val autoVersion = (((System.currentTimeMillis() / 1000) - 1451606400) / 10).toIn
 
 @Suppress("UnstableApiUsage")
 android {
-    namespace = "org.yuzu.yuzu_emu"
+    namespace = "org.torzu.torzu_emu"
 
     compileSdkVersion = "android-34"
     ndkVersion = "26.3.11579264"
@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         // TODO If this is ever modified, change application_id in strings.xml
-        applicationId = "org.yuzu.yuzu_emu"
+        applicationId = "org.torzu.torzu_emu"
         minSdk = 30
         targetSdk = 34
         versionName = getGitVersion()
@@ -103,7 +103,7 @@ android {
                 signingConfigs.getByName("default")
             }
 
-            resValue("string", "app_name_suffixed", "yuzu")
+            resValue("string", "app_name_suffixed", "torzu")
             isMinifyEnabled = true
             isDebuggable = false
             proguardFiles(
@@ -116,7 +116,7 @@ android {
         // Attaches 'debug' suffix to version and package name, allowing installation alongside the release build.
         register("relWithDebInfo") {
             isDefault = true
-            resValue("string", "app_name_suffixed", "yuzu Debug Release")
+            resValue("string", "app_name_suffixed", "torzu Debug Release")
             signingConfig = signingConfigs.getByName("default")
             isMinifyEnabled = true
             isDebuggable = true
@@ -133,7 +133,7 @@ android {
         // Attaches 'debug' suffix to version and package name, allowing installation alongside the release build.
         debug {
             signingConfig = signingConfigs.getByName("default")
-            resValue("string", "app_name_suffixed", "yuzu Debug")
+            resValue("string", "app_name_suffixed", "torzu Debug")
             isDebuggable = true
             isJniDebuggable = true
             versionNameSuffix = "-debug"
@@ -172,9 +172,9 @@ android {
                     "-DENABLE_WEB_SERVICE=0", // Don't use telemetry
                     "-DBUNDLE_SPEEX=ON",
                     "-DANDROID_ARM_NEON=true", // cryptopp requires Neon to work
-                    "-DYUZU_USE_BUNDLED_VCPKG=ON",
-                    "-DYUZU_USE_BUNDLED_FFMPEG=ON",
-                    "-DYUZU_ENABLE_LTO=ON",
+                    "-DTORZU_USE_BUNDLED_VCPKG=ON",
+                    "-DTORZU_USE_BUNDLED_FFMPEG=ON",
+                    "-DTORZU_ENABLE_LTO=ON",
                     "-DUSE_SYSTEM_ZSTD=OFF",
                     "-DCMAKE_CXX_FLAGS=-O2",
                     "-DCMAKE_C_FLAGS=-O2",

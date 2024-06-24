@@ -13,24 +13,24 @@
         <item name="android:paddingRight">32dp</item>
     </style>
 
-    <style name="YuzuSlider" parent="Widget.Material3.Slider">
+    <style name="TorzuSlider" parent="Widget.Material3.Slider">
         <item name="tickVisible">false</item>
         <item name="labelBehavior">gone</item>
     </style>
 
-    <style name="YuzuMaterialDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="colorPrimary">@color/yuzu_primaryContainer</item>
-        <item name="colorSurface">@color/yuzu_primaryContainer</item>
-        <item name="colorSecondary">@color/yuzu_primary</item>
-        <item name="android:textColorLink">@color/yuzu_primary</item>
-        <item name="buttonBarPositiveButtonStyle">@style/YuzuButton</item>
-        <item name="buttonBarNegativeButtonStyle">@style/YuzuButton</item>
-        <item name="buttonBarNeutralButtonStyle">@style/YuzuButton</item>
+    <style name="TorzuMaterialDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/torzu_primaryContainer</item>
+        <item name="colorSurface">@color/torzu_primaryContainer</item>
+        <item name="colorSecondary">@color/torzu_primary</item>
+        <item name="android:textColorLink">@color/torzu_primary</item>
+        <item name="buttonBarPositiveButtonStyle">@style/TorzuButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/TorzuButton</item>
+        <item name="buttonBarNeutralButtonStyle">@style/TorzuButton</item>
     </style>
 
-    <style name="YuzuButton" parent="Widget.Material3.Button.TextButton.Dialog">
-        <item name="android:textColor">@color/yuzu_primary</item>
-        <item name="rippleColor">@color/yuzu_inversePrimary</item>
+    <style name="TorzuButton" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/torzu_primary</item>
+        <item name="rippleColor">@color/torzu_inversePrimary</item>
     </style>
 
 </resources>

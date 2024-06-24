@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2018 yuzu Emulator Project
+# SPDX-FileCopyrightText: 2018 torzu Emulator Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 add_library(shader_recompiler STATIC
@@ -242,7 +242,7 @@ add_library(shader_recompiler STATIC
     varying_state.h
 )
 
-if (YUZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS)
+if (TORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS)
     set(SPIRV_TOOLS_LIBRARY SPIRV-Tools-opt)
 else()
     set(SPIRV_TOOLS_LIBRARY SPIRV-Tools-opt SPIRV-Tools SPIRV-Tools-link)
@@ -268,6 +268,6 @@ endif()
 
 create_target_directory_groups(shader_recompiler)
 
-if (YUZU_USE_PRECOMPILED_HEADERS)
+if (TORZU_USE_PRECOMPILED_HEADERS)
     target_precompile_headers(shader_recompiler PRIVATE precompiled_headers.h)
 endif()

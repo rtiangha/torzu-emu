@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2021 yuzu Emulator Project and 2024 torzu project
+// SPDX-FileCopyrightText: Copyright 2021 torzu Emulator Project and 2024 torzu project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #pragma once
@@ -475,7 +475,7 @@ struct Values {
         linkage, 0,    "rng_seed",       Category::System, Specialization::Hex,
         true,    true, &rng_seed_enabled};
     Setting<std::string> device_name{
-        linkage, "yuzu", "device_name", Category::System, Specialization::Default, true, true};
+        linkage, "torzu", "device_name", Category::System, Specialization::Default, true, true};
 
     Setting<s32> current_user{linkage, 0, "current_user", Category::System};
 
@@ -615,9 +615,9 @@ struct Values {
     // WebService
     Setting<std::string> web_api_url{linkage, "api.ynet-fun.xyz", "web_api_url",
                                      Category::WebService};
-    Setting<std::string> yuzu_username{linkage, std::string(), "yuzu_username",
+    Setting<std::string> torzu_username{linkage, std::string(), "torzu_username",
                                        Category::WebService};
-    Setting<std::string> yuzu_token{linkage, std::string(), "yuzu_token", Category::WebService};
+    Setting<std::string> torzu_token{linkage, std::string(), "torzu_token", Category::WebService};
 
     // Add-Ons
     std::map<u64, std::vector<std::string>> disabled_addons;

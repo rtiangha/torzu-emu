@@ -1,6 +1,6 @@
 # Blog Entry 1: ARM CPU emulation
 
-I've been studying the ARM recompiler used by Yuzu (Dynarmic) for quite a while now, and have learnt a lot on the way there.
+I've been studying the ARM recompiler used by Torzu (Dynarmic) for quite a while now, and have learnt a lot on the way there.
 
 This is going to be a rather technical post, but I hope it might help people like me understand what goes on under the hood.
 
@@ -16,7 +16,7 @@ The first step includes loading the executable into memory and allocating stack 
 The second step here sets (at least) 2 registers, the stack pointer which tells the CPU where the stack is and the program counter which tells the CPU where to execute code from. It would point to a specific routine inside the executable.
 The third step is to just let the CPU execute the application. In reality this step is much more complex but this explaination will do the job here.
 
-Yuzu is able to run ARM64 code natively on ARM64 CPUs through "NCE", sidestepping the need for recompilation.
+Torzu is able to run ARM64 code natively on ARM64 CPUs through "NCE", sidestepping the need for recompilation.
 
 ## Code recompilation
 

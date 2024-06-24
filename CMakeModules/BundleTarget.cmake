@@ -128,7 +128,7 @@ if (BUNDLE_TARGET_EXECUTE)
             ${extra_linuxdeploy_args}
             --plugin checkrt
             --executable "${executable_path}"
-            --icon-file "${source_path}/dist/yuzu.png"
+            --icon-file "${source_path}/dist/torzu.png"
             --desktop-file "${source_path}/dist/${executable_name}.desktop"
             --appdir "${appdir_path}"
             RESULT_VARIABLE linuxdeploy_appdir_result)
@@ -286,7 +286,7 @@ else()
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bundle/dist/")
         add_custom_command(
             TARGET bundle
-            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/dist/icon.png" "${CMAKE_BINARY_DIR}/bundle/dist/yuzu.png")
+            COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/dist/icon.png" "${CMAKE_BINARY_DIR}/bundle/dist/torzu.png")
         add_custom_command(
             TARGET bundle
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE.txt" "${CMAKE_BINARY_DIR}/bundle/")
@@ -320,7 +320,7 @@ else()
             set(bundle_qt OFF)
         elseif (target_name MATCHES ".*room")
             set(bundle_qt OFF)
-        elseif (target_name MATCHES "yuzu")
+        elseif (target_name MATCHES "torzu")
             set(bundle_qt ON)
             if (APPLE)
                 # For Qt targets on Apple, expect an app bundle.

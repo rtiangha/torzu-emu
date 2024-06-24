@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=torzu
+GenericName=Switch Emulator
+GenericName[fr]=Émulateur Switch
+Comment=Nintendo Switch video game console emulator
+Comment[fr]=Émulateur de console de jeu Nintendo Switch
+Icon=torzu
+TryExec=torzu-cmd
+Exec=torzu-cmd %f
+Categories=Game;Emulator;
+MimeType=application/x-nx-nro;application/x-nx-nso;application/x-nx-nsp;application/x-nx-xci;
+Keywords=Nintendo;Switch;
+PrefersNonDefaultGPU=true

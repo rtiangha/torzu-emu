@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022 yuzu Emulator Project
+# SPDX-FileCopyrightText: 2022 torzu Emulator Project
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 name: 'torzu-build'
@@ -274,14 +274,14 @@ jobs:
                 -DBoost_LIBRARY_DIRS=${{steps.install-boost.outputs.BOOST_ROOT}}/lib \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-                -DYUZU_USE_BUNDLED_VCPKG=OFF \
-                -DYUZU_TESTS=OFF \
-                -DYUZU_ENABLE_LTO=ON \
-                -DYUZU_USE_BUNDLED_QT=OFF \
-                -DYUZU_USE_BUNDLED_SDL2=OFF \
-                -DYUZU_USE_EXTERNAL_SDL2=ON \
+                -DTORZU_USE_BUNDLED_VCPKG=OFF \
+                -DTORZU_TESTS=OFF \
+                -DTORZU_ENABLE_LTO=ON \
+                -DTORZU_USE_BUNDLED_QT=OFF \
+                -DTORZU_USE_BUNDLED_SDL2=OFF \
+                -DTORZU_USE_EXTERNAL_SDL2=ON \
                 -DUSE_DISCORD_PRESENCE=ON \
-                -DYUZU_USE_QT_WEB_ENGINE=ON \
+                -DTORZU_USE_QT_WEB_ENGINE=ON \
                 -DUSE_SYSTEM_ZSTD=OFF \
                 -DENABLE_WEB_SERVICE=OFF \
                 -DENABLE_QT6=ON \

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2018 yuzu Emulator Project and 2024 torzu project
+# SPDX-FileCopyrightText: 2018 torzu Emulator Project and 2024 torzu project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 add_library(core STATIC
@@ -1229,11 +1229,11 @@ else()
         hle/service/ssl/ssl_backend_none.cpp)
 endif()
 
-if (YUZU_USE_PRECOMPILED_HEADERS)
+if (TORZU_USE_PRECOMPILED_HEADERS)
     target_precompile_headers(core PRIVATE precompiled_headers.h)
 endif()
 
-if (YUZU_ENABLE_LTO)
+if (TORZU_ENABLE_LTO)
   set_property(TARGET core PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 endif()
 

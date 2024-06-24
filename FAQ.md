@@ -20,7 +20,7 @@ Note however that all changes listed in the README file are my own work and othe
 
 **Q:** Will there ever be an Android version?<br/>
 **A:** Unfortunately I am pretty inexperienced in the Android world. This whole gradle stuff makes no sense to me and I've given up for now.
-Let's say, it'd be a nice bonus but it's very low priority. If you'd like to run Yuzu on Android you'd probably be better off with Sudachi.
+Let's say, it'd be a nice bonus but it's very low priority. If you'd like to run Torzu on Android you'd probably be better off with Sudachi.
 
 **Q:** This fork is going to be abandoned very soon!<br/>
 **A:** I have committed myself to at the very least keep it updated enough to compile and run on modern systems for the next decade or so. If you don't see commits for a while it doesn't mean I've abandoned it.

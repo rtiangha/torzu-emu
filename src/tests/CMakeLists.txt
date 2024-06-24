@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2018 yuzu Emulator Project
+# SPDX-FileCopyrightText: 2018 torzu Emulator Project
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 add_executable(tests
@@ -26,7 +26,7 @@ target_link_libraries(tests PRIVATE ${PLATFORM_LIBRARIES} Catch2::Catch2WithMain
 
 add_test(NAME tests COMMAND tests)
 
-if (YUZU_USE_PRECOMPILED_HEADERS)
+if (TORZU_USE_PRECOMPILED_HEADERS)
     target_precompile_headers(tests PRIVATE precompiled_headers.h)
 endif()
 

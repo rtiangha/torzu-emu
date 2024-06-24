@@ -1,17 +1,17 @@
 <!--
-SPDX-FileCopyrightText: 2018 yuzu Emulator Project - 2024 torzu Emulator Project
+SPDX-FileCopyrightText: 2018 torzu Emulator Project - 2024 torzu Emulator Project
 SPDX-License-Identifier: GPL-2.0-or-later
 -->
 
 <h1 align="center">
   <br>
-  <a href="http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu"><img src="https://raw.githubusercontent.com/litucks/torzu/master/dist/yuzu.bmp" alt="torzu" width="200"></a>
+  <a href="http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu"><img src="https://raw.githubusercontent.com/litucks/torzu/master/dist/torzu.bmp" alt="torzu" width="200"></a>
   <br>
   <b>torzu</b>
   <br>
 </h1>
 
-<h4 align="center"><b>torzu</b> is a fork of yuzu, the world's most popular, open-source, Nintendo Switch emulator.
+<h4 align="center"><b>torzu</b> is a fork of torzu, the world's most popular, open-source, Nintendo Switch emulator.
 <br>
 It is written in C++ with portability in mind, and I plan to actively maintain builds for Linux, Android and Windows.
 </h4>
@@ -39,9 +39,9 @@ Again, thanks to everyone who has supported me in any way (even by creating bug 
 
 ## Compatibility
 
-The emulator is capable of running most commercial games at full speed, provided you meet the [necessary hardware requirements](http://web.archive.org/web/20240130133811/https://yuzu-emu.org/help/quickstart/#hardware-requirements).
+The emulator is capable of running most commercial games at full speed, provided you meet the [necessary hardware requirements](http://web.archive.org/web/20240130133811/https://torzu-emu.org/help/quickstart/#hardware-requirements).
 
-It runs most Nintendo Switch games released until the date of the Yuzu takedown.
+It runs most Nintendo Switch games released until the date of the Torzu takedown.
 
 ## Goals
 
@@ -80,4 +80,4 @@ This project incorporates several commits from the [Suyu](https://suyu.dev) and 
 
 ## License
 
-yuzu is licensed under the GPLv3 (or any later version). Refer to the [LICENSE.txt](https://github.com/yuzu-emu/yuzu/blob/master/LICENSE.txt) file.
+torzu is licensed under the GPLv3 (or any later version). Refer to the [LICENSE.txt](https://github.com/torzu-emu/torzu/blob/master/LICENSE.txt) file.

@@ -73,6 +73,7 @@
 [submodule "externals/sirit"]
 	path = externals/sirit
 	url = https://github.com/rtiangha/sirit.git
+        branch = torzu
 [submodule "externals/fmt"]
 	path = externals/fmt
 	url = https://github.com/fmtlib/fmt.git

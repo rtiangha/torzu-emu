@@ -10,6 +10,7 @@
 [submodule "dynarmic"]
 	path = externals/dynarmic
 	url = https://github.com/rtiangha/dynarmic.git
+        branch = torzu
 [submodule "libusb"]
 	path = externals/libusb/libusb
 	url = https://github.com/libusb/libusb.git

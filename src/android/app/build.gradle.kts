@@ -176,8 +176,8 @@ android {
                     "-DTORZU_USE_BUNDLED_FFMPEG=ON",
                     "-DTORZU_ENABLE_LTO=ON",
                     "-DUSE_SYSTEM_ZSTD=OFF",
-                    "-DCMAKE_CXX_FLAGS=-O2",
-                    "-DCMAKE_C_FLAGS=-O2",
+                    "-DCMAKE_CXX_FLAGS=-Ofast",
+                    "-DCMAKE_C_FLAGS=-Ofast",
                     "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
                 )
 

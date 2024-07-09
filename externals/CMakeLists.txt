@@ -187,6 +187,14 @@ if (ENABLE_WEB_SERVICE AND NOT TARGET cpp-jwt::cpp-jwt)
     add_subdirectory(cpp-jwt)
 endif()
 
+# cpp-jwt
+if (ENABLE_WEB_SERVICE AND NOT TARGET cpp-jwt::cpp-jwt)
+    set(CPP_JWT_BUILD_EXAMPLES OFF)
+    set(CPP_JWT_BUILD_TESTS OFF)
+    set(CPP_JWT_USE_VENDORED_NLOHMANN_JSON OFF)
+    add_subdirectory(cpp-jwt)
+endif()
+
 # Opus
 if (NOT TARGET Opus::opus)
     set(OPUS_BUILD_TESTING OFF)

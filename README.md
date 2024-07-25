@@ -5,7 +5,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 <h1 align="center">
   <br>
-  <a href="http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu"><img src="https://raw.githubusercontent.com/litucks/torzu/master/dist/torzu.bmp" alt="torzu" width="200"></a>
+  <a href="http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu"><img src="https://codeberg.org/litucks/torzu/raw/branch/master/dist/yuzu.bmp" alt="torzu" width="200"></a>
   <br>
   <b>torzu</b>
   <br>
@@ -16,40 +16,10 @@ SPDX-License-Identifier: GPL-2.0-or-later
 It is written in C++ with portability in mind and runs on Linux and Windows
 </h4>
 
-## !!! PENDING GITHUB MIRROR TAKEDOWN !!!
+## Fake websites
 
-I have received a takedown notice from GitHub!
-
-```
-Hi litucks,
-
-GitHub Trust & Safety is contacting you because we've received a DMCA takedown notice regarding the following content:
-
-https://github.com/litucks/torzu
-
-You can see the DMCA takedown notice that we received here, which includes the complainant's requested changes to your repository:
-
-https://enterprise.githubsupport.com/attachments/token/IRkbmN2s4Pu7U7fwBNZ2hXYoP/?name=2024-07-05-nintendo.rtf
-
-We want to make clear that it is never our desire or goal to take down open source projects, but instead to help developers address DMCA concerns with their projects. To that end, you have some options:
-
-1. If you choose to make changes in response to this takedown notice, you'll have 1 business day to make the requested changes. Once you've made the changes, please reply to this message and let us know. If you don't tell us that you've made changes within the next 1 business day, we'll need to disable the entire repository according to our GitHub DMCA Takedown Policy - https://docs.github.com/en/github/site-policy/dmca-takedown-policy
-
-If you need to remove specific content from your repository, simply making the repository private or deleting it via a commit won't resolve the alleged infringement. Instead, you must follow these instructions to remove the content from your repository's history, even if you don't think it's sensitive - https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/removing-sensitive-data-from-a-repository
-
-2. If you believe your content on GitHub was mistakenly identified by a DMCA takedown request, you have the right to contest the takedown by submitting a counter notice, as described in our DMCA Takedown Policy - https://docs.github.com/en/github/site-policy/dmca-takedown-policy
-
-We want to help ensure you can make informed decisions when responding to this takedown request. To help, we have partnered with leading legal providers who can help you evaluate the takedown request and determine how to respond at no cost to you. If you are interested in receiving legal support through this program (https://github.blog/2021-07-27-github-developer-rights-fellowship-stanford-law-school/), reply to this message to let us know that.
-
-It is important that you reply to this message within 1 business day regardless of which option you choose. If you do not, the repository will be disabled.
-
-Please let us know if you have any questions or need any help removing the content.
-
-Regards,
-GitHub Trust & Safety
-```
-
-The next mirror repository is going to be at: https://codeberg.org/litucks/torzu (repo privatized until then) unless anything comes in the way. Otherwise you can use the button in the "About" menu of the emulator to get to the current mirror repository or simply check out the [main repository](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu).
+A lot of fake Torzu websites have popped up. These are not mine. **This project will not have a clearnet website for the foreseeable future!**
+I highly advice against downloading anything from these websites, specially if their intention is clearly to make money through advertisements.
 
 ## Limited public development
 
@@ -96,22 +66,27 @@ Most of the development happens on [Dark Git](http://vub63vv26q6v27xzv2dtcd25xum
 
 To clone this git repository, you can use these commands given tor is installed and running:
 
-    git -c http.proxy=socks5h://127.0.0.1:9050 clone http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu.git
+    git -c http.proxy=socks5h://127.0.0.1:9050 clone --depth 1 http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu.git
     cd torzu
-    git submodule update --init --depth 1 --recursive
+    git submodule update --init --recursive
 
-Alternatively, you can clone from the [GitHub mirror repository](https://github.com/litucks/torzu):
+Alternatively, you can clone from the [Codeberg mirror repository](https://codeberg.org/litucks/torzu):
 
-    git clone https://github.com/litucks/torzu.git --depth 1 --recursive
+    git clone https://codeberg.org/litucks/torzu.git --depth 1 --recursive
 
-Note that above repository may be taken down any time. Do not rely on its existence in production. In case the GitHub mirror goes down, another mirror will be most likely be set up on Bitbucket.
+Note that above repository may be taken down any time. Do not rely on its existence in production. In case the Codeberg mirror goes down, another mirror will be most likely be set up on Bitbucket.
 
 This project incorporates several commits from the [Suyu](https://suyu.dev) and [Sudachi](https://github.com/sudachi-emu/sudachi) forks (but cleaned up due to the typically mediocre code/commit quality from both projects) as well as changes listed in **Changes**.
 
+## GitHub mirror repository
+
+The GitHub mirror repository has been taken down. The new mirror repository is located on [Codeberg](https://codeberg.org/litucks/torzu).
+
 ## Building
 
-* __Linux__: [Linux Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/wiki/Building-for-Linux)
-* __Windows__: [Windows Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/wiki/Building-for-Windows)
+* [Android Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/src/branch/master/build-for-android.md) (Codeberg [alt](https://codeberg.org/litucks/torzu/src/branch/master/build-for-android.md))
+* [Linux Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/src/branch/master/build-for-linux.md) (Codeberg [alt](https://codeberg.org/litucks/torzu/src/branch/master/build-for-linux.md))
+* [Windows Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/src/branch/master/build-for-windows.md) (Codeberg [alt](https://codeberg.org/litucks/torzu/src/branch/master/build-for-windows.md))
 
 ## License
 

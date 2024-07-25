@@ -343,7 +343,7 @@ u32 GetCubebLatency() {
 #endif
 
     // Init cubeb
-    if (cubeb_init(&ctx, "yuzu Latency Getter", nullptr) != CUBEB_OK) {
+    if (cubeb_init(&ctx, "torzu Latency Getter", nullptr) != CUBEB_OK) {
         LOG_CRITICAL(Audio_Sink, "cubeb_init failed");
         // Return a large latency so we choose SDL instead.
         return 10000u;

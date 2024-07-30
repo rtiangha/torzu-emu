@@ -2,7 +2,7 @@
 
 if [ "$TARGET" = "appimage" ]; then
     # Compile the AppImage we distribute with Clang.
-    export EXTRA_CMAKE_FLAGS=(-DCMAKE_LINKER=/etc/bin/ld.lld)
+    export EXTRA_CMAKE_FLAGS=(-DCMAKE_LINKER=/usr/bin/lld-18)
     # Bundle required QT wayland libraries
     export EXTRA_QT_PLUGINS="waylandcompositor"
     export EXTRA_PLATFORM_PLUGINS="libqwayland-egl.so;libqwayland-generic.so"
@@ -16,8 +16,8 @@ cmake .. -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER_LAUNCHER=ccache \
     -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-    -DCMAKE_CXX_COMPILER=clang++-17 \
-    -DCMAKE_C_COMPILER=clang-17 \
+    -DCMAKE_CXX_COMPILER=clang++-18 \
+    -DCMAKE_C_COMPILER=clang-18 \
     -DCMAKE_CXX_FLAGS="-O2" \
     -DCMAKE_C_FLAGS="-O2" \
     "${EXTRA_CMAKE_FLAGS[@]}" \

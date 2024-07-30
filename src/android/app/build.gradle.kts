@@ -28,7 +28,7 @@ android {
     namespace = "org.torzu.torzu_emu"
 
     compileSdkVersion = "android-34"
-    ndkVersion = "26.3.11579264"
+    ndkVersion = "27.0.12077973"
 
     buildFeatures {
         viewBinding = true
@@ -195,7 +195,7 @@ tasks.getByPath("ktlintMainSourceSetCheck").doFirst { showFormatHelp.invoke() }
 tasks.getByPath("loadKtlintReporters").dependsOn("ktlintReset")
 
 ktlint {
-    version.set("1.3.0")
+    version.set("1.3.1")
     android.set(true)
     ignoreFailures.set(false)
     disabledRules.set(
@@ -224,12 +224,12 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.8.1")
+    implementation("androidx.fragment:fragment-ktx:1.8.2")
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
-    implementation("io.coil-kt:coil:2.6.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    implementation("io.coil-kt:coil:2.7.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.window:window:1.3.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

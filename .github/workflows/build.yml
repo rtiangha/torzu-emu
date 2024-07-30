@@ -64,7 +64,7 @@ jobs:
           host: 'linux'
           target: 'desktop'
           arch: 'linux_gcc_64'
-          modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
+          modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview qtwaylandcompositor qtmultimedia'
       - name: Build
         run: ./.ci/linux.sh
       - name: Pack

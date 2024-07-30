@@ -103,7 +103,7 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja spirv-tools automake boost ccache ffmpeg fmt glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
+        run: brew install ccache ninja automake boost ccache ffmpeg fmt glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -149,7 +149,7 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja spirv-tools autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool ninja nlohmann-json sdl2 speexdsp zlib
+        run: brew install ccache ninja autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -231,6 +231,18 @@ jobs:
       - name: Install extra tools (MSVC)
         run: choco install ccache ninja wget openssl
         if: ${{ matrix.target == 'msvc' }}
+      - name: Install Vulkan SDK (MSVC)
+        uses: humbletim/install-vulkan-sdk@v1.1.1
+        with:
+          version: latest
+          cache: true
+        if: ${{ matrix.target == 'msvc' }}
+      - name: Set up Vulkan SDK
+        uses: humbletim/setup-vulkan-sdk@v1.2.0
+        with:
+          vulkan-query-version: latest
+          vulkan-components: SPIRV-Tools, SPIRV-Headers, Glslang, Vulkan-Headers
+          vulkan-use-cache: true
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -240,17 +252,6 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
-      - name: Install Vulkan SDK
-        uses: humbletim/install-vulkan-sdk@v1.1.1
-        with:
-          version: latest
-          cache: true
-      - name: Set up Vulkan SDK
-        uses: humbletim/setup-vulkan-sdk@v1.2.0
-        with:
-          vulkan-query-version: latest
-          vulkan-components: SPIRV-Tools, SPIRV-Headers, Glslang, Vulkan-Headers
-          vulkan-use-cache: true
       - name: Install Boost
         uses: MarkusJx/install-boost@v2.4.5
         id: install-boost

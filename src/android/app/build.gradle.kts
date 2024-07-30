@@ -28,7 +28,7 @@ android {
     namespace = "org.torzu.torzu_emu"
 
     compileSdkVersion = "android-34"
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "26.3.11579264"
 
     buildFeatures {
         viewBinding = true

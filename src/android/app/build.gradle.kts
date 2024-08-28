@@ -10,7 +10,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.20"
     id("androidx.navigation.safeargs.kotlin")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
     id("com.github.triplet.play") version "3.10.1"
@@ -226,7 +226,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.fragment:fragment-ktx:1.8.2")
     implementation("androidx.documentfile:documentfile:1.0.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
     implementation("io.coil-kt:coil:2.7.0")

@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
     "name": "torzu",
-    "builtin-baseline": "1de2026f28ead93ff1773e6e680387643e914ea1",
+    "builtin-baseline": "3508985146f1b1d248c67ead13f8f54be5b4f5da",
     "version": "1.0",
     "dependencies": [
         "boost-algorithm",
@@ -55,7 +55,7 @@
     "overrides": [
         {
             "name": "catch2",
-            "version": "3.3.1"
+            "version": "3.7.0"
         },
         {
             "name": "fmt",

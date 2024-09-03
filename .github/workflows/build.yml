@@ -103,7 +103,7 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja automake boost ccache ffmpeg fmt glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
+        run: brew install ccache ninja automake ccache ffmpeg fmt glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -113,15 +113,54 @@ jobs:
           target: 'desktop'
           arch: 'clang_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.4.5
+        id: install-boost
+        with:
+            # REQUIRED: Specify the required boost version
+            # A list of supported versions can be found here:
+            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+            boost_version: 1.85.0
+            # OPTIONAL: Specify a platform version
+            platform_version: 13
+            # OPTIONAL: Specify a toolset
+            arch: x86
+            toolset: clang
+            link: static
+      - name: Configure cmake
+        run: |
+            mkdir build && cd build && cmake .. -G Ninja \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_OSX_ARCHITECTURES="$TARGET" \
+                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_FLAGS="-O2" \
+                -DCMAKE_C_FLAGS="-O2" \
+                -DTORZU_ENABLE_LTO=ON \
+                -DTORZU_USE_BUNDLED_VCPKG=OFF \
+                -DTORZU_USE_QT_WEB_ENGINE=ON \
+                -DTORZU_TESTS=OFF \
+                -DENABLE_WEB_SERVICE=OFF \
+                -DENABLE_LIBUSB=OFF \
+                -DENABLE_QT6=ON \
+                -DUSE_DISCORD_PRESENCE=ON
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
       - name: Build
         run: ./.ci/macos.sh
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
       - name: Prepare outputs for caching
         run: mv build/bundle $OS-$TARGET
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
       - name: Cache outputs for universal build
         uses: actions/cache/save@v4
         with:
           path: ${{ env.OS }}-${{ env.TARGET }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
   macos-arm:
     runs-on: ${{ (matrix.target == 'x86_64' && 'macos-13') || 'macos-14' }}
     strategy:
@@ -149,7 +188,7 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja autoconf automake boost ccache ffmpeg fmt glslang hidapi libtool ninja nlohmann-json sdl2 speexdsp zlib
+        run: brew install ccache ninja autoconf automake ccache ffmpeg fmt glslang hidapi libtool ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -159,15 +198,54 @@ jobs:
           target: 'desktop'
           arch: 'clang_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.4.5
+        id: install-boost
+        with:
+            # REQUIRED: Specify the required boost version
+            # A list of supported versions can be found here:
+            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+            boost_version: 1.85.0
+            # OPTIONAL: Specify a platform version
+            platform_version: 14
+            # OPTIONAL: Specify a toolset
+            toolset: clang
+            arch: aarch64
+            link: static
+      - name: Configure cmake
+        run: |
+            mkdir build && cd build && cmake .. -G Ninja \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_OSX_ARCHITECTURES="$TARGET" \
+                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_FLAGS="-O2" \
+                -DCMAKE_C_FLAGS="-O2" \
+                -DTORZU_ENABLE_LTO=ON \
+                -DTORZU_USE_BUNDLED_VCPKG=OFF \
+                -DTORZU_USE_QT_WEB_ENGINE=ON \
+                -DTORZU_TESTS=OFF \
+                -DENABLE_WEB_SERVICE=OFF \
+                -DENABLE_LIBUSB=OFF \
+                -DENABLE_QT6=ON \
+                -DUSE_DISCORD_PRESENCE=ON
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
       - name: Build
         run: ./.ci/macos.sh
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
       - name: Prepare outputs for caching
         run: mv build/bundle $OS-$TARGET
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
       - name: Cache outputs for universal build
         uses: actions/cache/save@v4
         with:
           path: ${{ env.OS }}-${{ env.TARGET }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
   macos-universal:
     runs-on: macos-14
     needs: [macos-arm, macos-x86]

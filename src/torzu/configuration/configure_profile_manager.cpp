@@ -421,7 +421,6 @@ ConfigureProfileManagerAvatarDialog::ConfigureProfileManagerAvatarDialog(QWidget
     auto* cancel_button = new QPushButton(tr("Cancel"), this);
     auto* bg_color_label = new QLabel(tr("Background Color"), this);
 
-    bg_color_button->setIconSize(bg_color_button->size().shrunkBy(QMargins(8, 8, 8, 8)));
     SetBackgroundColor(Qt::white);
 
     avatar_list->setViewMode(QListView::IconMode);
@@ -462,11 +461,8 @@ ConfigureProfileManagerAvatarDialog::~ConfigureProfileManagerAvatarDialog() = de
 void ConfigureProfileManagerAvatarDialog::SetBackgroundColor(const QColor& color) {
     avatar_bg_color = color;
 
-    QPixmap pixmap(bg_color_button->iconSize());
-    pixmap.fill(avatar_bg_color);
-
-    QIcon color_icon(pixmap);
-    bg_color_button->setIcon(color_icon);
+    bg_color_button->setStyleSheet(
+        QStringLiteral("background-color: %1; min-width: 60px;").arg(avatar_bg_color.name()));
 }
 
 QPixmap ConfigureProfileManagerAvatarDialog::CreateAvatar(const QPixmap& avatar) {

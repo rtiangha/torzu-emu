@@ -27,7 +27,7 @@ val autoVersion = (((System.currentTimeMillis() / 1000) - 1451606400) / 10).toIn
 android {
     namespace = "org.torzu.torzu_emu"
 
-    compileSdkVersion = "android-34"
+    compileSdkVersion = "android-35"
     ndkVersion = "27.1.12297006"
 
     buildFeatures {
@@ -56,7 +56,7 @@ android {
         // TODO If this is ever modified, change application_id in strings.xml
         applicationId = "org.torzu.torzu_emu"
         minSdk = 30
-        targetSdk = 34
+        targetSdk = 35
         versionName = getGitVersion()
 
         versionCode = if (System.getenv("AUTO_VERSIONED") == "true") {

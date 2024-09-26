@@ -103,7 +103,7 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja automake ccache ffmpeg fmt glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
+        run: brew install ccache ninja automake ccache ffmpeg glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -139,21 +139,34 @@ jobs:
                 -DTORZU_ENABLE_LTO=ON \
                 -DTORZU_USE_BUNDLED_VCPKG=OFF \
                 -DTORZU_USE_QT_WEB_ENGINE=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
+                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
                 -DTORZU_TESTS=OFF \
                 -DENABLE_WEB_SERVICE=OFF \
                 -DENABLE_LIBUSB=OFF \
+                -DUSE_SYSTEM_ZSTD=OFF \
+                -DUSE_SYSTEM_FMT=OFF \
                 -DENABLE_QT6=ON \
                 -DUSE_DISCORD_PRESENCE=ON
         env:
             BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Build
         run: ./.ci/macos.sh
         env:
             BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Prepare outputs for caching
         run: mv build/bundle $OS-$TARGET
         env:
             BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Cache outputs for universal build
         uses: actions/cache/save@v4
         with:
@@ -161,6 +174,8 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
         env:
             BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
   macos-arm:
     runs-on: ${{ (matrix.target == 'x86_64' && 'macos-13') || 'macos-14' }}
     strategy:
@@ -188,7 +203,7 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja autoconf automake ccache ffmpeg fmt glslang hidapi libtool ninja nlohmann-json sdl2 speexdsp zlib
+        run: brew install ccache ninja autoconf automake ccache ffmpeg glslang hidapi libtool ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -223,22 +238,35 @@ jobs:
                 -DCMAKE_C_FLAGS="-O2" \
                 -DTORZU_ENABLE_LTO=ON \
                 -DTORZU_USE_BUNDLED_VCPKG=OFF \
+                -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
+                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
                 -DTORZU_USE_QT_WEB_ENGINE=ON \
                 -DTORZU_TESTS=OFF \
                 -DENABLE_WEB_SERVICE=OFF \
                 -DENABLE_LIBUSB=OFF \
                 -DENABLE_QT6=ON \
+                -DUSE_SYSTEM_ZSTD=OFF \
+                -DUSE_SYSTEM_FMT=OFF \
                 -DUSE_DISCORD_PRESENCE=ON
         env:
             BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Build
         run: ./.ci/macos.sh
         env:
             BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Prepare outputs for caching
         run: mv build/bundle $OS-$TARGET
         env:
             BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Cache outputs for universal build
         uses: actions/cache/save@v4
         with:
@@ -246,6 +274,8 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
         env:
             BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
   macos-universal:
     runs-on: macos-14
     needs: [macos-arm, macos-x86]
@@ -315,12 +345,6 @@ jobs:
           version: latest
           cache: true
         if: ${{ matrix.target == 'msvc' }}
-      - name: Set up Vulkan SDK
-        uses: humbletim/setup-vulkan-sdk@v1.2.0
-        with:
-          vulkan-query-version: latest
-          vulkan-components: SPIRV-Tools, SPIRV-Headers, Glslang, Vulkan-Headers
-          vulkan-use-cache: true
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -356,12 +380,18 @@ jobs:
                 -DTORZU_USE_BUNDLED_VCPKG=OFF \
                 -DTORZU_TESTS=OFF \
                 -DTORZU_ENABLE_LTO=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON \
+                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
+                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
                 -DTORZU_USE_BUNDLED_QT=OFF \
                 -DTORZU_USE_BUNDLED_SDL2=OFF \
                 -DTORZU_USE_EXTERNAL_SDL2=ON \
                 -DUSE_DISCORD_PRESENCE=ON \
                 -DTORZU_USE_QT_WEB_ENGINE=ON \
                 -DUSE_SYSTEM_ZSTD=OFF \
+                -DUSE_SYSTEM_FMT=OFF \
                 -DENABLE_WEB_SERVICE=OFF \
                 -DENABLE_QT6=ON \
                 -DQT_VERSION=6 
@@ -411,6 +441,19 @@ jobs:
         with:
           version: latest
           cache: true
+      - name: Install Boost
+        uses: MarkusJx/install-boost@v2.4.5
+        id: install-boost
+        with:
+            # REQUIRED: Specify the required boost version
+            # A list of supported versions can be found here:
+            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
+            boost_version: 1.85.0
+            # OPTIONAL: Specify a platform version
+            platform_version: 2022
+            # OPTIONAL: Specify a toolset
+            toolset: msvc
+            link: static
       - name: Set up MSYS2
         uses: msys2/setup-msys2@v2
         with:
@@ -419,15 +462,21 @@ jobs:
           install: git make p7zip autoconf libtool automake-wrapper lz4 liblz4-devel
           pacboy: >-
             qt6:p toolchain:p ccache:p cmake:p ninja:p ffmpeg:p
-            vulkan-headers:p spirv-headers:p vulkan-utility-libraries:p
-            python-pip:p glslang:p spirv-tools:p boost:p lz4:p libusb:p
-            spirv-cross:p spirv-llvm-translator:p pkg-config:p
+            python-pip:p glslang:p lz4:p libusb:p pkg-config:p
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
       - name: Build (MSYS2)
         run: ./.ci/windows-msys2.sh
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Pack
         run: ./.ci/pack.sh
+        env:
+            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
+            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
+            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Upload
         uses: actions/upload-artifact@v4
         with:

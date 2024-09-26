@@ -167,8 +167,13 @@ android {
                     "-DANDROID_ARM_NEON=true", // cryptopp requires Neon to work
                     "-DTORZU_USE_BUNDLED_VCPKG=ON",
                     "-DTORZU_USE_BUNDLED_FFMPEG=ON",
+                    "-DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON",
+                    "-DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON",
+                    "-DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON",
+                    "-DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON",
                     "-DTORZU_ENABLE_LTO=ON",
                     "-DUSE_SYSTEM_ZSTD=OFF",
+                    "-DUSE_SYSTEM_FMT=OFF",
                     "-DCMAKE_CXX_FLAGS=-O2",
                     "-DCMAKE_C_FLAGS=-O2",
                     "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"

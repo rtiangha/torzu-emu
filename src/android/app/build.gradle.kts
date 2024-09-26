@@ -175,12 +175,12 @@ android {
                     "-DTORZU_ENABLE_LTO=ON",
                     "-DUSE_SYSTEM_ZSTD=OFF",
                     "-DUSE_SYSTEM_FMT=OFF",
-                    "-DCMAKE_CXX_FLAGS=-O2",
-                    "-DCMAKE_C_FLAGS=-O2",
+                    "-DCMAKE_CXX_FLAGS=-march=armv8.2-a -Ofast",
+                    "-DCMAKE_C_FLAGS=-march=armv8.2-a -Ofast",
                     "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
                 )
 
-                abiFilters("arm64-v8a", "x86_64")
+                abiFilters("arm64-v8a")
             }
         }
     }

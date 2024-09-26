@@ -165,6 +165,7 @@ android {
                     "-DENABLE_WEB_SERVICE=0", // Don't use telemetry
                     "-DBUNDLE_SPEEX=ON",
                     "-DANDROID_ARM_NEON=true", // cryptopp requires Neon to work
+                    "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON", // Support Android V 16KiB page sizes
                     "-DTORZU_USE_BUNDLED_VCPKG=ON",
                     "-DTORZU_USE_BUNDLED_FFMPEG=ON",
                     "-DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON",

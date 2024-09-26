@@ -16,15 +16,18 @@ Whenever a mirror repository gets taken down, I'll just move on to another git s
 
 **Q:** But you're just stealing changes from other forks!<br/>
 **A:** This is a pretty normal thing to do in the open source world. Yes, a lot of the changes are cherry-picked from other forks. There is no point in duplicating work unnecessarily and keeping good additions out of the project just because they are not mine. Original contributors are always credited as commit author of course.
-Note however that all changes listed in the README file are my own work and other forks should feel free to cherry-pick them!
+Note however that all changes listed in the README file are the work of Torzu contributors and other forks should feel free to cherry-pick them!
 
 **Q:** Will there ever be an Android version?<br/>
 **A:** Unfortunately I am pretty inexperienced in the Android world. This whole gradle stuff makes no sense to me and I've given up for now.
-Let's say, it'd be a nice bonus but it's very low priority. If you'd like to run Yuzu on Android you'd probably be better off with Sudachi.
+Let's say, it'd be a nice bonus but it's very low priority. If you'd like to run Yuzu on Android you'd probably be better off with Sudachi. I'm [looking for people interested in helping out](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/issues/20)!
 
 **Q:** This fork is going to be abandoned very soon!<br/>
 **A:** I have committed myself to at the very least keep it updated enough to compile and run on modern systems for the next decade or so. If you don't see commits for a while it doesn't mean I've abandoned it.
 I have ADHD and need to shift my focus between different projects sometimes to stay motivated. Also, personal life is a thing. ~~Who knows maybe I'll be run over by a car tomorrow? Joking, that's not going to happen. Hopefully.~~
+
+**Q:** Why don't you reply on Reddit?
+**A:** Reddit doesn't like the way I anonymize my connection and heavily restricts my actions. Whenever I post something, it's immediately flagged and deleted. The `r/torzu` subreddit isn't mine, I was just given moderator privileges to it.
 
 Enjoy playing your favorite (and legally obtained) Nintendo games on whatever device and emulator you prefer!<br/>
 Don't let Nintendo pressure you into using their kind of terrible and overpriced hardware... I'm truly sorry if no emulator can currently play the game you want to play.

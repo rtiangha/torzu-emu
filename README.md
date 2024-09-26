@@ -5,7 +5,7 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 <h1 align="center">
   <br>
-  <a href="http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu"><img src="https://raw.githubusercontent.com/litucks/torzu/master/dist/yuzu.bmp" alt="torzu" width="200"></a>
+  <a href="http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu"><img src="./dist/yuzu.png" alt="torzu" width="200"></a>
   <br>
   <b>torzu</b>
   <br>
@@ -13,8 +13,17 @@ SPDX-License-Identifier: GPL-2.0-or-later
 
 <h4 align="center"><b>torzu</b> is a fork of yuzu, an open-source Nintendo Switch emulator.
 <br>
-It is written in C++ with portability in mind and runs on Linux and Windows
+It is written in C++ with portability in mind and runs on Linux, Windows and Android
 </h4>
+
+## Fake websites
+
+A lot of fake Torzu websites have popped up. These are not mine. **This project will not have a clearnet website for the foreseeable future!**
+I highly advice against downloading anything from these websites, specially if their intention is clearly to make money through advertisements.
+
+## Move away from Codeberg
+
+As requested by Codeberg staff, **I have removed the Codeberg mirror repository**. [The new mirror repository is on NotABug](https://notabug.org/litucks/torzu).
 
 ## Limited public development
 
@@ -23,26 +32,16 @@ Keep in mind, this is just a hobby project. I feel like I always have to keep up
 Turns out: running an open source project takes a lot more time than I have.
 And then stupid and unnecessary issues like Windows Defender flagging the emulator as malware ruin the rest. I am grateful for all your bug reports, help and support, but all that has distracted me from taking the project into the direction I would've liked.
 
-Today I've accidentally locked myself out of the Tor site out of pure stupidity and one of the things I didn't make a backup of for was the key required to get the same Tor site set back up.
-
-For these reasons, I have decided to limit public development.
 It is not all over though. My plan is to:
- - continue the blog
- - move the blog into a seperate repository
- - keep this repository updated just enough so it stays compilable on Linux and Windows
- - keep the externals updated
- - push some bigger updates from my private upstream whenever I feel like (no promises)
+ - Continue the blog
+ - Keep this repository updated enough so it stays compilable on Linux and Windows
+ - Keep the externals updated
  - NOT publish releases. If someone feels like publishing builds they should feel free to do that
  - NOT offer support in any way
-   - feel free to open issues on the main repository though if you feel like an issue REALLY needs my attention
- - accept pull requests as long as they are of reasonable quality
+   - Feel free to open issues on the main repository though if you feel like an issue REALLY needs my attention
+ - Accept pull requests as long as they are of reasonable quality
 
 Again, thanks to everyone who has supported my efforts so far in any way (even by creating bug reports), I really appreciate it.
-
-## Possible pending GitHub mirror takedown
-
-I have received emails about takedowns on the release binaries hosted at mega (no worries I'll find another place to reupload them).
-If the GitHub mirror gets taken down too, the next mirror repository is going to be at: https://codeberg.org/litucks/torzu (repo privatized until then) unless anything comes in the way. You can use the button in the "About" menu of the emulator to get to the current mirror repository or simply check out the [main repository](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu). Please note that setting the new mirror repo to public is a manual process that could take me up to 2 days depending on how long it takes me to notice that the GitHub mirror has been taken down (specially mid-week).
 
 ## Compatibility
 
@@ -58,31 +57,30 @@ It is very important to me that this project is going to be a good base to fork 
 
 A secondary goal is the improvement of usability on low-end systems. This includes both improving the performance of the emulator as well as making games more playable below 100% speed whenever possible (the sync CPU to render speed limit option already helps with that in few cases).
 
-Android support is low priority but would be a nice bonus.
-
 ## Development
 
 Most of the development happens on [Dark Git](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/). It's also where [our central repository](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu) is hosted.
 
 To clone this git repository, you can use these commands given tor is installed and running:
 
-    git -c http.proxy=socks5h://127.0.0.1:9050 clone http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu.git
+    git -c http.proxy=socks5h://127.0.0.1:9050 clone --depth 1 http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu.git
     cd torzu
-    git submodule update --init --depth 1 --recursive
+    git submodule update --init --recursive
 
-Alternatively, you can clone from the [GitHub mirror repository](https://github.com/litucks/torzu):
+Alternatively, you can clone from the [NotABug mirror repository](https://notabug.org/litucks/torzu):
 
-    git clone https://github.com/litucks/torzu.git --depth 1 --recursive
+    git clone https://notabug.org/litucks/torzu.git --depth 1 --recursive
 
-Note that above repository may be taken down any time. Do not rely on its existence in production. In case the GitHub mirror goes down, another mirror will be most likely be set up on Bitbucket.
+Note that above repository may be taken down any time. Do not rely on its existence in production. In case the NotABug mirror goes down, another mirror will be most likely be set up on Bitbucket.
 
 This project incorporates several commits from the [Suyu](https://suyu.dev) and [Sudachi](https://github.com/sudachi-emu/sudachi) forks (but cleaned up due to the typically mediocre code/commit quality from both projects) as well as changes listed in **Changes**.
 
 ## Building
-
-* __Linux__: [Linux Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/wiki/Building-for-Linux)
-* __Windows__: [Windows Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/wiki/Building-for-Windows)
+<!--  -->
+* [Android Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/src/branch/master/build-for-android.md) (NotABug [alt](https://notabug.org/litucks/torzu/src/master/build-for-android.md))
+* [Linux Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/src/branch/master/build-for-linux.md) (NotABug [alt](https://notabug.org/litucks/torzu/src/master/build-for-linux.md))
+* [Windows Build](http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu/src/branch/master/build-for-windows.md) (NotABug [alt](https://notabug.org/litucks/torzu/src/master/build-for-windows.md))
 
 ## License
 
-yuzu is licensed under the GPLv3 (or any later version). Refer to the [LICENSE.txt](https://github.com/yuzu-emu/yuzu/blob/master/LICENSE.txt) file.
+yuzu is licensed under the GPLv3 (or any later version). Refer to the [LICENSE.txt](./LICENSE.txt) file.

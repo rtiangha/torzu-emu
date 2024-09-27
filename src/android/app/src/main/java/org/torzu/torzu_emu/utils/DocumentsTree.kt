@@ -13,10 +13,10 @@ class DocumentsTree {
     private var root: DocumentsNode? = null
 
     fun setRoot(rootUri: Uri?) {
-        root = null
-        root = DocumentsNode()
-        root!!.uri = rootUri
-        root!!.isDirectory = true
+        root = DocumentsNode().apply {
+            uri = rootUri
+            isDirectory = true
+        }
     }
 
     fun openContentUri(filepath: String, openMode: String?): Int {
@@ -43,20 +43,18 @@ class DocumentsTree {
     }
 
     fun getParentDirectory(filepath: String): String {
-        val node = resolvePath(filepath)!!
+        val node = resolvePath(filepath) ?: return filepath
         val parentNode = node.parent
-        if (parentNode != null && parentNode.isDirectory) {
-            return parentNode.uri!!.toString()
+        return if (parentNode != null && parentNode.isDirectory) {
+            parentNode.uri?.toString() ?: filepath
+        } else {
+            node.uri?.toString() ?: filepath
         }
-        return node.uri!!.toString()
     }
 
     fun getFilename(filepath: String): String {
         val node = resolvePath(filepath)
-        if (node != null) {
-            return node.name!!
-        }
-        return filepath
+        return node?.name ?: filepath
     }
 
     private fun resolvePath(filepath: String): DocumentsNode? {
@@ -72,7 +70,8 @@ class DocumentsTree {
     }
 
     private fun find(parent: DocumentsNode?, filename: String): DocumentsNode? {
-        if (parent!!.isDirectory && !parent.loaded) {
+        if (parent == null) return null
+        if (parent.isDirectory && !parent.loaded) {
             structTree(parent)
         }
         return parent.children[filename]
@@ -127,11 +126,7 @@ class DocumentsTree {
 
     companion object {
         fun isNativePath(path: String): Boolean {
-            return if (path.isNotEmpty()) {
-                path[0] == '/'
-            } else {
-                false
-            }
+            return path.isNotEmpty() && path[0] == '/'
         }
     }
 }

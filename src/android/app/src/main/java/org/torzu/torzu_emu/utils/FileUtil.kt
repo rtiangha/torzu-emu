@@ -88,7 +88,7 @@ object FileUtil {
     fun openContentUri(path: String, openMode: String?): Int {
         try {
             val uri = Uri.parse(path)
-            val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, openMode!!)
+            val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, openMode ?: return -1)
             if (parcelFileDescriptor == null) {
                 Log.error("[FileUtil]: Cannot get the file descriptor from uri: $path")
                 return -1
@@ -125,7 +125,7 @@ object FileUtil {
             }
             val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(uri, docId)
             c = resolver.query(childrenUri, columns, null, null, null)
-            while (c!!.moveToNext()) {
+            while (c?.moveToNext() == true) {
                 val documentId = c.getString(0)
                 val documentName = c.getString(1)
                 val documentMimeType = c.getString(2)
@@ -152,7 +152,7 @@ object FileUtil {
             val mUri = Uri.parse(path)
             val columns = arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID)
             c = context.contentResolver.query(mUri, columns, null, null, null)
-            return c!!.count > 0
+            return c?.count ?: 0 > 0
         } catch (e: Exception) {
             if (!suppressLog) {
                 Log.info("[FileUtil] Cannot find file from given path, error: " + e.message)
@@ -178,9 +178,10 @@ object FileUtil {
         try {
             val mUri = Uri.parse(path)
             c = resolver.query(mUri, columns, null, null, null)
-            c!!.moveToNext()
-            val mimeType = c.getString(0)
-            isDirectory = mimeType == DocumentsContract.Document.MIME_TYPE_DIR
+            if (c?.moveToNext() == true) {
+                val mimeType = c.getString(0)
+                isDirectory = mimeType == DocumentsContract.Document.MIME_TYPE_DIR
+            }
         } catch (e: Exception) {
             Log.error("[FileUtil]: Cannot list files, error: " + e.message)
         } finally {
@@ -203,8 +204,9 @@ object FileUtil {
         var c: Cursor? = null
         try {
             c = resolver.query(uri, columns, null, null, null)
-            c!!.moveToNext()
-            filename = c.getString(0)
+            if (c?.moveToNext() == true) {
+                filename = c.getString(0)
+            }
         } catch (e: Exception) {
             Log.error("[FileUtil]: Cannot get file size, error: " + e.message)
         } finally {
@@ -238,8 +240,9 @@ object FileUtil {
         try {
             val mUri = Uri.parse(path)
             c = resolver.query(mUri, columns, null, null, null)
-            c!!.moveToNext()
-            size = c.getLong(0)
+            if (c?.moveToNext() == true) {
+                size = c.getLong(0)
+            }
         } catch (e: Exception) {
             Log.error("[FileUtil]: Cannot get file size, error: " + e.message)
         } finally {
@@ -405,7 +408,7 @@ object FileUtil {
                 return
             }
 
-            val newFile = File(file, it.name!!)
+            val newFile = File(file, it.name ?: return@forEach)
             if (it.isDirectory) {
                 newFile.mkdirs()
                 DocumentFile.fromTreeUri(TorzuApplication.appContext, it.uri)?.copyFilesTo(newFile)

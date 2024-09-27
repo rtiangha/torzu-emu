@@ -32,17 +32,17 @@ object NativeLibrary {
 
     init {
         try {
-            System.loadLibrary("torzu-android")
+           System.loadLibrary("torzu-android")
         } catch (ex: UnsatisfiedLinkError) {
-            error("[NativeLibrary] $ex")
+           Log.e("[NativeLibrary]", ex.toString())
         }
     }
 
     @Keep
     @JvmStatic
     fun openContentUri(path: String?, openmode: String?): Int {
-        return if (DocumentsTree.isNativePath(path!!)) {
-            TorzuApplication.documentsTree!!.openContentUri(path, openmode)
+        return if (path != null && DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.openContentUri(path, openmode) ?: -1
         } else {
             FileUtil.openContentUri(path, openmode)
         }
@@ -51,8 +51,8 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun getSize(path: String?): Long {
-        return if (DocumentsTree.isNativePath(path!!)) {
-            TorzuApplication.documentsTree!!.getFileSize(path)
+        return if (path != null && DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.getFileSize(path) ?: 0L
         } else {
             FileUtil.getFileSize(path)
         }
@@ -61,8 +61,8 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun exists(path: String?): Boolean {
-        return if (DocumentsTree.isNativePath(path!!)) {
-            TorzuApplication.documentsTree!!.exists(path)
+        return if (path != null && DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.exists(path) ?: false
         } else {
             FileUtil.exists(path, suppressLog = true)
         }
@@ -71,8 +71,8 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun isDirectory(path: String?): Boolean {
-        return if (DocumentsTree.isNativePath(path!!)) {
-            TorzuApplication.documentsTree!!.isDirectory(path)
+        return if (path != null && DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.isDirectory(path) ?: false
         } else {
             FileUtil.isDirectory(path)
         }
@@ -80,21 +80,23 @@ object NativeLibrary {
 
     @Keep
     @JvmStatic
-    fun getParentDirectory(path: String): String =
-        if (DocumentsTree.isNativePath(path)) {
-            TorzuApplication.documentsTree!!.getParentDirectory(path)
+    fun getParentDirectory(path: String): String {
+        return if (DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.getParentDirectory(path) ?: path
         } else {
             path
         }
+    }
 
     @Keep
     @JvmStatic
-    fun getFilename(path: String): String =
-        if (DocumentsTree.isNativePath(path)) {
-            TorzuApplication.documentsTree!!.getFilename(path)
+    fun getFilename(path: String): String {
+        return if (DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.getFilename(path) ?: path
         } else {
             FileUtil.getFilename(Uri.parse(path))
         }
+    }
 
     external fun setAppDirectory(directory: String)
 
@@ -157,7 +159,7 @@ object NativeLibrary {
     external fun isPaused(): Boolean
 
     /**
-     * Returns the performance stats for the current game
+     * Returns the performance stats for the current game.
      */
     external fun getPerfStats(): DoubleArray
 
@@ -175,19 +177,10 @@ object NativeLibrary {
 
     external fun logSettings()
 
-    enum class CoreError {
-        ErrorSystemFiles,
-        ErrorSavestate,
-        ErrorUnknown
-    }
-
-    var coreErrorAlertResult = false
-    val coreErrorAlertLock = Object()
-
     private fun onCoreErrorImpl(title: String, message: String) {
         val emulationActivity = sEmulationActivity.get()
         if (emulationActivity == null) {
-            Log.error("[NativeLibrary] EmulationActivity not present")
+            Log.e("[NativeLibrary]", "EmulationActivity not present")
             return
         }
 
@@ -203,7 +196,7 @@ object NativeLibrary {
     fun onCoreError(error: CoreError?, details: String): Boolean {
         val emulationActivity = sEmulationActivity.get()
         if (emulationActivity == null) {
-            Log.error("[NativeLibrary] EmulationActivity not present")
+            Log.e("[NativeLibrary]", "EmulationActivity not present")
             return false
         }
 
@@ -237,7 +230,14 @@ object NativeLibrary {
         emulationActivity.runOnUiThread { onCoreErrorImpl(title, message) }
 
         // Wait for the lock to notify that it is complete.
-        synchronized(coreErrorAlertLock) { coreErrorAlertLock.wait() }
+        synchronized(coreErrorAlertLock) {
+            try {
+                coreErrorAlertLock.wait()
+            } catch (e: InterruptedException) {
+                Thread.currentThread().interrupt()
+                Log.e("[NativeLibrary]", "Thread interrupted: ${e.message}")
+            }
+        }
 
         return coreErrorAlertResult
     }
@@ -245,19 +245,19 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun exitEmulationActivity(resultCode: Int) {
-        val Success = 0
-        val ErrorNotInitialized = 1
-        val ErrorGetLoader = 2
-        val ErrorSystemFiles = 3
-        val ErrorSharedFont = 4
-        val ErrorVideoCore = 5
-        val ErrorUnknown = 6
-        val ErrorLoader = 7
+        val SUCCESS = 0
+        val ERROR_NOT_INITIALIZED = 1
+        val ERROR_GET_LOADER = 2
+        val ERROR_SYSTEM_FILES = 3
+        val ERROR_SHARED_FONT = 4
+        val ERROR_VIDEO_CORE = 5
+        val ERROR_UNKNOWN = 6
+        val ERROR_LOADER = 7
 
         val captionId: Int
         var descriptionId: Int
         when (resultCode) {
-            ErrorVideoCore -> {
+            ERROR_VIDEO_CORE -> {
                 captionId = R.string.loader_error_video_core
                 descriptionId = R.string.loader_error_video_core_description
             }
@@ -273,10 +273,9 @@ object NativeLibrary {
 
         val emulationActivity = sEmulationActivity.get()
         if (emulationActivity == null) {
-            Log.warning("[NativeLibrary] EmulationActivity is null, can't exit.")
+            Log.w("[NativeLibrary]", "EmulationActivity is null, can't exit.")
             return
         }
-
         val builder = MaterialAlertDialogBuilder(emulationActivity)
             .setTitle(captionId)
             .setMessage(
@@ -298,40 +297,40 @@ object NativeLibrary {
     }
 
     fun setEmulationActivity(emulationActivity: EmulationActivity?) {
-        Log.debug("[NativeLibrary] Registering EmulationActivity.")
+        Log.d("[NativeLibrary]", "Registering EmulationActivity.")
         sEmulationActivity = WeakReference(emulationActivity)
     }
 
     fun clearEmulationActivity() {
-        Log.debug("[NativeLibrary] Unregistering EmulationActivity.")
+        Log.d("[NativeLibrary]", "Unregistering EmulationActivity.")
         sEmulationActivity.clear()
     }
 
     @Keep
     @JvmStatic
     fun onEmulationStarted() {
-        sEmulationActivity.get()!!.onEmulationStarted()
+        sEmulationActivity.get()?.onEmulationStarted() ?: Log.w("[NativeLibrary]", "EmulationActivity not present")
     }
 
     @Keep
     @JvmStatic
     fun onEmulationStopped(status: Int) {
-        sEmulationActivity.get()!!.onEmulationStopped(status)
+        sEmulationActivity.get()?.onEmulationStopped(status) ?: Log.w("[NativeLibrary]", "EmulationActivity not present")
     }
 
     @Keep
     @JvmStatic
     fun onProgramChanged(programIndex: Int) {
-        sEmulationActivity.get()!!.onProgramChanged(programIndex)
+        sEmulationActivity.get()?.onProgramChanged(programIndex) ?: Log.w("[NativeLibrary]", "EmulationActivity not present")
     }
 
     /**
-     * Logs the Torzu version, Android version and, CPU.
+     * Logs the Torzu version, Android version, and CPU.
      */
     external fun logDeviceInfo()
 
     /**
-     * Submits inline keyboard text. Called on input for buttons that result text.
+     * Submits inline keyboard text. Called on input for buttons that result in text.
      * @param text Text to submit to the inline software keyboard implementation.
      */
     external fun submitInlineKeyboardText(text: String?)
@@ -343,16 +342,16 @@ object NativeLibrary {
     external fun submitInlineKeyboardInput(key_code: Int)
 
     /**
-     * Creates a generic user directory if it doesn't exist already
+     * Creates a generic user directory if it doesn't exist already.
      */
     external fun initializeEmptyUserDirectory()
 
     /**
      * Gets the launch path for a given applet. It is the caller's responsibility to also
-     * set the system's current applet ID before trying to launch the nca given by this function.
+     * set the system's current applet ID before trying to launch the NCA given by this function.
      *
      * @param id The applet entry ID
-     * @return The applet's launch path
+     * @return The applet's launch path.
      */
     external fun getAppletLaunchPath(id: Long): String
 

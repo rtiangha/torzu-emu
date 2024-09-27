@@ -3,26 +3,29 @@
 
 package org.torzu.torzu_emu.utils
 
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.DocumentsContract
+import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
+import java.io.OutputStream
+import java.lang.NullPointerException
 import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
+import java.util.zip.Deflater
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
+import java.util.zip.ZipOutputStream
 import org.torzu.torzu_emu.TorzuApplication
 import org.torzu.torzu_emu.model.MinimalDocumentFile
 import org.torzu.torzu_emu.model.TaskState
-import java.io.BufferedOutputStream
-import java.io.OutputStream
-import java.lang.NullPointerException
-import java.nio.charset.StandardCharsets
-import java.util.zip.Deflater
-import java.util.zip.ZipOutputStream
 import kotlin.IllegalStateException
 
 object FileUtil {
@@ -64,16 +67,21 @@ object FileUtil {
      * @param directoryName directory display name.
      * @return boolean
      */
-    fun createDir(directory: String?, directoryName: String?): DocumentFile? {
-        var decodedDirectoryName = directoryName
+    fun createFile(context: Context, directory: String?, filename: String): DocumentFile? {
+        var decodedFilename = filename
         try {
+            if (directory == null) return null
             val directoryUri = Uri.parse(directory)
             val parent = DocumentFile.fromTreeUri(context, directoryUri) ?: return null
-            decodedDirectoryName = URLDecoder.decode(decodedDirectoryName, DECODE_METHOD)
-            val isExist = parent.findFile(decodedDirectoryName)
-            return isExist ?: parent.createDirectory(decodedDirectoryName)
+            decodedFilename = URLDecoder.decode(decodedFilename, "UTF-8")
+            var mimeType = "application/octet-stream"
+            if (decodedFilename.endsWith(".txt")) {
+                mimeType = "text/plain"
+            }
+            val exists = parent.findFile(decodedFilename)
+            return exists ?: parent.createFile(mimeType, decodedFilename)
         } catch (e: Exception) {
-            Log.error("[FileUtil]: Cannot create file, error: " + e.message)
+            Log.e("[FileUtil]", "Cannot create file, error: ${e.message}")
         }
         return null
     }
@@ -85,19 +93,19 @@ object FileUtil {
      * @return file descriptor
      */
     @JvmStatic
-    fun openContentUri(path: String, openMode: String?): Int {
+    fun openContentUri(context: Context, path: String, openMode: String?): Int {
         try {
             val uri = Uri.parse(path)
-            val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, openMode!!)
+            val parcelFileDescriptor = context.contentResolver.openFileDescriptor(uri, openMode ?: return -1)
             if (parcelFileDescriptor == null) {
-                Log.error("[FileUtil]: Cannot get the file descriptor from uri: $path")
+                Log.e("[FileUtil]", "Cannot get the file descriptor from uri: $path")
                 return -1
             }
             val fileDescriptor = parcelFileDescriptor.detachFd()
             parcelFileDescriptor.close()
             return fileDescriptor
         } catch (e: Exception) {
-            Log.error("[FileUtil]: Cannot open content uri, error: " + e.message)
+            Log.e("[FileUtil]", "Cannot open content uri, error: ${e.message}")
         }
         return -1
     }
@@ -108,7 +116,7 @@ object FileUtil {
      * @param uri Directory uri.
      * @return CheapDocument lists.
      */
-    fun listFiles(uri: Uri): Array<MinimalDocumentFile> {
+    fun listFiles(context: Context, uri: Uri): Array<MinimalDocumentFile> {
         val resolver = context.contentResolver
         val columns = arrayOf(
             DocumentsContract.Document.COLUMN_DOCUMENT_ID,
@@ -125,7 +133,7 @@ object FileUtil {
             }
             val childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(uri, docId)
             c = resolver.query(childrenUri, columns, null, null, null)
-            while (c!!.moveToNext()) {
+            while (c?.moveToNext() == true) {
                 val documentId = c.getString(0)
                 val documentName = c.getString(1)
                 val documentMimeType = c.getString(2)
@@ -134,9 +142,9 @@ object FileUtil {
                 results.add(document)
             }
         } catch (e: Exception) {
-            Log.error("[FileUtil]: Cannot list file error: " + e.message)
+            Log.e("[FileUtil]", "Cannot list file error: ${e.message}")
         } finally {
-            closeQuietly(c)
+            c?.close()
         }
         return results.toTypedArray()
     }
@@ -146,19 +154,19 @@ object FileUtil {
      * @param path Native content uri path
      * @return bool
      */
-    fun exists(path: String?, suppressLog: Boolean = false): Boolean {
+    fun exists(context: Context, path: String?, suppressLog: Boolean = false): Boolean {
         var c: Cursor? = null
         try {
             val mUri = Uri.parse(path)
             val columns = arrayOf(DocumentsContract.Document.COLUMN_DOCUMENT_ID)
             c = context.contentResolver.query(mUri, columns, null, null, null)
-            return c!!.count > 0
+            return c?.count ?: 0 > 0
         } catch (e: Exception) {
             if (!suppressLog) {
-                Log.info("[FileUtil] Cannot find file from given path, error: " + e.message)
+                Log.i("[FileUtil]", "Cannot find file from given path, error: ${e.message}")
             }
         } finally {
-            closeQuietly(c)
+            c?.close()
         }
         return false
     }
@@ -168,7 +176,7 @@ object FileUtil {
      * @param path content uri path
      * @return bool
      */
-    fun isDirectory(path: String): Boolean {
+    fun isDirectory(context: Context, path: String): Boolean {
         val resolver = context.contentResolver
         val columns = arrayOf(
             DocumentsContract.Document.COLUMN_MIME_TYPE
@@ -178,13 +186,14 @@ object FileUtil {
         try {
             val mUri = Uri.parse(path)
             c = resolver.query(mUri, columns, null, null, null)
-            c!!.moveToNext()
-            val mimeType = c.getString(0)
-            isDirectory = mimeType == DocumentsContract.Document.MIME_TYPE_DIR
+            if (c?.moveToNext() == true) {
+                val mimeType = c.getString(0)
+                isDirectory = mimeType == DocumentsContract.Document.MIME_TYPE_DIR
+            }
         } catch (e: Exception) {
-            Log.error("[FileUtil]: Cannot list files, error: " + e.message)
+            Log.e("[FileUtil]", "Cannot list files, error: ${e.message}")
         } finally {
-            closeQuietly(c)
+            c?.close()
         }
         return isDirectory
     }
@@ -194,8 +203,8 @@ object FileUtil {
      * @param uri content uri
      * @return String display name
      */
-    fun getFilename(uri: Uri): String {
-        val resolver = TorzuApplication.appContext.contentResolver
+    fun getFilename(context: Context, uri: Uri): String {
+        val resolver = context.contentResolver
         val columns = arrayOf(
             DocumentsContract.Document.COLUMN_DISPLAY_NAME
         )
@@ -203,20 +212,21 @@ object FileUtil {
         var c: Cursor? = null
         try {
             c = resolver.query(uri, columns, null, null, null)
-            c!!.moveToNext()
-            filename = c.getString(0)
+            if (c?.moveToNext() == true) {
+                filename = c.getString(0)
+            }
         } catch (e: Exception) {
-            Log.error("[FileUtil]: Cannot get file size, error: " + e.message)
+            Log.e("[FileUtil]", "Cannot get file size, error: ${e.message}")
         } finally {
-            closeQuietly(c)
+            c?.close()
         }
         return filename
     }
 
-    fun getFilesName(path: String): Array<String> {
+    fun getFilesName(context: Context, path: String): Array<String> {
         val uri = Uri.parse(path)
         val files: MutableList<String> = ArrayList()
-        for (file in listFiles(uri)) {
+        for (file in listFiles(context, uri)) {
             files.add(file.filename)
         }
         return files.toTypedArray()
@@ -228,7 +238,7 @@ object FileUtil {
      * @return long file size
      */
     @JvmStatic
-    fun getFileSize(path: String): Long {
+    fun getFileSize(context: Context, path: String): Long {
         val resolver = context.contentResolver
         val columns = arrayOf(
             DocumentsContract.Document.COLUMN_SIZE
@@ -238,12 +248,13 @@ object FileUtil {
         try {
             val mUri = Uri.parse(path)
             c = resolver.query(mUri, columns, null, null, null)
-            c!!.moveToNext()
-            size = c.getLong(0)
+            if (c?.moveToNext() == true) {
+                size = c.getLong(0)
+            }
         } catch (e: Exception) {
-            Log.error("[FileUtil]: Cannot get file size, error: " + e.message)
+            Log.e("[FileUtil]", "Cannot get file size, error: ${e.message}")
         } finally {
-            closeQuietly(c)
+            c?.close()
         }
         return size
     }
@@ -257,16 +268,16 @@ object FileUtil {
      * @param destinationFilename Optionally renames the file once copied
      */
     fun copyUriToInternalStorage(
+        context: Context,
         sourceUri: Uri,
         destinationParentPath: String,
         destinationFilename: String = ""
-    ): File? =
-        try {
-            val fileName =
-                if (destinationFilename == "") getFilename(sourceUri) else "/$destinationFilename"
-            val inputStream = context.contentResolver.openInputStream(sourceUri)!!
+    ): File? {
+        return try {
+            val fileName = if (destinationFilename.isEmpty()) getFilename(context, sourceUri) else destinationFilename
+            val inputStream = context.contentResolver.openInputStream(sourceUri) ?: return null
 
-            val destinationFile = File("$destinationParentPath$fileName")
+            val destinationFile = File(destinationParentPath, fileName)
             if (destinationFile.exists()) {
                 destinationFile.delete()
             }
@@ -276,10 +287,10 @@ object FileUtil {
             }
             destinationFile
         } catch (e: IOException) {
-            null
-        } catch (e: NullPointerException) {
+            Log.e("[FileUtil]", "Cannot copy URI to internal storage, error: ${e.message}")
             null
         }
+    }
 
     /**
      * Extracts the given zip file into the given directory.
@@ -290,15 +301,14 @@ object FileUtil {
      */
     @Throws(SecurityException::class)
     fun unzipToInternalStorage(
+        context: Context,
         path: String,
         destDir: File,
         progressCallback: (max: Long, progress: Long) -> Boolean = { _, _ -> false }
     ) {
         var totalEntries = 0L
         ZipInputStream(getInputStream(path)).use { zis ->
-            var tempEntry = zis.nextEntry
-            while (tempEntry != null) {
-                tempEntry = zis.nextEntry
+            while (zis.nextEntry != null) {
                 totalEntries++
             }
         }
@@ -331,6 +341,12 @@ object FileUtil {
         }
     }
 
+    private fun getInputStream(path: String): InputStream {
+        // Implement this method to return an InputStream for the given path
+        // For example, you might use context.assets.open(path) if the file is in the assets folder
+        return FileInputStream(File(path))
+    }
+
     /**
      * Creates a zip file from a directory within internal storage
      * @param inputFile File representation of the item that will be zipped
@@ -347,7 +363,7 @@ object FileUtil {
         progressCallback: (max: Long, progress: Long) -> Boolean = { _, _ -> false },
         compression: Boolean = true
     ): TaskState {
-        try {
+        return try {
             ZipOutputStream(outputStream).use { zos ->
                 if (!compression) {
                     zos.setMethod(ZipOutputStream.DEFLATED)
@@ -362,22 +378,22 @@ object FileUtil {
                     }
 
                     if (!file.isDirectory) {
-                        val entryName =
-                            file.absolutePath.removePrefix(rootDir).removePrefix("/")
+                        val entryName = file.absolutePath.removePrefix(rootDir).removePrefix("/")
                         val entry = ZipEntry(entryName)
                         zos.putNextEntry(entry)
                         if (file.isFile) {
                             file.inputStream().use { fis -> fis.copyTo(zos) }
                         }
+                        zos.closeEntry()
                         count++
                     }
                 }
             }
+            TaskState.Completed
         } catch (e: Exception) {
-            Log.error("[FileUtil] Failed creating zip file - ${e.message}")
-            return TaskState.Failed
+            Log.e("[FileUtil]", "Failed creating zip file - ${e.message}")
+            TaskState.Failed
         }
-        return TaskState.Completed
     }
 
     /**
@@ -388,6 +404,7 @@ object FileUtil {
      * @throws IllegalStateException Fails when trying to copy a folder into a file and vice versa
      */
     fun DocumentFile.copyFilesTo(
+        context: Context,
         file: File,
         progressCallback: (max: Long, progress: Long) -> Boolean = { _, _ -> false }
     ) {
@@ -405,18 +422,17 @@ object FileUtil {
                 return
             }
 
-            val newFile = File(file, it.name!!)
+            val newFile = File(file, it.name ?: return@forEach)
             if (it.isDirectory) {
                 newFile.mkdirs()
-                DocumentFile.fromTreeUri(TorzuApplication.appContext, it.uri)?.copyFilesTo(newFile)
+                DocumentFile.fromTreeUri(context, it.uri)?.copyFilesTo(context, newFile)
             } else {
-                val inputStream =
-                    TorzuApplication.appContext.contentResolver.openInputStream(it.uri)
-                BufferedInputStream(inputStream).use { bos ->
+                val inputStream = context.contentResolver.openInputStream(it.uri) ?: return@forEach
+                BufferedInputStream(inputStream).use { bis ->
                     if (!newFile.exists()) {
                         newFile.createNewFile()
                     }
-                    newFile.outputStream().use { os -> bos.copyTo(os) }
+                    newFile.outputStream().use { os -> bis.copyTo(os) }
                 }
             }
             count++
@@ -439,13 +455,12 @@ object FileUtil {
         }
     }
 
-    fun getExtension(uri: Uri): String {
-        val fileName = getFilename(uri)
-        return fileName.substring(fileName.lastIndexOf(".") + 1)
-            .lowercase()
+    fun getExtension(context: Context, uri: Uri): String {
+        val fileName = getFilename(context, uri)
+        return fileName.substring(fileName.lastIndexOf(".") + 1).lowercase()
     }
 
-    fun isTreeUriValid(uri: Uri): Boolean {
+    fun isTreeUriValid(context: Context, uri: Uri): Boolean {
         val resolver = context.contentResolver
         val columns = arrayOf(
             DocumentsContract.Document.COLUMN_DOCUMENT_ID,
@@ -466,16 +481,20 @@ object FileUtil {
         }
     }
 
-    fun getInputStream(path: String) = if (path.contains("content://")) {
-        Uri.parse(path).inputStream()
-    } else {
-        File(path).inputStream()
+    fun getInputStream(context: Context, path: String): InputStream? {
+        return if (path.contains("content://")) {
+            Uri.parse(path).inputStream(context)
+        } else {
+            File(path).inputStream()
+        }
     }
 
-    fun getOutputStream(path: String) = if (path.contains("content://")) {
-        Uri.parse(path).outputStream()
-    } else {
-        File(path).outputStream()
+    fun getOutputStream(context: Context, path: String): OutputStream? {
+        return if (path.contains("content://")) {
+            Uri.parse(path).outputStream(context)
+        } else {
+            File(path).outputStream()
+        }
     }
 
     @Throws(IOException::class)
@@ -486,18 +505,18 @@ object FileUtil {
     fun getStringFromInputStream(stream: InputStream): String =
         String(stream.readBytes(), StandardCharsets.UTF_8)
 
-    fun DocumentFile.inputStream(): InputStream =
-        TorzuApplication.appContext.contentResolver.openInputStream(uri)!!
+    fun DocumentFile.inputStream(context: Context): InputStream? =
+        context.contentResolver.openInputStream(uri)
 
-    fun DocumentFile.outputStream(): OutputStream =
-        TorzuApplication.appContext.contentResolver.openOutputStream(uri)!!
+    fun DocumentFile.outputStream(context: Context): OutputStream? =
+        context.contentResolver.openOutputStream(uri)
 
-    fun Uri.inputStream(): InputStream =
-        TorzuApplication.appContext.contentResolver.openInputStream(this)!!
+    fun Uri.inputStream(context: Context): InputStream? =
+        context.contentResolver.openInputStream(this)
 
-    fun Uri.outputStream(): OutputStream =
-        TorzuApplication.appContext.contentResolver.openOutputStream(this)!!
+    fun Uri.outputStream(context: Context): OutputStream? =
+        context.contentResolver.openOutputStream(this)
 
-    fun Uri.asDocumentFile(): DocumentFile? =
-        DocumentFile.fromSingleUri(TorzuApplication.appContext, this)
+    fun Uri.asDocumentFile(context: Context): DocumentFile? =
+        DocumentFile.fromSingleUri(context, this)
 }

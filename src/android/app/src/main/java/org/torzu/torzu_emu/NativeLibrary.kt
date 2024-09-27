@@ -41,8 +41,8 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun openContentUri(path: String?, openmode: String?): Int {
-        return if (DocumentsTree.isNativePath(path!!)) {
-            TorzuApplication.documentsTree!!.openContentUri(path, openmode)
+        return if (path != null && DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.openContentUri(path, openmode) ?: -1
         } else {
             FileUtil.openContentUri(path, openmode)
         }
@@ -51,8 +51,8 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun getSize(path: String?): Long {
-        return if (DocumentsTree.isNativePath(path!!)) {
-            TorzuApplication.documentsTree!!.getFileSize(path)
+        return if (path != null && DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.getFileSize(path) ?: 0L
         } else {
             FileUtil.getFileSize(path)
         }
@@ -61,8 +61,8 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun exists(path: String?): Boolean {
-        return if (DocumentsTree.isNativePath(path!!)) {
-            TorzuApplication.documentsTree!!.exists(path)
+        return if (path != null && DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.exists(path) ?: false
         } else {
             FileUtil.exists(path, suppressLog = true)
         }
@@ -71,8 +71,8 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun isDirectory(path: String?): Boolean {
-        return if (DocumentsTree.isNativePath(path!!)) {
-            TorzuApplication.documentsTree!!.isDirectory(path)
+        return if (path != null && DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.isDirectory(path) ?: false
         } else {
             FileUtil.isDirectory(path)
         }
@@ -80,18 +80,18 @@ object NativeLibrary {
 
     @Keep
     @JvmStatic
-    fun getParentDirectory(path: String): String =
-        if (DocumentsTree.isNativePath(path)) {
-            TorzuApplication.documentsTree!!.getParentDirectory(path)
+    fun getParentDirectory(path: String): String {
+        return if (DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.getParentDirectory(path) ?: path
         } else {
             path
         }
 
     @Keep
     @JvmStatic
-    fun getFilename(path: String): String =
-        if (DocumentsTree.isNativePath(path)) {
-            TorzuApplication.documentsTree!!.getFilename(path)
+    fun getFilename(path: String): String {
+        return if (DocumentsTree.isNativePath(path)) {
+            TorzuApplication.documentsTree?.getFilename(path) ?: path
         } else {
             FileUtil.getFilename(Uri.parse(path))
         }
@@ -310,19 +310,19 @@ object NativeLibrary {
     @Keep
     @JvmStatic
     fun onEmulationStarted() {
-        sEmulationActivity.get()!!.onEmulationStarted()
+        sEmulationActivity.get()?.onEmulationStarted() ?: Log.warning("[NativeLibrary]", "EmulationActivity not present")
     }
 
     @Keep
     @JvmStatic
     fun onEmulationStopped(status: Int) {
-        sEmulationActivity.get()!!.onEmulationStopped(status)
+        sEmulationActivity.get()?.onEmulationStarted() ?: Log.warning("[NativeLibrary]", "EmulationActivity not present")
     }
 
     @Keep
     @JvmStatic
     fun onProgramChanged(programIndex: Int) {
-        sEmulationActivity.get()!!.onProgramChanged(programIndex)
+        sEmulationActivity.get()?.onEmulationStarted() ?: Log.warning("[NativeLibrary]", "EmulationActivity not present")
     }
 
     /**

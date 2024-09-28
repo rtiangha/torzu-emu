@@ -52,10 +52,17 @@ jobs:
           repo: deb http://apt.llvm.org/noble/ llvm-toolchain-noble-17 main
           repo-name: llvm
           keys-asc: https://apt.llvm.org/llvm-snapshot.gpg.key
-      - name: Update System Packages
-        run: sudo apt-get update && sudo apt-get -y dist-upgrade
+      - name: Get latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: latest
+          ninjaVersion: latest
       - name: Install New Packages
-        run: sudo apt-get -y install ccache clang-17 clang-tools-17 clang-17-doc libclang-common-17-dev libclang-17-dev libclang1-17 clang-format-17 python3-clang-17 clangd-17 clang-tidy-17 autoconf cmake git glslang-tools libva2 libva-dev libasound2t64 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm ninja-build libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev 
+        uses: gerlero/apt-install@v1
+        with:
+          packages: ccache clang-17 clang-tools-17 clang-17-doc libclang-common-17-dev libclang-17-dev libclang1-17 clang-format-17 python3-clang-17 clangd-17 clang-tidy-17 autoconf git glslang-tools libva2 libva-dev libasound2t64 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev 
+      - name: Update System Packages
+        run: sudo apt-get update && sudo apt-get -y dist-upgrade && sudo apt-get clean
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -103,7 +110,9 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja automake ccache ffmpeg glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
+        uses: tecolicom/actions-use-homebrew-tools@v1
+        with:
+          tools: ccache ninja automake ccache ffmpeg glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -203,7 +212,9 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Install tools
-        run: brew install ccache ninja autoconf automake ccache ffmpeg glslang hidapi libtool ninja nlohmann-json sdl2 speexdsp zlib
+        uses: tecolicom/actions-use-homebrew-tools@v1
+        with:
+          tools: ccache ninja autoconf automake ccache ffmpeg glslang hidapi libtool nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -507,11 +518,13 @@ jobs:
       - name: Query tag name
         uses: olegtarasov/get-tag@v2.1.3
         id: tagName
-      - name: Install dependencies
+      - name: Install New Packages
+        uses: gerlero/apt-install@v1
+        with:
+          packages: ccache apksigner glslang-dev glslang-tools
+      - name: Update system packages
         run: |
-          sudo add-apt-repository -y ppa:theofficialgman/gpu-tools
-          sudo apt-get update && sudo apt-get -y dist-upgrade
-          sudo apt-get install -y ccache apksigner glslang-dev glslang-tools
+          sudo apt-get update && sudo apt-get -y dist-upgrade && sudo apt-get clean
       - name: Build
         run: ./.ci/scripts/android/build.sh
         env:

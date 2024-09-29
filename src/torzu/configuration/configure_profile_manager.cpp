@@ -509,15 +509,24 @@ void ConfigureProfileManagerAvatarDialog::LoadImages(const QVector<QPixmap>& ava
 
     // Determine window size now that avatars are loaded into the grid
     // There is probably a better way to handle this that I'm unaware of
+    const auto* style = avatar_list->style();
+
     const int icon_size = avatar_list->iconSize().width();
-    const int spacing = avatar_list->spacing() * 2;
-    const int border_width = avatar_list->style()->pixelMetric(QStyle::PM_FocusFrameHMargin) * 2;
-    const int scrollbar_width = avatar_list->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-    const int icon_full_size = icon_size + border_width + spacing;
+    const int icon_spacing = avatar_list->spacing() * 2;
+    const int icon_margin = style->pixelMetric(QStyle::PM_FocusFrameHMargin);
+    const int icon_full_size = icon_size + icon_spacing + icon_margin;
+
+    const int horizontal_margin = style->pixelMetric(QStyle::PM_LayoutLeftMargin) +
+                                  style->pixelMetric(QStyle::PM_LayoutRightMargin) +
+                                  style->pixelMetric(QStyle::PM_ScrollBarExtent);
+    const int vertical_margin = style->pixelMetric(QStyle::PM_LayoutTopMargin) +
+                                style->pixelMetric(QStyle::PM_LayoutBottomMargin);
 
     // Set default list size so that it is 6 icons wide and 4.5 tall
-    const int total_width = icon_full_size * 6 + scrollbar_width;
-    const int total_height = icon_full_size * 4.5;
+    const int columns = 6;
+    const double rows = 4.5;
+    const int total_width = icon_full_size * columns + horizontal_margin;
+    const int total_height = icon_full_size * rows + vertical_margin;
     avatar_list->setMinimumSize(total_width, total_height);
 }
 

@@ -20,7 +20,7 @@
 [submodule "mbedtls"]
 	path = externals/mbedtls
 	url = https://github.com/rtiangha/mbedtls.git
-        branch = archive/mbedtls-2.16
+        branch = torzu 
 [submodule "xbyak"]
 	path = externals/xbyak
 	url = https://github.com/herumi/xbyak.git

@@ -63,6 +63,7 @@ if (NOT MSVC)
     target_compile_options(mbedcrypto PRIVATE
         -Wno-unused-but-set-variable
         -Wno-string-concatenation)
+    option(ENABLE_TESTING "Build mbed TLS tests." OFF)
 endif()
 
 # MicroProfile

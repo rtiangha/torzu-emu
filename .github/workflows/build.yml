@@ -60,7 +60,7 @@ jobs:
       - name: Install New Packages
         uses: gerlero/apt-install@v1
         with:
-          packages: ccache clang-17 clang-tools-17 clang-17-doc libclang-common-17-dev libclang-17-dev libclang1-17 clang-format-17 python3-clang-17 clangd-17 clang-tidy-17 autoconf git glslang-tools libva2 libva-dev libasound2t64 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev 
+          packages: ccache clang-17 clang-tools-17 clang-17-doc libclang-common-17-dev libclang-17-dev libclang1-17 clang-format-17 python3-clang-17 clangd-17 clang-tidy-17 autoconf git glslang-tools libva2 libva-dev libasound2t64 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev build-essential gstreamer1.0-gl gstreamer1.0-plugins-base libcdparanoia0 libegl-dev libegl-mesa0 libegl1 libgl1-mesa-dev libgles-dev libgles1 libgles2 libglvnd-core-dev libglvnd-dev libgraphene-1.0-0 libgstreamer-gl1.0-0 libgstreamer-plugins-base1.0-0 liborc-0.4-0t64 libvisual-0.4-0 libxcb-cursor0 libxcb-shape0 libxcb-xkb-dev libxkbcommon-dev apparmor cloud-init firefox libapparmor1 libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core
       - name: Update System Packages
         run: sudo apt-get update && sudo apt-get -y dist-upgrade && sudo apt-get clean
       - name: Install Qt
@@ -521,7 +521,7 @@ jobs:
       - name: Install New Packages
         uses: gerlero/apt-install@v1
         with:
-          packages: ccache apksigner glslang-dev glslang-tools
+          packages: ccache apksigner glslang-dev glslang-tools apparmor cloud-init firefox libapparmor1 libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core
       - name: Update system packages
         run: |
           sudo apt-get update && sudo apt-get -y dist-upgrade && sudo apt-get clean

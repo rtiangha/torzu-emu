@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
     "name": "torzu",
-    "builtin-baseline": "f176b58f35a75f9f8f54099cd9df97d2e2793a2e",
+    "builtin-baseline": "c82f74667287d3dc386bce81e44964370c91a289",
     "version": "1.0",
     "dependencies": [
         "boost-algorithm",

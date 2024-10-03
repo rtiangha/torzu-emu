@@ -13,13 +13,13 @@ jobs:
     if: ${{ !github.head_ref }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
         with:
           submodules: recursive
       - name: Pack
         run: ./.ci/source.sh
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: source
           path: artifacts/
@@ -35,12 +35,12 @@ jobs:
       OS: linux
       TARGET: ${{ matrix.target }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
         with:
           submodules: recursive
           fetch-depth: 0
       - name: Set up cache
-        uses: actions/cache@v4
+        uses: actions/cache@v4.0.2
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}
@@ -53,12 +53,12 @@ jobs:
           repo-name: llvm
           keys-asc: https://apt.llvm.org/llvm-snapshot.gpg.key
       - name: Get latest CMake and Ninja
-        uses: lukka/get-cmake@latest
+        uses: lukka/get-cmake@v3.30.4
         with:
           cmakeVersion: latest
           ninjaVersion: latest
       - name: Install New Packages
-        uses: gerlero/apt-install@v1
+        uses: gerlero/apt-install@v1.2.2
         with:
           packages: ccache clang-17 clang-tools-17 clang-17-doc libclang-common-17-dev libclang-17-dev libclang1-17 clang-format-17 python3-clang-17 clangd-17 clang-tidy-17 autoconf git glslang-tools libva2 libva-dev libasound2t64 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev build-essential gstreamer1.0-gl gstreamer1.0-plugins-base libcdparanoia0 libegl-dev libegl-mesa0 libegl1 libgl1-mesa-dev libgles-dev libgles1 libgles2 libglvnd-core-dev libglvnd-dev libgraphene-1.0-0 libgstreamer-gl1.0-0 libgstreamer-plugins-base1.0-0 liborc-0.4-0t64 libvisual-0.4-0 libxcb-cursor0 libxcb-shape0 libxcb-xkb-dev libxkbcommon-dev apparmor cloud-init firefox libapparmor1 libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core php8.3 php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xml php8.3-xsl php8.3-zip vim vim-common vim-runtime vim-tiny xxd
       - name: Update System Packages
@@ -132,7 +132,7 @@ jobs:
             Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
         if: ${{ matrix.target == 'appimage' }}
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         if: ${{ matrix.target == 'appimage' }}
         with:
           name: ${{ env.OS }}-${{ env.TARGET }}
@@ -153,22 +153,22 @@ jobs:
       OS: macos
       TARGET: ${{ matrix.target }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
         with:
           submodules: recursive
       - name: Set up cache
-        uses: actions/cache@v4
+        uses: actions/cache@v4.0.2
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.target }}-
       - name: Setup XCode
-        uses: maxim-lobanov/setup-xcode@v1
+        uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
           xcode-version: latest-stable
       - name: Install tools
-        uses: tecolicom/actions-use-homebrew-tools@v1
+        uses: tecolicom/actions-use-homebrew-tools@v1.3
         with:
           tools: ccache ninja automake ccache ffmpeg glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
@@ -235,7 +235,7 @@ jobs:
             Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
             Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Cache outputs for universal build
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v4.0.2
         with:
           path: ${{ env.OS }}-${{ env.TARGET }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -255,22 +255,22 @@ jobs:
       OS: macos
       TARGET: ${{ matrix.target }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
         with:
           submodules: recursive
       - name: Set up cache
-        uses: actions/cache@v4
+        uses: actions/cache@v4.0.2
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.target }}-
       - name: Setup XCode
-        uses: maxim-lobanov/setup-xcode@v1
+        uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
           xcode-version: latest-stable
       - name: Install tools
-        uses: tecolicom/actions-use-homebrew-tools@v1
+        uses: tecolicom/actions-use-homebrew-tools@v1.3
         with:
           tools: ccache ninja autoconf automake ccache ffmpeg glslang hidapi libtool nlohmann-json sdl2 speexdsp zlib
       - name: Install Qt
@@ -337,7 +337,7 @@ jobs:
             Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
             Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Cache outputs for universal build
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v4.0.2
         with:
           path: ${{ env.OS }}-${{ env.TARGET }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -352,15 +352,15 @@ jobs:
       OS: macos
       TARGET: universal
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
       - name: Download x86_64 build from cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v4.0.2
         with:
           path: ${{ env.OS }}-x86_64
           key: ${{ runner.os }}-x86_64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           fail-on-cache-miss: true
       - name: Download ARM64 build from cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v4.0.2
         with:
           path: ${{ env.OS }}-arm64
           key: ${{ runner.os }}-arm64-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -372,7 +372,7 @@ jobs:
       - name: Pack
         run: ./.ci/pack.sh
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: ${{ env.OS }}-${{ env.TARGET }}
           path: artifacts/
@@ -391,19 +391,19 @@ jobs:
       OS: windows
       TARGET: ${{ matrix.target }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
         with:
           submodules: recursive
           fetch-depth: 0
       - name: Set up cache
-        uses: actions/cache@v4
+        uses: actions/cache@v4.0.2
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.target }}-
       - name: Set up MSVC
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@v1.13.0
         if: ${{ matrix.target == 'msvc' }}
       - name: Install extra tools (MSVC)
         run: choco install ccache ninja wget openssl
@@ -474,7 +474,7 @@ jobs:
       - name: Pack
         run: ./.ci/pack.sh
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: ${{ env.OS }}-${{ env.TARGET }}
           path: artifacts/
@@ -493,18 +493,18 @@ jobs:
       OS: windows
       TARGET: ${{ matrix.target }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
         with:
           submodules: recursive
       - name: Set up cache
-        uses: actions/cache@v4
+        uses: actions/cache@v4.0.2
         with:
           path: ${{ env.CCACHE_DIR }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.target }}-
       - name: Set up MSVC
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@v1.13.0
       - name: Install Vulkan SDK
         uses: humbletim/install-vulkan-sdk@v1.1.1
         with:
@@ -524,7 +524,7 @@ jobs:
             toolset: msvc
             link: static
       - name: Set up MSYS2
-        uses: msys2/setup-msys2@v2
+        uses: msys2/setup-msys2@v2.24.1
         with:
           msystem: clang64
           update: true
@@ -547,7 +547,7 @@ jobs:
             Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
             Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: ${{ env.OS }}-${{ env.TARGET }}
           path: artifacts/
@@ -560,12 +560,12 @@ jobs:
       OS: android
       TARGET: universal
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
         with:
           submodules: recursive
           fetch-depth: 0
       - name: Set up cache
-        uses: actions/cache@v4
+        uses: actions/cache@v4.0.2
         with:
           path: |
             ~/.gradle/caches
@@ -578,12 +578,12 @@ jobs:
         uses: olegtarasov/get-tag@v2.1.3
         id: tagName
       - name: Set up JDK 22
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v4.4.0
         with:
           java-version: '22'
           distribution: 'temurin'
       - name: Install New Packages
-        uses: gerlero/apt-install@v1
+        uses: gerlero/apt-install@v1.2.2
         with:
           packages: ccache apksigner glslang-dev glslang-tools apparmor cloud-init firefox libapparmor1 libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core php8.3 php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xml php8.3-xsl php8.3-zip vim vim-common vim-runtime vim-tiny xxd
       - name: Update system packages
@@ -598,7 +598,7 @@ jobs:
       - name: Copy artifacts
         run: ./.ci/scripts/android/upload.sh
       - name: Upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: android
           path: artifacts/
@@ -608,9 +608,9 @@ jobs:
     needs: [Source, macos-universal, Linux, Windows-MSVC, Windows-CLANG, Android]
     if: ${{ startsWith(github.ref, 'refs/tags/') }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4.1.8
       - name: Create release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

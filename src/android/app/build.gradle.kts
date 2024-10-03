@@ -32,6 +32,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     compileOptions {
@@ -187,7 +188,7 @@ android {
 }
 
 tasks.create<Delete>("ktlintReset") {
-    delete(File(buildDir.path + File.separator + "intermediates/ktLint"))
+    delete(layout.buildDirectory.dir("intermediates/ktLint"))
 }
 
 val showFormatHelp = {
@@ -201,7 +202,7 @@ tasks.getByPath("ktlintMainSourceSetCheck").doFirst { showFormatHelp.invoke() }
 tasks.getByPath("loadKtlintReporters").dependsOn("ktlintReset")
 
 ktlint {
-    version.set("1.3.1")
+    version.set("0.47")
     android.set(true)
     ignoreFailures.set(false)
     disabledRules.set(

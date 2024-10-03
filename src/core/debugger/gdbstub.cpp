@@ -3,6 +3,7 @@
 
 #include <atomic>
 #include <codecvt>
+#include <fmt/ranges.h>
 #include <locale>
 #include <numeric>
 #include <optional>

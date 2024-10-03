@@ -262,7 +262,7 @@ struct fmt::formatter<VideoCommon::Extent3D> {
     }
 
     template <typename FormatContext>
-    auto format(const VideoCommon::Extent3D& extent, FormatContext& ctx) {
+    auto format(const VideoCommon::Extent3D& extent, FormatContext& ctx) const {
         return fmt::format_to(ctx.out(), "{{{}, {}, {}}}", extent.width, extent.height,
                               extent.depth);
     }

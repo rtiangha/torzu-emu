@@ -3,6 +3,7 @@
 
 #include <array>
 #include <future>
+#include <QByteArray>
 #include <QColor>
 #include <QDesktopServices>
 #include <QFutureWatcher>

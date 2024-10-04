@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <QUnhandledException>
 #include <thread>
 #include "core/hle/service/am/applet_manager.h"
 #include "core/loader/nca.h"

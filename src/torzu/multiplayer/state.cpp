@@ -3,6 +3,7 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QByteArray>
 #include <QIcon>
 #include <QMessageBox>
 #include <QStandardItemModel>

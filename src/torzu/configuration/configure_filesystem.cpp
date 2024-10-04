@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: Copyright 2019 torzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
+#include <QByteArray>
 #include <QFileDialog>
 #include <QMessageBox>
 #include "common/fs/fs.h"

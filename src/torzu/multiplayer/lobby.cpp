@@ -4,6 +4,7 @@
 #include <QInputDialog>
 #include <QList>
 #include <QtConcurrent/QtConcurrentRun>
+#include <QUnhandledException>
 #include "common/logging/log.h"
 #include "common/settings.h"
 #include "core/core.h"

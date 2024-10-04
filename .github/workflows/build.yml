@@ -63,6 +63,10 @@ jobs:
         with:
           cmakeVersion: latest
           ninjaVersion: latest
+      - name: Install mold linker
+        uses: rui314/setup-mold@v1
+        with:
+          make-default: false
       - name: Install Boost
         uses: MarkusJx/install-boost@v2.4.5
         id: install-boost
@@ -101,7 +105,9 @@ jobs:
                 -DCMAKE_C_COMPILER=clang-18 \
                 -DCMAKE_CXX_FLAGS="-O2 -stdlib=libc++" \
                 -DCMAKE_C_FLAGS="-O2" \
-                -DCMAKE_LINKER=/usr/bin/lld-18 \
+                -DCMAKE_LINKER_TYPE="MOLD" \
+                -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=mold" \
+                -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=mold" \
                 -DTORZU_ENABLE_LTO=ON \
                 -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
                 -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \

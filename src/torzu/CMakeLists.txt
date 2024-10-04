@@ -384,6 +384,7 @@ endif()
 target_link_libraries(torzu PRIVATE common core input_common frontend_common network video_core)
 target_link_libraries(torzu PRIVATE Boost::headers glad json Qt${QT_MAJOR_VERSION}::Widgets httplib::httplib)
 target_link_libraries(torzu PRIVATE ${PLATFORM_LIBRARIES} Threads::Threads)
+target_link_libraries(torzu PRIVATE Qt${QT_MAJOR_VERSION}::Core)
 
 target_link_libraries(torzu PRIVATE Vulkan::Headers)
 if (NOT WIN32)

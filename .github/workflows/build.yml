@@ -24,7 +24,7 @@ jobs:
           name: source
           path: artifacts/
   Linux:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         target: ["appimage", "fresh"]
@@ -49,20 +49,20 @@ jobs:
       - name: Install Clang PPA
         uses: myci-actions/add-deb-repo@11
         with:
-          repo: deb http://apt.llvm.org/noble/ llvm-toolchain-noble-17 main
+          repo: deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-18 main
           repo-name: llvm
           keys-asc: https://apt.llvm.org/llvm-snapshot.gpg.key
+      - name: Install New Packages
+        uses: gerlero/apt-install@v1.2.2
+        with:
+          packages: ccache libc++-18-dev clang-18 clang-tools-18 clang-18-doc libclang-common-18-dev libclang-18-dev libclang1-18 clang-format-18 python3-clang-18 clangd-18 clang-tidy-18 autoconf git libva2 libva-dev libasound2-dev libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev build-essential gstreamer1.0-gl gstreamer1.0-plugins-base libcdparanoia0 libegl-dev libegl-mesa0 libegl1 libgl1-mesa-dev libgles-dev libgles1 libgles2 libglvnd-core-dev libglvnd-dev libgraphene-1.0-0 libgstreamer-gl1.0-0 libgstreamer-plugins-base1.0-0 liborc-0.4-dev libvisual-0.4-0 libxcb-cursor0 libxcb-shape0 libxcb-xkb-dev libxkbcommon-dev apparmor aspnetcore-runtime-6.0 aspnetcore-runtime-7.0 aspnetcore-targeting-pack-6.0 aspnetcore-targeting-pack-7.0 ca-certificates cloud-init dotnet-apphost-pack-6.0 dotnet-apphost-pack-7.0 dotnet-hostfxr-6.0 dotnet-runtime-6.0 dotnet-runtime-7.0 dotnet-sdk-8.0 dotnet-targeting-pack-6.0 dotnet-targeting-pack-7.0 firefox libapparmor1 libapr1 libcups2 libcurl3-gnutls libmm-glib0 libopenjp2-7 libopenjp2-7-dev libpcap0.8 linux-cloud-tools-common linux-tools-common netstandard-targeting-pack-2.1 podman python3-configobj ubuntu-advantage-tools ubuntu-minimal ubuntu-pro-client ubuntu-pro-client-l10n ubuntu-server ubuntu-standard php8.1 php8.1-bcmath php8.1-bz2 php8.1-cgi php8.1-cli php8.1-common php8.1-curl php8.1-dba php8.1-dev php8.1-enchant php8.1-fpm php8.1-gd php8.1-gmp php8.1-imap php8.1-interbase php8.1-intl php8.1-ldap php8.1-mbstring php8.1-mysql php8.1-odbc php8.1-opcache php8.1-pgsql php8.1-phpdbg php8.1-pspell php8.1-readline php8.1-snmp php8.1-soap php8.1-sqlite3 php8.1-sybase php8.1-tidy php8.1-xml php8.1-xsl php8.1-zip vim vim-common vim-runtime vim-tiny xxd libnetplan0 netplan.io 
+      - name: Update System Packages
+        run: sudo apt-get update && sudo apt-get -y dist-upgrade && sudo apt-get clean
       - name: Get latest CMake and Ninja
         uses: lukka/get-cmake@v3.30.4
         with:
           cmakeVersion: latest
           ninjaVersion: latest
-      - name: Install New Packages
-        uses: gerlero/apt-install@v1.2.2
-        with:
-          packages: ccache clang-17 clang-tools-17 clang-17-doc libclang-common-17-dev libclang-17-dev libclang1-17 clang-format-17 python3-clang-17 clangd-17 clang-tidy-17 autoconf git glslang-tools libva2 libva-dev libasound2t64 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev build-essential gstreamer1.0-gl gstreamer1.0-plugins-base libcdparanoia0 libegl-dev libegl-mesa0 libegl1 libgl1-mesa-dev libgles-dev libgles1 libgles2 libglvnd-core-dev libglvnd-dev libgraphene-1.0-0 libgstreamer-gl1.0-0 libgstreamer-plugins-base1.0-0 liborc-0.4-0t64 libvisual-0.4-0 libxcb-cursor0 libxcb-shape0 libxcb-xkb-dev libxkbcommon-dev apparmor cloud-init firefox libapparmor1 libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core php8.3 php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xml php8.3-xsl php8.3-zip vim vim-common vim-runtime vim-tiny xxd
-      - name: Update System Packages
-        run: sudo apt-get update && sudo apt-get -y dist-upgrade && sudo apt-get clean
       - name: Install Boost
         uses: MarkusJx/install-boost@v2.4.5
         id: install-boost
@@ -86,17 +86,22 @@ jobs:
           target: 'desktop'
           arch: 'linux_gcc_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview qtwaylandcompositor qtmultimedia'
+      - name: Install Vulkan SDK
+        uses: humbletim/install-vulkan-sdk@v1.1.1
+        with:
+          version: latest
+          cache: true
       - name: Configure cmake
         run: |
             mkdir build && cd build && cmake .. -G Ninja \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_COMPILER=clang++-17 \
-                -DCMAKE_C_COMPILER=clang-17 \
-                -DCMAKE_CXX_FLAGS="-O2" \
+                -DCMAKE_CXX_COMPILER=clang++-18 \
+                -DCMAKE_C_COMPILER=clang-18 \
+                -DCMAKE_CXX_FLAGS="-O2 -stdlib=libc++" \
                 -DCMAKE_C_FLAGS="-O2" \
-                -DCMAKE_LINKER=/usr/bin/lld-17 \
+                -DCMAKE_LINKER=/usr/bin/lld-18 \
                 -DTORZU_ENABLE_LTO=ON \
                 -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
                 -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
@@ -577,18 +582,28 @@ jobs:
       - name: Query tag name
         uses: olegtarasov/get-tag@v2.1.3
         id: tagName
+      - name: Install New Packages
+        uses: gerlero/apt-install@v1.2.2
+        with:
+          packages: ccache apksigner apparmor cloud-init firefox libapparmor1 libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core php8.3 php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xml php8.3-xsl php8.3-zip vim vim-common vim-runtime vim-tiny xxd
+      - name: Update system packages
+        run: |
+          sudo apt-get update && sudo apt-get -y dist-upgrade && sudo apt-get clean
+      - name: Get latest CMake and Ninja
+        uses: lukka/get-cmake@v3.30.4
+        with:
+          cmakeVersion: latest
+          ninjaVersion: latest
       - name: Set up JDK 22
         uses: actions/setup-java@v4.4.0
         with:
           java-version: '22'
           distribution: 'temurin'
-      - name: Install New Packages
-        uses: gerlero/apt-install@v1.2.2
+      - name: Install Vulkan SDK
+        uses: humbletim/install-vulkan-sdk@v1.1.1
         with:
-          packages: ccache apksigner glslang-dev glslang-tools apparmor cloud-init firefox libapparmor1 libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core php8.3 php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xml php8.3-xsl php8.3-zip vim vim-common vim-runtime vim-tiny xxd
-      - name: Update system packages
-        run: |
-          sudo apt-get update && sudo apt-get -y dist-upgrade && sudo apt-get clean
+          version: latest
+          cache: true
       - name: Build
         run: JAVA_HOME=$JAVA_HOME_22_X64 ./.ci/scripts/android/build.sh
         env:

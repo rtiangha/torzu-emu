@@ -198,6 +198,10 @@ jobs:
             arch: x86
             toolset: clang
             link: static
+      - name: Uninstall problematic packages
+        run: |
+            brew uninstall fmt
+            brew autoremove
       - name: Configure cmake
         run: |
             mkdir build && cd build && cmake .. -G Ninja \
@@ -300,6 +304,10 @@ jobs:
             toolset: clang
             arch: aarch64
             link: static
+      - name: Uninstall problematic packages
+        run: |
+            brew uninstall fmt
+            brew autoremove
       - name: Configure cmake
         run: |
             mkdir build && cd build && cmake .. -G Ninja \

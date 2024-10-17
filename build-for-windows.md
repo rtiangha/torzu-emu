@@ -106,55 +106,82 @@ git submodule update --init --recursive
 
 * [MSYS2](https://www.msys2.org)
 * [Vulkan SDK](https://vulkan.lunarg.com/sdk/home#windows) - **Make sure to select Latest SDK.**
+### Install torzu dependencies for MinGW-w64
 * Make sure to follow the instructions and update to the latest version by running `pacman -Syu` as many times as needed.
 
-### Install torzu dependencies for MinGW-w64
-
+### Install other dependencies
 * Open the `MSYS2 MinGW 64-bit` (mingw64.exe) shell
-* Download and install all dependencies using: `pacman -Syu git make mingw-w64-x86_64-SDL2 mingw-w64-x86_64-cmake mingw-w64-x86_64-python-pip mingw-w64-x86_64-qt5 mingw-w64-x86_64-toolchain autoconf libtool automake-wrapper`
-* Add MinGW binaries to the PATH: `echo 'PATH=/mingw64/bin:$PATH' >> ~/.bashrc`
-* Add glslangValidator to the PATH: `echo 'PATH=$(readlink -e /c/VulkanSDK/*/Bin/):$PATH' >> ~/.bashrc`
+* Download and install all dependencies using: `pacman -Syu git make mingw-w64-x86_64-SDL2 mingw-w64-x86_64-cmake mingw-w64-x86_64-qt5 mingw-w64-x86_64-toolchain`
+
+### Setup environment variables
+```
+export PATH="<Absolute path to the Bin folder in Vulkan SDK>:$PATH"
+export VCPKG_DEFAULT_HOST_TRIPLET=x64-mingw-static
+export VCPKG_DEFAULT_TRIPLET=x64-mingw-static
+```
+We have to manually set some VCPKG variables for some reason.
+This issue probably already exists in the original Yuzu.
 
 ### Clone the torzu repository with Git
 
-**from Codeberg repo (the `--recursive` option automatically clones the required Git submodules):**
+**from NotABug repo (the `--recursive` option automatically clones the required Git submodules):**
 ```
-git clone --depth 1 --recursive https://codeberg.org/litucks/torzu.git
+git clone --depth 1 --recursive https://notabug.org/litucks/torzu.git
 cd torzu
+git submodule update --init --recursive
 ```
 **from Torzu repo (assuming Tor is installed as a service):**
 ```
 git -c http.proxy=socks5h://127.0.0.1:9050 clone --depth 1 http://vub63vv26q6v27xzv2dtcd25xumubshogm67yrpaz2rculqxs7jlfqad.onion/torzu-emu/torzu.git
 cd torzu
-git submodule update --init --recursive
+git submodule update --init --recursive 
 ```
 
+<<<<<<< HEAD
 ### Run the following commands to build torzu (dynamically linked build)
 
+### Generating makefile
 ```bash
+cmake -G "MSYS Makefiles" -DYUZU_USE_BUNDLED_VCPKG=ON -DYUZU_TESTS=OFF -DVCPKG_TARGET_TRIPLET=x64-mingw-static ..
 mkdir build && cd build
-cmake -G "MSYS Makefiles" -DTORZU_USE_BUNDLED_VCPKG=ON -DTORZU_TESTS=OFF ..
 make -j$(nproc)
 # test torzu out with
 ./bin/torzu.exe
 ```
+`DVCPKG_TARGET_TRIPLET` has to be overriden to `x64-mingw-static` here to generate a static build that doesn't require extra DLLs to be packaged.
 
-* *(Note: This build is not a static build meaning that you need to include all of the DLLs with the .exe in order to use it!)*
-
-e.g.
-```Bash
-cp externals/ffmpeg-*/bin/*.dll bin/
+### Build yuzu
 ```
+make -j$(nproc) yuzu
+```
+The reason we are not using `make all` is that linker will fail.
+This is because Yuzu developer didn't set linker flags properly in their `CMakeLists.txt` for some reason. So we have add something manually.
+```
+VERBOSE=1 make yuzu
+```
+This will shows the exact link command, should be something like:
+```
+cd ***/src/yuzu && /mingw64/bin/c++.exe -O3 -DNDEBUG -Wl,--subsystem,windows -Wl,--whole-archive ...
+```
+Copy the command line and add the following arguments:
+```
+-static-libstdc++ -lws2_32 -s -Wl,--Map,../../bin/yuzu.map
+```
+Explanation of the extra arguments:
+- `-static-libstdc++`: Force usage of static libstdc++, without this argument the binary will have no entrypoint.
+- `-lws2_32`: Link the ws2_32.a provided by mingw.
+- `-s`: Optional, strip the symbols from the output binary.
+- `-Wl,--Map,../../bin/yuzu.map`: Optional, output a separated linker map to `../../bin/yuzu.map`
+Please note that `-lw2_32` is already added, but the order is not correct and hence cause linking fails.
 
-Bonus Note: Running programs from inside `MSYS2 MinGW x64` shell has a different %PATH% than directly from explorer. This different %PATH% has the locations of the other DLLs required.
-![image](https://user-images.githubusercontent.com/190571/165000848-005e8428-8a82-41b1-bb4d-4ce7797cdac8.png)
-
+Now the built executable should work properly. Repeating step 4 should build `yuzu-cmd` as well.
+Some DLLs (e.g., Qt) are still required as they cannot being linked statically. Copying those DLLs from the latest release is one option.
 
 ### Building without Qt (Optional)
 
 Doesn't require the rather large Qt dependency, but you will lack a GUI frontend:
 
-  * Pass the `-DENABLE_QT=no` flag to cmake
+  * Pass the `-DENABLE_QT=NO` flag to cmake
 
 ## Method III: CLion Environment Setup
 

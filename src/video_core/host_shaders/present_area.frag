@@ -33,14 +33,14 @@ vec4 AreaSampling(sampler2D textureSampler, vec2 texCoords, vec2 source_size, ve
     // Determine the sizes of the source and target images.
     vec2 inverted_target_size = vec2(1.0) / target_size;
 
-    // Convert the target pixel box to source pixel box.
+    // Determine the range of the source image that the target pixel will cover.
     vec2 range = source_size * inverted_target_size;
     vec2 beg = (texCoords.xy * source_size) - (range * 0.5);
     vec2 end = beg + range;
 
     // Compute the top-left and bottom-right corners of the pixel box.
-    ivec2 f_beg = ivec2(beg);
-    ivec2 f_end = ivec2(end);
+    ivec2 f_beg = ivec2(floor(beg));
+    ivec2 f_end = ivec2(floor(end));
 
     // Compute how much of the start and end pixels are covered horizontally & vertically.
     float area_w = 1.0 - fract(beg.x);

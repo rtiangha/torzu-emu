@@ -10,7 +10,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "2.0.20"
+    kotlin("plugin.serialization") version "2.0.21"
     id("androidx.navigation.safeargs.kotlin")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
     id("com.github.triplet.play") version "3.11.0"
@@ -28,7 +28,7 @@ android {
     namespace = "org.torzu.torzu_emu"
 
     compileSdkVersion = "android-35"
-    ndkVersion = "27.1.12297006"
+    ndkVersion = "27.2.12479018"
 
     buildFeatures {
         viewBinding = true
@@ -234,8 +234,8 @@ dependencies {
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("androidx.fragment:fragment-ktx:1.8.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.2")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.3")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")

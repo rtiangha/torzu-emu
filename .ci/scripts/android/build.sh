@@ -29,13 +29,13 @@ cmake -S . -B build \
   -D CMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
   -D CMAKE_C_COMPILER_LAUNCHER=ccache \
   -D CMAKE_CXX_COMPILER_LAUNCHER=ccache \
-  -D CMAKE_CXX_COMPILER=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android30-clang++ \
-  -D CMAKE_C_COMPILER=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android30-clang \
-  -D CMAKE_CXX_FLAGS="-O2" \
-  -D CMAKE_C_FLAGS="-O2" \
+  -D CMAKE_CXX_COMPILER=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android34-clang++ \
+  -D CMAKE_C_COMPILER=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android34-clang \
+  -D CMAKE_CXX_FLAGS="-Ofast -march=armv8.2-a" \
+  -D CMAKE_C_FLAGS="-Ofast -march=armv8.2-a" \
   -D CMAKE_EXE_LINKER_FLAGS=-flto=thin \
   -D CMAKE_SHARED_LINKER_FLAGS=-flto=thin \
-  -D ANDROID_PLATFORM=30 \
+  -D ANDROID_PLATFORM=34 \
   -D CMAKE_ANDROID_ARCH_ABI=arm64-v8a \
   -D CMAKE_ANDROID_STL_TYPE=c++_static \
   -D ANDROID_USE_LEGACY_TOOLCHAIN_FILE=NO \

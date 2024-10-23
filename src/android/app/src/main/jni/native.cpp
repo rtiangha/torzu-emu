@@ -510,17 +510,12 @@ void JNICALL Java_org_torzu_torzu_1emu_NativeLibrary_initializeGpuDriver(JNIEnv*
 }
 
 [[maybe_unused]] bool SupportsCustomDriver() {
-    return android_get_device_api_level() >= 28 && CheckKgslPresent();
+    return android_get_device_api_level() >= 30;
 }
 
 jboolean JNICALL Java_org_torzu_torzu_1emu_utils_GpuDriverHelper_supportsCustomDriverLoading(
     JNIEnv* env, jobject instance) {
-#ifdef ARCHITECTURE_arm64
-    // If the KGSL device exists custom drivers can be loaded using adrenotools
     return SupportsCustomDriver();
-#else
-    return false;
-#endif
 }
 
 jobjectArray Java_org_torzu_torzu_1emu_utils_GpuDriverHelper_getSystemDriverInfo(

@@ -7,9 +7,12 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.BatteryManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -59,6 +62,9 @@ import org.torzu.torzu_emu.overlay.model.OverlayLayout
 import org.torzu.torzu_emu.utils.*
 import org.torzu.torzu_emu.utils.ViewUtils.setVisible
 import java.lang.NullPointerException
+import kotlin.math.roundToInt
+import android.app.ActivityManager
+import android.os.Process
 
 class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     private lateinit var emulationState: EmulationState
@@ -79,6 +85,10 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
     private var isInFoldableLayout = false
 
     private lateinit var powerManager: PowerManager
+
+    private lateinit var activityManager: ActivityManager
+    private val memoryInfo = ActivityManager.MemoryInfo()
+    private val pids = intArrayOf(Process.myPid())
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -415,6 +425,8 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
         driverViewModel.isInteractionAllowed.collect(viewLifecycleOwner) {
             if (it) startEmulation()
         }
+
+        activityManager = requireContext().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     }
 
     private fun startEmulation(programIndex: Int = 0) {
@@ -487,30 +499,31 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
         val showOverlay = BooleanSetting.SHOW_PERFORMANCE_OVERLAY.getBoolean()
         binding.showFpsText.setVisible(showOverlay)
         if (showOverlay) {
-            val SYSTEM_FPS = 0
-            val FPS = 1
-            val FRAMETIME = 2
-            val SPEED = 3
             perfStatsUpdater = {
-                if (emulationViewModel.emulationStarted.value &&
-                    !emulationViewModel.isEmulationStopping.value
+                if (emulationViewModel.emulationStarted.value == true &&
+                    emulationViewModel.isEmulationStopping.value != true
                 ) {
                     val perfStats = NativeLibrary.getPerfStats()
-                    val cpuBackend = NativeLibrary.getCpuBackend()
-                    val gpuDriver = NativeLibrary.getGpuDriver()
-                    if (_binding != null) {
-                        binding.showFpsText.text =
-                            String.format("FPS: %.1f\n%s/%s", perfStats[FPS], cpuBackend, gpuDriver)
+                    val ramUsage = getAppMemoryUsage()
+                    binding.showFpsText?.text = buildString {
+                        append("FPS: %.1f\n".format(perfStats[1]))
+                        append(NativeLibrary.getCpuBackend())
+                        append('/')
+                        append(NativeLibrary.getGpuDriver())
+                        append("\nRAM: %.1f MB".format(ramUsage))
                     }
                     perfStatsUpdateHandler.postDelayed(perfStatsUpdater!!, 800)
                 }
             }
             perfStatsUpdateHandler.post(perfStatsUpdater!!)
         } else {
-            if (perfStatsUpdater != null) {
-                perfStatsUpdateHandler.removeCallbacks(perfStatsUpdater!!)
-            }
+            perfStatsUpdater?.let { perfStatsUpdateHandler.removeCallbacks(it) }
         }
+    }
+
+    private fun getAppMemoryUsage(): Float {
+        activityManager.getMemoryInfo(memoryInfo)
+        return activityManager.getProcessMemoryInfo(pids)[0].totalPss / 1024f
     }
 
     private fun updateThermalOverlay() {
@@ -521,18 +534,15 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
                 if (emulationViewModel.emulationStarted.value &&
                     !emulationViewModel.isEmulationStopping.value
                 ) {
-                    val thermalStatus = when (powerManager.currentThermalStatus) {
-                        PowerManager.THERMAL_STATUS_LIGHT -> "😥"
-                        PowerManager.THERMAL_STATUS_MODERATE -> "🥵"
-                        PowerManager.THERMAL_STATUS_SEVERE -> "🔥"
-                        PowerManager.THERMAL_STATUS_CRITICAL,
-                        PowerManager.THERMAL_STATUS_EMERGENCY,
-                        PowerManager.THERMAL_STATUS_SHUTDOWN -> "☢️"
+                    val batteryTemp = getBatteryTemperature()
+                    val tempF = celsiusToFahrenheit(batteryTemp)
+                    val thermalMeter = createThermalMeter(batteryTemp)
 
-                        else -> "🙂"
-                    }
                     if (_binding != null) {
-                        binding.showThermalsText.text = thermalStatus
+                        binding.showThermalsText.text = String.format(
+                            "Temperature:\n%s\n%.1f°C / %.1f°F",
+                            thermalMeter, batteryTemp, tempF
+                        )
                     }
                     thermalStatsUpdateHandler.postDelayed(thermalStatsUpdater!!, 1000)
                 }
@@ -543,6 +553,24 @@ class EmulationFragment : Fragment(), SurfaceHolder.Callback {
                 thermalStatsUpdateHandler.removeCallbacks(thermalStatsUpdater!!)
             }
         }
+    }
+
+    private fun getBatteryTemperature(): Float {
+        val intent = requireContext().registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+        val temp = intent?.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0) ?: 0
+        return temp / 10.0f
+    }
+
+    private fun celsiusToFahrenheit(celsius: Float): Float {
+        return (celsius * 9 / 5) + 32
+    }
+
+    private fun createThermalMeter(tempC: Float): String {
+        val meterLength = 10
+        val lowTemp = 20f
+        val highTemp = 50f
+        val filledBars = ((tempC - lowTemp) / (highTemp - lowTemp) * meterLength).roundToInt().coerceIn(0, meterLength)
+        return "[" + "█".repeat(filledBars) + "▒".repeat(meterLength - filledBars) + "]"
     }
 
     @SuppressLint("SourceLockedOrientationActivity")

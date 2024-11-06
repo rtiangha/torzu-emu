@@ -126,6 +126,33 @@
           </layout>
          </widget>
         </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_CRT">
+          <property name="title">
+           <string>CRT Filter</string>
+          </property>
+          <layout class="QVBoxLayout">
+           <item>
+            <widget class="QCheckBox" name="toggle_crt_filter">
+             <property name="text">
+              <string>Enable CRT Filter</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSlider" name="crt_curvature_slider">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <!-- Add similar sliders for scanline intensity and RGB shift -->
+          </layout>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>

@@ -44,7 +44,7 @@ struct InputTopologyVertices {
         case InputTopology::TrianglesAdjacency:
             return 6;
         }
-        std::unreachable();  // ZEPHYRON C++23, || use __builtin_unreachable() for older versions
+        __builtin_unreachable();
     }
 };
 

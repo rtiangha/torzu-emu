@@ -1315,6 +1315,8 @@ void Device::CollectPhysicalMemoryInfo() {
     device_access_memory = 0;
     u64 device_initial_usage = 0;
     u64 local_memory = 0;
+
+    // Collect memory information from all valid heaps
     for (size_t element = 0; element < num_properties; ++element) {
         const bool is_heap_local =
             (mem_properties.memoryHeaps[element].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT) != 0;
@@ -1332,23 +1334,35 @@ void Device::CollectPhysicalMemoryInfo() {
         }
         device_access_memory += mem_properties.memoryHeaps[element].size;
     }
+
     if (!is_integrated) {
-        const u64 reserve_memory = std::min<u64>(device_access_memory / 8, 1_GiB);
+        // For dedicated GPUs, use more aggressive memory allocation
+        const u64 reserve_memory = std::min<u64>(device_access_memory / 16, 512_MiB);
         device_access_memory -= reserve_memory;
 
-        if (Settings::values.vram_usage_mode.GetValue() != Settings::VramUsageMode::Aggressive) {
-            // Account for resolution scaling in memory limits
-            const size_t normal_memory = 6_GiB;
-            const size_t scaler_memory = 1_GiB * Settings::values.resolution_info.ScaleUp(1);
-            device_access_memory =
-                std::min<u64>(device_access_memory, normal_memory + scaler_memory);
+        if (Settings::values.vram_usage_mode.GetValue() == Settings::VramUsageMode::Aggressive) {
+            // In aggressive mode, use up to 90% of available memory (9/10)
+            device_access_memory = device_access_memory * 9 / 10;
+        } else {
+            // For normal mode, still allow higher memory usage but with scaling consideration
+            const size_t base_memory = 8_GiB;
+            const size_t scaler_memory = 2_GiB * Settings::values.resolution_info.ScaleUp(1);
+            // Use up to 75% of available memory (3/4)
+            device_access_memory = std::min<u64>(
+                device_access_memory * 3 / 4,
+                base_memory + scaler_memory);
         }
-
         return;
     }
+
+    // For integrated GPUs, be more conservative but still allow good utilization
     const s64 available_memory = static_cast<s64>(device_access_memory - device_initial_usage);
+    const s64 system_reservation = 4_GiB;
+    const s64 max_allocation = 6_GiB;
+
     device_access_memory = static_cast<u64>(std::max<s64>(
-        std::min<s64>(available_memory - 8_GiB, 4_GiB), std::min<s64>(local_memory, 4_GiB)));
+        std::min<s64>(available_memory - system_reservation, max_allocation),
+        std::min<s64>(local_memory, max_allocation)));
 }
 
 void Device::CollectToolingInfo() {

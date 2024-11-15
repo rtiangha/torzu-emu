@@ -31,8 +31,10 @@ enum class InputTopology {
 };
 
 struct InputTopologyVertices {
-    static u32 vertices(InputTopology input_topology) {
+    [[nodiscard]] static constexpr u32 vertices(InputTopology input_topology) noexcept {
         switch (input_topology) {
+        case InputTopology::Points:
+            return 1;
         case InputTopology::Lines:
             return 2;
         case InputTopology::LinesAdjacency:
@@ -41,10 +43,8 @@ struct InputTopologyVertices {
             return 3;
         case InputTopology::TrianglesAdjacency:
             return 6;
-        case InputTopology::Points:
-        default:
-            return 1;
         }
+        std::unreachable();  // ZEPHYRON C++23, || use __builtin_unreachable() for older versions
     }
 };
 

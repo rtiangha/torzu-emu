@@ -44,7 +44,7 @@ struct InputTopologyVertices {
         case InputTopology::TrianglesAdjacency:
             return 6;
         }
-        __builtin_unreachable();
+        return 0;
     }
 };
 

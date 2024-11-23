@@ -96,11 +96,14 @@ static_assert(std::is_standard_layout_v<CommandHeader>, "CommandHeader is not st
 static_assert(sizeof(CommandHeader) == sizeof(u32), "CommandHeader has incorrect size!");
 
 constexpr CommandHeader BuildCommandHeader(BufferMethods method, u32 arg_count, SubmissionMode mode) {
-    u32 result = 0;
-    BitField<0, 13, u32>{static_cast<u32>(method)}.Copy(result);
-    BitField<16, 13, u32>{arg_count}.Copy(result);
-    BitField<29, 3, SubmissionMode>{mode}.Copy(result);
-    return CommandHeader{result};
+    CommandHeader result{};
+    result.raw = 0;
+
+    result.method = static_cast<u32>(method);
+    result.arg_count = arg_count;
+    result.mode = mode;
+
+    return result;
 }
 
 struct CommandList final {

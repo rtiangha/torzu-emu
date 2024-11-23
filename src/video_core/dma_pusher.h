@@ -82,27 +82,25 @@ static_assert(sizeof(CommandListHeader) == sizeof(u64), "CommandListHeader is in
 
 struct CommandHeader {
     union {
-        u32 argument;
-        struct {
-            BitField<0, 13, u32> method;
-            BitField<13, 3, u32> subchannel;
-            BitField<16, 13, u32> arg_count;
-            BitField<29, 3, SubmissionMode> mode;
-        };
+        u32 raw;
+        BitField<0, 13, u32> method;
+        BitField<13, 3, u32> subchannel;
+        BitField<16, 13, u32> arg_count;
+        BitField<29, 3, SubmissionMode> mode;
     };
 
-    constexpr CommandHeader() noexcept : argument{} {}
-    constexpr CommandHeader(u32 raw) noexcept : argument{raw} {}
+    constexpr CommandHeader() noexcept : raw{} {}
+    constexpr CommandHeader(u32 value) noexcept : raw{value} {}
 };
 static_assert(std::is_standard_layout_v<CommandHeader>, "CommandHeader is not standard layout");
 static_assert(sizeof(CommandHeader) == sizeof(u32), "CommandHeader has incorrect size!");
 
 constexpr CommandHeader BuildCommandHeader(BufferMethods method, u32 arg_count, SubmissionMode mode) {
-    CommandHeader result{};
-    result.method.Assign(static_cast<u32>(method));
-    result.arg_count.Assign(arg_count);
-    result.mode.Assign(mode);
-    return result;
+    u32 result = 0;
+    BitField<0, 13, u32>{static_cast<u32>(method)}.Copy(result);
+    BitField<16, 13, u32>{arg_count}.Copy(result);
+    BitField<29, 3, SubmissionMode>{mode}.Copy(result);
+    return CommandHeader{result};
 }
 
 struct CommandList final {

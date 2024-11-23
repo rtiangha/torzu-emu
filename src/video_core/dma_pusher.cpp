@@ -109,20 +109,24 @@ void DmaPusher::ProcessCommands(std::span<const CommandHeader> commands) {
         const CommandHeader& command_header = commands[index];
 
         if (dma_state.method_count) {
-            // Data word of methods command
+            // Calculate word offset once per iteration
             dma_state.dma_word_offset = static_cast<u32>(index * sizeof(u32));
+
             if (dma_state.non_incrementing) {
-                const u32 max_write = static_cast<u32>(
-                    std::min<std::size_t>(index + dma_state.method_count, commands.size()) - index);
+                // Use saturating arithmetic to prevent potential overflow
+                const u32 remaining_commands = static_cast<u32>(commands.size() - index);
+                const u32 max_write = std::min(dma_state.method_count, remaining_commands);
+
                 CallMultiMethod(&command_header.argument, max_write);
                 dma_state.method_count -= max_write;
                 dma_state.is_last_call = true;
                 index += max_write;
                 continue;
-            } else {
-                dma_state.is_last_call = dma_state.method_count <= 1;
-                CallMethod(command_header.argument);
             }
+
+            // Move is_last_call calculation before method call for consistency
+            dma_state.is_last_call = dma_state.method_count <= 1;
+            CallMethod(command_header.argument);
 
             if (!dma_state.non_incrementing) {
                 dma_state.method++;

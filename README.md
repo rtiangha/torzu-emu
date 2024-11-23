@@ -21,9 +21,10 @@ It is written in C++ with portability in mind and runs on Linux, Windows and And
 A lot of fake Torzu websites have popped up. These are not mine. **This project will not have a clearnet website for the foreseeable future!**
 I highly advice against downloading anything from these websites, specially if their intention is clearly to make money through advertisements.
 
-## Move away from Codeberg
+## IRC
 
-As requested by Codeberg staff, **I have removed the Codeberg mirror repository**. [The new mirror repository is on NotABug](https://notabug.org/litucks/torzu).
+There's an IRC now! Connect to `mao7u6s7jwxeof2fax2kwwqeabyevy5b2icbl24lhgnmkebbtmh37had.onion` port `6667` using your favorite client and join `#torzu`. Connecting via Tor might require a bit of setup but that shouldn't take much more than a quick web search to figure out.
+Please **register your nicks**!
 
 ## Limited public development
 

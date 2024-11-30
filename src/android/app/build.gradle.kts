@@ -10,7 +10,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "2.0.21"
+    kotlin("plugin.serialization") version "2.1.0"
     id("androidx.navigation.safeargs.kotlin")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
     id("com.github.triplet.play") version "3.12.1"
@@ -36,12 +36,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_22
-        targetCompatibility = JavaVersion.VERSION_22
+        sourceCompatibility = JavaVersion.VERSION_23
+        targetCompatibility = JavaVersion.VERSION_23
     }
 
     kotlinOptions {
-        jvmTarget = "22"
+        jvmTarget = "23"
     }
 
     packaging {

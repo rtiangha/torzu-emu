@@ -430,7 +430,7 @@ jobs:
             # REQUIRED: Specify the required boost version
             # A list of supported versions can be found here:
             # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-            boost_version: 1.85.0
+            boost_version: 1.86.0
             # OPTIONAL: Specify a platform version
             platform_version: 2022
             # OPTIONAL: Specify a toolset
@@ -517,7 +517,7 @@ jobs:
             # REQUIRED: Specify the required boost version
             # A list of supported versions can be found here:
             # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-            boost_version: 1.85.0
+            boost_version: 1.86.0
             # OPTIONAL: Specify a platform version
             platform_version: 2022
             # OPTIONAL: Specify a toolset

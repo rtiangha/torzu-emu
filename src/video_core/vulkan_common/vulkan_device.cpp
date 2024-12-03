@@ -1355,10 +1355,11 @@ void Device::CollectPhysicalMemoryInfo() {
         return;
     }
 
-    // For integrated GPUs, be more conservative but still allow good utilization
+    // For integrated GPUs
+    // NOTE(EmulationEnjoyer): revisit allocation strategy for APUs, 4GB reservation crashing on demanding titles (test 6GB?) (Dec. 3, 2024)
     const s64 available_memory = static_cast<s64>(device_access_memory - device_initial_usage);
-    const s64 system_reservation = 4_GiB;
-    const s64 max_allocation = 6_GiB;
+    const s64 system_reservation = 8_GiB; // 4_GiB;
+    const s64 max_allocation = 4_GiB; // 6_GiB;
 
     device_access_memory = static_cast<u64>(std::max<s64>(
         std::min<s64>(available_memory - system_reservation, max_allocation),

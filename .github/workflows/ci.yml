@@ -16,7 +16,7 @@ jobs:
     container: torzuemu/build-environments:linux-transifex
     if: ${{ github.repository == 'torzu-emu/torzu' && !github.head_ref }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
@@ -29,5 +29,5 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'torzu-emu/torzu' }}
     steps:
-    - uses: actions/checkout@v3
-    - uses: fsfe/reuse-action@v1
+    - uses: actions/checkout@v4
+    - uses: fsfe/reuse-action@v5

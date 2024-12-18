@@ -9,14 +9,14 @@
 	url = https://github.com/mozilla/cubeb.git
 [submodule "dynarmic"]
 	path = externals/dynarmic
-	url = https://github.com/rtiangha/dynarmic.git
+	url = https://github.com/Borked3DS/dynarmic.git
         branch = torzu
 [submodule "libusb"]
 	path = externals/libusb/libusb
 	url = https://github.com/libusb/libusb.git
 [submodule "discord-rpc"]
 	path = externals/discord-rpc
-	url = https://github.com/rtiangha/discord-rpc.git
+	url = https://github.com/Borked3DS/discord-rpc.git
 [submodule "mbedtls"]
 	path = externals/mbedtls
 	url = https://github.com/rtiangha/mbedtls.git
@@ -56,7 +56,7 @@
 	url = https://github.com/brofield/simpleini.git
 [submodule "oaknut"]
 	path = externals/oaknut
-	url = https://github.com/rtiangha/oaknut
+	url = https://github.com/Borked3DS/oaknut
 [submodule "externals/SPIRV-Headers"]
 	path = externals/SPIRV-Headers
 	url = https://github.com/KhronosGroup/SPIRV-Headers.git
@@ -74,7 +74,7 @@
 	url = https://github.com/KhronosGroup/Vulkan-Headers.git
 [submodule "externals/sirit"]
 	path = externals/sirit
-	url = https://github.com/rtiangha/sirit.git
+	url = https://github.com/Borked3DS/sirit.git
         branch = torzu
 [submodule "externals/fmt"]
 	path = externals/fmt

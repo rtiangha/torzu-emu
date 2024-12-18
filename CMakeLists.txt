@@ -3,6 +3,13 @@
 
 cmake_minimum_required(VERSION 3.22)
 
+if(COMMAND CMAKE_POLICY)
+    if(POLICY CMP0175)
+        set(CMAKE_POLICY_DEFAULT_CMP0175 NEW)
+    endif()
+endif()
+
+
 project(torzu)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")

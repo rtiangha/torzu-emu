@@ -84,7 +84,7 @@ jobs:
           name: ${{ env.OS }}-${{ env.TARGET }}
           path: artifacts/
   macos-x86:
-    runs-on: ${{ (matrix.target == 'x86_64' && 'macos-13') || 'macos-14' }}
+    runs-on: macos-13
     strategy:
       matrix:
         target: ["x86_64"]
@@ -138,7 +138,7 @@ jobs:
           path: ${{ env.OS }}-${{ env.TARGET }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
   macos-arm:
-    runs-on: ${{ (matrix.target == 'x86_64' && 'macos-13') || 'macos-14' }}
+    runs-on: macos-15
     strategy:
       matrix:
         target: ["arm64"]
@@ -192,7 +192,7 @@ jobs:
           path: ${{ env.OS }}-${{ env.TARGET }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
   macos-universal:
-    runs-on: macos-14
+    runs-on: macos-15
     needs: [macos-arm, macos-x86]
     env:
       OS: macos
@@ -223,7 +223,7 @@ jobs:
           name: ${{ env.OS }}-${{ env.TARGET }}
           path: artifacts/
   Windows-MSVC:
-    runs-on: windows-latest
+    runs-on: windows-2025
     strategy:
       matrix:
         target: ["msvc"]
@@ -282,7 +282,7 @@ jobs:
           name: ${{ env.OS }}-${{ env.TARGET }}
           path: artifacts/
   Windows-CLANG:
-    runs-on: windows-latest
+    runs-on: windows-2025
     strategy:
       matrix:
         target: ["msys2"]

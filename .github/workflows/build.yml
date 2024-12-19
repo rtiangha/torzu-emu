@@ -57,26 +57,12 @@ jobs:
       - name: Install GCC PPA
         run: sudo add-apt-repository ppa:ubuntu-toolchain-r/ppa
       - name: Install New Packages
-        run: sudo apt-get update && sudo apt-get -y install ccache gcc-14 g++-14 clang-19 clang-tools-19 clang-19-doc libclang-common-19-dev libclang-19-dev libclang1-19 clang-format-19 python3-clang-19 clangd-19 clang-tidy-19 autoconf git glslang-tools libva2 libva-dev libasound2t64 libboost-context-dev libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev build-essential gstreamer1.0-gl gstreamer1.0-plugins-base libcdparanoia0 libegl-dev libegl-mesa0 libegl1 libgl1-mesa-dev libgles-dev libgles1 libgles2 libglvnd-core-dev libglvnd-dev libgraphene-1.0-0 libgstreamer-gl1.0-0 libgstreamer-plugins-base1.0-0 liborc-0.4-0t64 libvisual-0.4-0 libxcb-cursor0 libxcb-shape0 libxcb-xkb-dev libxkbcommon-dev apparmor cloud-init firefox libapparmor1 libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core php8.3 php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xml php8.3-xsl php8.3-zip vim vim-common vim-runtime vim-tiny xxd && sudo apt-get clean
+        run: sudo apt-get update && sudo apt-get -y install ccache gcc-14 g++-14 clang-19 clang-tools-19 clang-19-doc libclang-common-19-dev libclang-19-dev libclang1-19 clang-format-19 python3-clang-19 clangd-19 clang-tidy-19 autoconf git glslang-tools libva2 libva-dev libasound2t64 libglu1-mesa-dev libhidapi-dev libpulse-dev libtool libudev-dev libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 libxext-dev libxkbcommon-x11-0 mesa-common-dev nasm libmbedtls-dev catch2 libfmt-dev liblz4-dev nlohmann-json3-dev libssl-dev libavfilter-dev libavcodec-dev libswscale-dev build-essential gstreamer1.0-gl gstreamer1.0-plugins-base libcdparanoia0 libegl-dev libegl-mesa0 libegl1 libgl1-mesa-dev libgles-dev libgles1 libgles2 libglvnd-core-dev libglvnd-dev libgraphene-1.0-0 libgstreamer-gl1.0-0 libgstreamer-plugins-base1.0-0 liborc-0.4-0t64 libvisual-0.4-0 libxcb-cursor0 libxcb-shape0 libxcb-xkb-dev libxkbcommon-dev apparmor cloud-init libapr1t64 libcups2t64 libopenjp2-7 libproc2-0 linux-azure linux-cloud-tools-azure linux-headers-azure linux-image-azure linux-tools-azure lxd-agent-loader mdadm nvme-cli open-vm-tools procps python3-update-manager systemd-hwe-hwdb ubuntu-pro-client ubuntu-pro-client-l10n update-manager-core php8.3 php8.3-bcmath php8.3-bz2 php8.3-cgi php8.3-cli php8.3-common php8.3-curl php8.3-dba php8.3-dev php8.3-enchant php8.3-fpm php8.3-gd php8.3-gmp php8.3-imap php8.3-interbase php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-odbc php8.3-opcache php8.3-pgsql php8.3-phpdbg php8.3-pspell php8.3-readline php8.3-snmp php8.3-soap php8.3-sqlite3 php8.3-sybase php8.3-tidy php8.3-xml php8.3-xsl php8.3-zip vim vim-common vim-runtime vim-tiny xxd && sudo apt-get clean
       - name: Get latest CMake and Ninja
         uses: lukka/get-cmake@latest
         with:
           cmakeVersion: latest
           ninjaVersion: latest
-      - name: Install Boost
-        uses: MarkusJx/install-boost@v2.4.5
-        id: install-boost
-        with:
-            # REQUIRED: Specify the required boost version
-            # A list of supported versions can be found here:
-            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-            boost_version: 1.85.0
-            # OPTIONAL: Specify a platform version
-            platform_version: 22.04
-            # OPTIONAL: Specify a toolset
-            arch: x86
-            toolset: gcc
-            link: static+shared
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -86,50 +72,10 @@ jobs:
           target: 'desktop'
           arch: 'linux_gcc_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview qtwaylandcompositor qtmultimedia'
-      - name: Configure cmake
-        run: |
-            mkdir build && cd build && cmake .. -G Ninja \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_COMPILER=clang++-19 \
-                -DCMAKE_C_COMPILER=clang-19 \
-                -DCMAKE_CXX_FLAGS="-O2" \
-                -DCMAKE_C_FLAGS="-O2" \
-                -DCMAKE_LINKER=/usr/bin/lld-19 \
-                -DTORZU_ENABLE_LTO=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
-                -DTORZU_USE_BUNDLED_VCPKG=OFF \
-                -DTORZU_USE_BUNDLED_FFMPEG=OFF \
-                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
-                -DTORZU_TESTS=OFF \
-                -DTORZU_ENABLE_LTO=OFF \
-                -DTORZU_USE_EXTERNAL_SDL2=ON \
-                -DDTORZU_USE_QT_WEB_ENGINE=ON \
-                -DUSE_DISCORD_PRESENCE=ON \
-                -DENABLE_QT6=ON \
-                -DUSE_SYSTEM_ZSTD=OFF \
-                -DUSE_SYSTEM_FMT=OFF \
-                -DENABLE_WEB_SERVICE=OFF
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Build
         run: ./.ci/linux.sh
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Pack
         run: ./.ci/pack.sh
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
         if: ${{ matrix.target == 'appimage' }}
       - name: Upload
         uses: actions/upload-artifact@v4
@@ -137,10 +83,6 @@ jobs:
         with:
           name: ${{ env.OS }}-${{ env.TARGET }}
           path: artifacts/
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
   macos-x86:
     runs-on: ${{ (matrix.target == 'x86_64' && 'macos-13') || 'macos-14' }}
     strategy:
@@ -170,7 +112,7 @@ jobs:
       - name: Install tools
         uses: tecolicom/actions-use-homebrew-tools@v1
         with:
-          tools: ccache ninja automake ccache ffmpeg glslang hidapi ninja nlohmann-json sdl2 speexdsp zlib
+          tools: ccache ninja automake ccache ffmpeg glslang hidapi ninja speexdsp
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -180,69 +122,15 @@ jobs:
           target: 'desktop'
           arch: 'clang_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
-      - name: Install Boost
-        uses: MarkusJx/install-boost@v2.4.5
-        id: install-boost
-        with:
-            # REQUIRED: Specify the required boost version
-            # A list of supported versions can be found here:
-            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-            boost_version: 1.85.0
-            # OPTIONAL: Specify a platform version
-            platform_version: 13
-            # OPTIONAL: Specify a toolset
-            arch: x86
-            toolset: clang
-            link: static
-      - name: Configure cmake
-        run: |
-            mkdir build && cd build && cmake .. -G Ninja \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_OSX_ARCHITECTURES="$TARGET" \
-                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_FLAGS="-O2" \
-                -DCMAKE_C_FLAGS="-O2" \
-                -DTORZU_ENABLE_LTO=ON \
-                -DTORZU_USE_BUNDLED_VCPKG=OFF \
-                -DTORZU_USE_QT_WEB_ENGINE=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
-                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
-                -DTORZU_TESTS=OFF \
-                -DENABLE_WEB_SERVICE=OFF \
-                -DENABLE_LIBUSB=OFF \
-                -DUSE_SYSTEM_ZSTD=OFF \
-                -DUSE_SYSTEM_FMT=OFF \
-                -DENABLE_QT6=ON \
-                -DUSE_DISCORD_PRESENCE=ON
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Build
         run: ./.ci/macos.sh
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Prepare outputs for caching
         run: mv build/bundle $OS-$TARGET
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Cache outputs for universal build
         uses: actions/cache/save@v4
         with:
           path: ${{ env.OS }}-${{ env.TARGET }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
   macos-arm:
     runs-on: ${{ (matrix.target == 'x86_64' && 'macos-13') || 'macos-14' }}
     strategy:
@@ -272,7 +160,7 @@ jobs:
       - name: Install tools
         uses: tecolicom/actions-use-homebrew-tools@v1
         with:
-          tools: ccache ninja autoconf automake ccache ffmpeg glslang hidapi libtool nlohmann-json sdl2 speexdsp zlib
+          tools: ccache ninja autoconf automake ccache ffmpeg glslang hidapi libtool speexdsp
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -282,69 +170,15 @@ jobs:
           target: 'desktop'
           arch: 'clang_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
-      - name: Install Boost
-        uses: MarkusJx/install-boost@v2.4.5
-        id: install-boost
-        with:
-            # REQUIRED: Specify the required boost version
-            # A list of supported versions can be found here:
-            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-            boost_version: 1.85.0
-            # OPTIONAL: Specify a platform version
-            platform_version: 14
-            # OPTIONAL: Specify a toolset
-            toolset: clang
-            arch: aarch64
-            link: static
-      - name: Configure cmake
-        run: |
-            mkdir build && cd build && cmake .. -G Ninja \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_OSX_ARCHITECTURES="$TARGET" \
-                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_FLAGS="-O2" \
-                -DCMAKE_C_FLAGS="-O2" \
-                -DTORZU_ENABLE_LTO=ON \
-                -DTORZU_USE_BUNDLED_VCPKG=OFF \
-                -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
-                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
-                -DTORZU_USE_QT_WEB_ENGINE=ON \
-                -DTORZU_TESTS=OFF \
-                -DENABLE_WEB_SERVICE=OFF \
-                -DENABLE_LIBUSB=OFF \
-                -DENABLE_QT6=ON \
-                -DUSE_SYSTEM_ZSTD=OFF \
-                -DUSE_SYSTEM_FMT=OFF \
-                -DUSE_DISCORD_PRESENCE=ON
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Build
         run: ./.ci/macos.sh
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Prepare outputs for caching
         run: mv build/bundle $OS-$TARGET
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Cache outputs for universal build
         uses: actions/cache/save@v4
         with:
           path: ${{ env.OS }}-${{ env.TARGET }}
           key: ${{ runner.os }}-${{ matrix.target }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
   macos-universal:
     runs-on: macos-14
     needs: [macos-arm, macos-x86]
@@ -423,53 +257,10 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2022_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
-      - name: Install Boost
-        uses: MarkusJx/install-boost@v2.4.5
-        id: install-boost
-        with:
-            # REQUIRED: Specify the required boost version
-            # A list of supported versions can be found here:
-            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-            boost_version: 1.85.0
-            # OPTIONAL: Specify a platform version
-            platform_version: 2022
-            # OPTIONAL: Specify a toolset
-            toolset: msvc
-            link: static
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
-      - name: Configure cmake (MSVC)
-        run: |
-            mkdir build && cd build && cmake .. -G Ninja \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DBoost_INCLUDE_DIR=${{steps.install-boost.outputs.BOOST_ROOT}}/include \
-                -DBoost_LIBRARY_DIRS=${{steps.install-boost.outputs.BOOST_ROOT}}/lib \
-                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-                -DTORZU_USE_BUNDLED_VCPKG=OFF \
-                -DTORZU_TESTS=OFF \
-                -DTORZU_ENABLE_LTO=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_HEADERS=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON \
-                -DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON \
-                -DALLOW_EXTERNAL_SPIRV_TOOLS=ON \
-                -DTORZU_USE_BUNDLED_QT=OFF \
-                -DTORZU_USE_BUNDLED_SDL2=OFF \
-                -DTORZU_USE_EXTERNAL_SDL2=ON \
-                -DUSE_DISCORD_PRESENCE=ON \
-                -DTORZU_USE_QT_WEB_ENGINE=ON \
-                -DUSE_SYSTEM_ZSTD=OFF \
-                -DUSE_SYSTEM_FMT=OFF \
-                -DENABLE_WEB_SERVICE=OFF \
-                -DENABLE_QT6=ON \
-                -DQT_VERSION=6 
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
       - name: Build (MSVC)
         run: ./.ci/windows-msvc.sh
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
         if: ${{ matrix.target == 'msvc' }}
       - name: Pack
         run: ./.ci/pack.sh
@@ -510,42 +301,21 @@ jobs:
         with:
           version: latest
           cache: true
-      - name: Install Boost
-        uses: MarkusJx/install-boost@v2.4.5
-        id: install-boost
-        with:
-            # REQUIRED: Specify the required boost version
-            # A list of supported versions can be found here:
-            # https://github.com/MarkusJx/prebuilt-boost/blob/main/versions-manifest.json
-            boost_version: 1.85.0
-            # OPTIONAL: Specify a platform version
-            platform_version: 2022
-            # OPTIONAL: Specify a toolset
-            toolset: msvc
-            link: static
       - name: Set up MSYS2
         uses: msys2/setup-msys2@v2
         with:
           msystem: clang64
           update: true
-          install: git make p7zip autoconf libtool automake-wrapper lz4 liblz4-devel
+          install: git make p7zip autoconf libtool automake-wrapper
           pacboy: >-
             qt6:p toolchain:p ccache:p cmake:p ninja:p ffmpeg:p
-            python-pip:p glslang:p lz4:p libusb:p pkg-config:p
+            python-pip:p glslang:p pkg-config:p
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
       - name: Build (MSYS2)
         run: ./.ci/windows-msys2.sh
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Pack
         run: ./.ci/pack.sh
-        env:
-            BOOST_ROOT: ${{ steps.install-boost.outputs.BOOST_ROOT }}
-            Boost_INCLUDE_DIR: ${{steps.install-boost.outputs.BOOST_ROOT}}/include
-            Boost_LIBRARY_DIRS: ${{steps.install-boost.outputs.BOOST_ROOT}}/lib
       - name: Upload
         uses: actions/upload-artifact@v4
         with:

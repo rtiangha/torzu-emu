@@ -423,7 +423,7 @@ if(ENABLE_QT)
     set(QT_VERSION 5.15)
     # These are used to specify minimum versions
     set(QT5_VERSION 5.15)
-    set(QT6_VERSION 6.3.1)
+    set(QT6_VERSION 6.8.1)
 
     set_torzu_qt_components()
     if (ENABLE_QT6)

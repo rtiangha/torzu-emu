@@ -20,6 +20,17 @@ if (NOT TARGET SPIRV-Headers::SPIRV-Headers)
     add_subdirectory(SPIRV-Headers)
 endif()
 
+# Catch2
+add_library(catch2 INTERFACE)
+if(USE_SYSTEM_CATCH2)
+    find_package(Catch2 3.0.0 REQUIRED)
+else()
+    set(CATCH_INSTALL_DOCS OFF CACHE BOOL "")
+    set(CATCH_INSTALL_EXTRAS OFF CACHE BOOL "")
+    add_subdirectory(catch2)
+endif()
+target_link_libraries(catch2 INTERFACE Catch2::Catch2WithMain)
+
 # fmt and Xbyak need to be added before dynarmic
 # libfmt
 if(USE_SYSTEM_FMT)

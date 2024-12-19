@@ -373,7 +373,7 @@ if (ENABLE_WEB_SERVICE)
 endif()
 
 if (TORZU_TESTS)
-    find_package(Catch2 3.0.1 REQUIRED)
+    find_package(Catch2 3.0.1 MODULE)
 endif()
 
 # boost:asio has functions that require AcceptEx et al

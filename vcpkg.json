@@ -76,10 +76,6 @@
         "boost-winapi"
     ],
     "features": {
-        "torzu-tests": {
-            "description": "Compile tests",
-            "dependencies": [ "catch2" ]
-        },
         "web-service": {
             "description": "Enable web services (telemetry, etc.)",
             "dependencies": [

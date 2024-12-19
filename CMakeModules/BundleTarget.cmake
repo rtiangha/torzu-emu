@@ -280,24 +280,30 @@ else()
         add_custom_target(bundle)
         add_custom_command(
             TARGET bundle
+            POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bundle/")
         add_custom_command(
             TARGET bundle
+            POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bundle/dist/")
         add_custom_command(
             TARGET bundle
+            POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/dist/icon.png" "${CMAKE_BINARY_DIR}/bundle/dist/torzu.png")
         add_custom_command(
             TARGET bundle
+            POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/LICENSE.txt" "${CMAKE_BINARY_DIR}/bundle/")
         add_custom_command(
             TARGET bundle
+            POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/README.md" "${CMAKE_BINARY_DIR}/bundle/")
 
         # On Linux, add a command to prepare linuxdeploy and any required plugins before any bundling occurs.
         if (CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
             add_custom_command(
                 TARGET bundle
+                POST_BUILD
                 COMMAND ${CMAKE_COMMAND}
                 "-DBUNDLE_TARGET_DOWNLOAD_LINUXDEPLOY=1"
                 "-DLINUXDEPLOY_PATH=${CMAKE_BINARY_DIR}/externals/linuxdeploy"

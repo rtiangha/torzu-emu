@@ -70,6 +70,7 @@ endif()
 if (ANDROID)
     add_subdirectory(oboe)
     add_library(oboe::oboe ALIAS oboe)
+    add_library(liboboe ALIAS oboe)
 endif()
 
 # zlib

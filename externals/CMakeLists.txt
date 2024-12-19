@@ -74,6 +74,7 @@ if (ANDROID)
 endif()
 
 # zlib
+set(ZLIB_BUILD_EXAMPLES OFF)
 add_subdirectory(zlib)
 
 # Glad

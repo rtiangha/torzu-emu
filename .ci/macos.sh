@@ -23,8 +23,6 @@ mkdir build && cd build && cmake .. -G Ninja \
     -DENABLE_QT6=ON \
     -DUSE_DISCORD_PRESENCE=ON
 
-cd build
-
 ninja
 ninja bundle
 

@@ -36,8 +36,6 @@ mkdir build && cd build && cmake .. -G Ninja \
     -DUSE_SYSTEM_FMT=OFF \
     -DENABLE_WEB_SERVICE=OFF
 
-cd build
-
 ninja
 strip -s bin/torzu
 strip -s bin/torzu-cmd

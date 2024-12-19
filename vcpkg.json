@@ -74,11 +74,7 @@
         "boost-variant",
         "boost-variant2",
         "boost-winapi",
-        "fmt",
-        "lz4",
-        "nlohmann-json",
-        "zlib",
-        "zstd"
+        "zlib"
     ],
     "features": {
         "torzu-tests": {
@@ -108,10 +104,6 @@
         {
             "name": "catch2",
             "version": "3.7.1"
-        },
-        {
-            "name": "fmt",
-            "version": "11.0.2"
         },
         {
             "name": "boost-algorithm",

@@ -178,6 +178,7 @@ android {
                     "-DUSE_SYSTEM_FMT=OFF",
                     "-DCMAKE_CXX_FLAGS=-O2",
                     "-DCMAKE_C_FLAGS=-O2",
+                    "-DVCPKG_INSTALL_OPTIONS=--allow-unsupported",
                     "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
                 )
 

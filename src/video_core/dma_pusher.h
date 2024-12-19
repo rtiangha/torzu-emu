@@ -80,24 +80,19 @@ struct CommandListHeader {
 };
 static_assert(sizeof(CommandListHeader) == sizeof(u64), "CommandListHeader is incorrect size");
 
-struct CommandHeader {
-    union {
-        u32 argument;
-        struct {
-            BitField<0, 13, u32> method;
-            BitField<13, 3, u32> subchannel;
-            BitField<16, 13, u32> arg_count;
-            BitField<29, 3, SubmissionMode> mode;
-        };
-    };
-
-    constexpr CommandHeader() noexcept : argument{} {}
-    constexpr CommandHeader(u32 raw) noexcept : argument{raw} {}
+union CommandHeader {
+    u32 argument;
+    BitField<0, 13, u32> method;
+    BitField<0, 24, u32> method_count_;
+    BitField<13, 3, u32> subchannel;
+    BitField<16, 13, u32> arg_count;
+    BitField<16, 13, u32> method_count;
+    BitField<29, 3, SubmissionMode> mode;
 };
 static_assert(std::is_standard_layout_v<CommandHeader>, "CommandHeader is not standard layout");
 static_assert(sizeof(CommandHeader) == sizeof(u32), "CommandHeader has incorrect size!");
 
-constexpr CommandHeader BuildCommandHeader(BufferMethods method, u32 arg_count, SubmissionMode mode) {
+inline CommandHeader BuildCommandHeader(BufferMethods method, u32 arg_count, SubmissionMode mode) {
     CommandHeader result{};
     result.method.Assign(static_cast<u32>(method));
     result.arg_count.Assign(arg_count);
@@ -161,14 +156,14 @@ private:
     std::size_t dma_pushbuffer_subindex{};  ///< Index within a command list within the pushbuffer
 
     struct DmaState {
-        u32 method{};            ///< Current method
-        u32 subchannel{};        ///< Current subchannel
-        u32 method_count{};      ///< Current method count
-        u32 length_pending{};    ///< Large NI command length pending
-        GPUVAddr dma_get{};      ///< Currently read segment
-        u64 dma_word_offset{};   ///< Current word offset from address
-        bool non_incrementing{}; ///< Current command's NI flag
-        bool is_last_call{};
+        u32 method;            ///< Current method
+        u32 subchannel;        ///< Current subchannel
+        u32 method_count;      ///< Current method count
+        u32 length_pending;    ///< Large NI command length pending
+        GPUVAddr dma_get;      ///< Currently read segment
+        u64 dma_word_offset;   ///< Current word offset from address
+        bool non_incrementing; ///< Current command's NI flag
+        bool is_last_call;
     };
 
     DmaState dma_state{};

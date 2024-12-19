@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 3.22)
 if(COMMAND CMAKE_POLICY)
     # Allow for uppercase <PACKAGENAME>_ROOT variables
     if(POLICY CMP0144)
+        cmake_policy(SET CMP0144 NEW)
         set(CMAKE_POLICY_DEFAULT_CMP0144 NEW)
     endif()
     # FindBoost module no longer provided in cmake 3.30 and above

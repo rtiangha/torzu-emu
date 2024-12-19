@@ -98,6 +98,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
       - name: Set up cache
         uses: actions/cache@v4
         with:
@@ -151,6 +152,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
       - name: Set up cache
         uses: actions/cache@v4
         with:
@@ -297,6 +299,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
       - name: Set up cache
         uses: actions/cache@v4
         with:

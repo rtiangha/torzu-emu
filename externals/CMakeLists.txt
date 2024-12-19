@@ -103,9 +103,9 @@ else()
 endif()
 
 # lz4
-if (MSVC)
-    add_subdirectory(lz4/build/cmake EXCLUDE_FROM_ALL)
-    target_include_directories(lz4 INTERFACE lz4/lib)
+add_subdirectory(lz4/build/cmake EXCLUDE_FROM_ALL)
+target_include_directories(lz4 INTERFACE lz4/lib)
+if(NOT TARGET lz4::lz4)
     add_library(lz4::lz4 ALIAS lz4)
 endif()
 

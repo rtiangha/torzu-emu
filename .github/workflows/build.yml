@@ -122,6 +122,11 @@ jobs:
           target: 'desktop'
           arch: 'clang_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
+      - name: Get latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: latest
+          ninjaVersion: latest
       - name: Build
         run: ./.ci/macos.sh
       - name: Prepare outputs for caching
@@ -170,6 +175,11 @@ jobs:
           target: 'desktop'
           arch: 'clang_64'
           modules: 'qtpositioning qtwebchannel qtwebengine qtwebsockets qtwebview'
+      - name: Get latest CMake and Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: latest
+          ninjaVersion: latest
       - name: Build
         run: ./.ci/macos.sh
       - name: Prepare outputs for caching

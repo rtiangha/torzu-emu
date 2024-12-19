@@ -61,6 +61,9 @@ if (ANDROID)
     add_library(oboe::oboe ALIAS oboe)
 endif()
 
+# zlib
+add_subdirectory(zlib)
+
 # Glad
 add_subdirectory(glad)
 

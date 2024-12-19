@@ -73,8 +73,7 @@
         "boost-utility",
         "boost-variant",
         "boost-variant2",
-        "boost-winapi",
-        "zlib"
+        "boost-winapi"
     ],
     "features": {
         "torzu-tests": {

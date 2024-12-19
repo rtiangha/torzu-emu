@@ -55,6 +55,12 @@ if (MSVC)
     add_subdirectory(getopt)
 endif()
 
+# oboe
+if (ANDROID)
+    add_subdirectory(oboe)
+    add_library(oboe::oboe ALIAS oboe)
+endif()
+
 # Glad
 add_subdirectory(glad)
 

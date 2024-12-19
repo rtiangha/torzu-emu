@@ -91,3 +91,6 @@
 [submodule "externals/glslang"]
 	path = externals/glslang
 	url = https://github.com/KhronosGroup/glslang.git
+[submodule "externals/oboe"]
+	path = externals/oboe
+	url = https://github.com/google/oboe.git

@@ -9,7 +9,7 @@
       { "name": "nlohmann-json" },
       { "name": "zlib" },
       { "name": "zstd" },
-      { "name": "boost", "version=": "1.85.0" }
+      { "name": "boost", "version": "1.85.0" }
     ],
     "features": {
         "torzu-tests": {

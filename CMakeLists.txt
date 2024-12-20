@@ -111,7 +111,7 @@ if (ANDROID AND TORZU_DOWNLOAD_ANDROID_VVL)
 
     # Copy the arm64 binary to src/android/app/main/jniLibs
     set(vvl_lib_path "${CMAKE_CURRENT_SOURCE_DIR}/src/android/app/src/main/jniLibs/arm64-v8a/")
-    file(COPY "${CMAKE_BINARY_DIR}/externals/android-binaries-${vvl_version}/arm64-v8a/libVkLayer_khronos_validation.so"
+    file(COPY "${CMAKE_BINARY_DIR}/externals/lib/arm64-v8a/libVkLayer_khronos_validation.so"
             DESTINATION "${vvl_lib_path}")
 endif()
 

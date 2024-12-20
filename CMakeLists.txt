@@ -104,14 +104,13 @@ endif()
 option(ENABLE_OPENSSL "Enable OpenSSL backend for ISslConnection" ${DEFAULT_ENABLE_OPENSSL})
 
 if (ANDROID AND TORZU_DOWNLOAD_ANDROID_VVL)
-    set(vvl_version "1.3.296.0")
-    set(vvl_zip_file "${CMAKE_BINARY_DIR}/externals/vvl-android.zip")
+    set(vvl_zip_file "${CMAKE_CURRENT_SOURCE_DIR}/externals/vvl-android.zip")
     execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf "${vvl_zip_file}"
-                    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/externals")
+                    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/externals")
 
     # Copy the arm64 binary to src/android/app/main/jniLibs
     set(vvl_lib_path "${CMAKE_CURRENT_SOURCE_DIR}/src/android/app/src/main/jniLibs/arm64-v8a/")
-    file(COPY "${CMAKE_BINARY_DIR}/externals/lib/arm64-v8a/libVkLayer_khronos_validation.so"
+    file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/externals/lib/arm64-v8a/libVkLayer_khronos_validation.so"
             DESTINATION "${vvl_lib_path}")
 endif()
 

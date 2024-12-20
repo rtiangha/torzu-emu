@@ -173,6 +173,7 @@ android {
                     "-DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON",
                     "-DTORZU_USE_EXTERNAL_VULKAN_UTILITY_LIBRARIES=ON",
                     "-DTORZU_USE_EXTERNAL_VULKAN_SPIRV_TOOLS=ON",
+                    "-DTORZU_DOWNLOAD_ANDROID_VVL=OFF",
                     "-DTORZU_ENABLE_LTO=ON",
                     "-DUSE_SYSTEM_ZSTD=OFF",
                     "-DUSE_SYSTEM_FMT=OFF",

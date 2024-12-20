@@ -73,7 +73,8 @@
         "boost-utility",
         "boost-variant",
         "boost-variant2",
-        "boost-winapi"
+        "boost-winapi",
+        "ffmpeg"
     ],
     "features": {
         "web-service": {

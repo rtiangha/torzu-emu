@@ -100,3 +100,6 @@
 [submodule "externals/catch2"]
 	path = externals/catch2
 	url = https://github.com/catchorg/Catch2.git
+[submodule "externals/Vulkan-ValidationLayers"]
+	path = externals/Vulkan-ValidationLayers
+	url = https://github.com/KhronosGroup/Vulkan-ValidationLayers.git

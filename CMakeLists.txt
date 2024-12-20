@@ -111,9 +111,9 @@ if (ANDROID AND TORZU_DOWNLOAD_ANDROID_VVL)
         set(vvl_base_url "https://github.com/KhronosGroup/Vulkan-ValidationLayers/releases/download")
         file(DOWNLOAD "${vvl_base_url}/vulkan-sdk-${vvl_version}/android-binaries-${vvl_version}.zip"
             "${vvl_zip_file}" SHOW_PROGRESS)
-        execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf "${vvl_zip_file}"
-                        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/externals")
     endif()
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf "${vvl_zip_file}"
+                    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/externals")
 
     # Copy the arm64 binary to src/android/app/main/jniLibs
     set(vvl_lib_path "${CMAKE_CURRENT_SOURCE_DIR}/src/android/app/src/main/jniLibs/arm64-v8a/")

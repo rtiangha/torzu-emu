@@ -322,7 +322,7 @@ jobs:
           install: git make p7zip autoconf libtool automake-wrapper
           pacboy: >-
             qt6:p toolchain:p ccache:p cmake:p ninja:p ffmpeg:p
-            python-pip:p glslang:p pkg-config:p autotools:p
+            python-pip:p glslang:p pkg-config:p autotools:p libusb:p
       - name: Disable line ending translation
         run: git config --global core.autocrlf input
       - name: Build (MSYS2)
